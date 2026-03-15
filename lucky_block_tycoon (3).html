@@ -1,0 +1,1800 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>🌌 Cosmos Block</title>
+<style>
+@media(orientation:landscape){#rot{display:flex!important}#app{display:none!important}}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+:root{
+  --bg0:#06040F;--bg1:#0D0820;--bg2:#130E2A;
+  --card:rgba(255,255,255,.07);--cardb:rgba(255,255,255,.13);
+  --ink:#F0EEFF;--ink2:#A090C8;--ink3:#5A4880;
+  --acc:#9966FF;--acc2:#CC88FF;
+  --gold:#FFD700;--goldbg:rgba(255,215,0,.13);--goldbrd:rgba(255,215,0,.4);
+  --green:#44DD88;--greenbg:rgba(68,221,136,.13);--greenbrd:rgba(68,221,136,.4);
+  --red:#FF5555;--redbg:rgba(255,85,85,.13);
+  --c-common:#90A0B0;--c-rare:#55AAFF;--c-epic:#CC55FF;--c-supreme:#FF9911;--c-universe:#FF3399;
+  --c-multiverse:#FF6622;--c-omniverse:#FFAA00;--c-ethereal:#00FFEE;--c-absolute:#FFFFFF;
+  --r:14px;--rsm:10px;--evt-accent:var(--acc);
+}
+body.evt-newyear{--bg0:#0A0800;--bg1:#1A1200;--bg2:#221800;--acc:#FFD700;--acc2:#FFE966;--evt-accent:#FFD700;}
+body.evt-meteor{--bg0:#04060F;--bg1:#080C20;--bg2:#0C1228;--acc:#55AAFF;--acc2:#88CCFF;--evt-accent:#55AAFF;}
+body.evt-eclipse{--bg0:#080008;--bg1:#120012;--bg2:#180020;--acc:#CC55FF;--acc2:#DD88FF;--evt-accent:#CC55FF;}
+body.evt-halloween{--bg0:#0A0400;--bg1:#160800;--bg2:#1E0C00;--acc:#FF6611;--acc2:#FF8844;--evt-accent:#FF6611;}
+body.evt-universe{--bg0:#020008;--bg1:#060010;--bg2:#0A0018;--acc:#FF3399;--acc2:#FF66BB;--evt-accent:#FF3399;}
+body.evt-lucky{--bg0:#001508;--bg1:#002510;--bg2:#003018;--acc:#44DD88;--acc2:#88FFBB;--evt-accent:#44DD88;}
+body.evt-mega{--bg0:#0A0A00;--bg1:#181800;--bg2:#202000;--acc:#FFEE00;--acc2:#FFFF66;--evt-accent:#FFEE00;}
+
+html,body{width:100%;height:100%;overflow:hidden;background:var(--bg0);
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+  color:var(--ink);touch-action:manipulation}
+#rot{display:none;position:fixed;inset:0;z-index:9999;background:var(--bg0);
+  flex-direction:column;align-items:center;justify-content:center;gap:12px;
+  font-size:1rem;color:var(--ink2);text-align:center;padding:24px}
+#starfield{position:fixed;inset:0;pointer-events:none;z-index:0}
+#pc{position:fixed;inset:0;pointer-events:none;z-index:400}
+#app{display:flex;flex-direction:column;height:100vh;height:100svh;
+  max-width:430px;margin:0 auto;position:relative;z-index:1;overflow:hidden}
+
+/* EVENT BANNER */
+#evtbanner{flex-shrink:0;max-height:0;overflow:hidden;transition:max-height .4s;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  font-size:.76rem;font-weight:700;padding:0 16px}
+#evtbanner.show{max-height:34px;padding:7px 16px}
+
+/* HEADER */
+#hdr{flex-shrink:0;display:flex;align-items:center;justify-content:space-between;
+  padding:8px 14px 7px;border-bottom:1px solid rgba(255,255,255,.08);
+  background:rgba(0,0,0,.3);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.logo{font-size:.95rem;font-weight:800;
+  background:linear-gradient(135deg,var(--acc2),var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hdr-pills{display:flex;align-items:center;gap:5px}
+.pill{display:flex;align-items:center;gap:4px;border-radius:50px;padding:4px 10px;font-size:.78rem;font-weight:800}
+.pill-gold{background:var(--goldbg);border:1.5px solid var(--goldbrd);color:var(--gold)}
+.pill-blue{background:rgba(100,220,255,.12);border:1.5px solid rgba(100,220,255,.32);color:#88EEFF}
+.pill-green{background:var(--greenbg);border:1.5px solid var(--greenbrd);color:var(--green)}
+#sdot{width:5px;height:5px;border-radius:50%;background:var(--green);opacity:0;transition:opacity .4s;margin-left:2px}
+#sdot.on{opacity:1}
+.hdr-btns{display:flex;gap:4px}
+.hdr-ico-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);
+  border-radius:8px;padding:5px 8px;font-size:.75rem;cursor:pointer;color:var(--ink2)}
+
+/* TABS */
+#tabs{flex-shrink:0;display:flex;background:rgba(0,0,0,.25);
+  border-bottom:1px solid rgba(255,255,255,.07);overflow-x:auto;scrollbar-width:none}
+#tabs::-webkit-scrollbar{display:none}
+.tab{flex:0 0 auto;padding:8px 11px;border:none;background:transparent;
+  font-family:inherit;font-size:.7rem;font-weight:600;color:var(--ink3);
+  border-bottom:2.5px solid transparent;cursor:pointer;transition:all .18s;white-space:nowrap}
+.tab.on{color:var(--ink);border-bottom-color:var(--evt-accent)}
+
+/* SCREENS */
+#scr{flex:1;overflow:hidden;position:relative}
+.sc{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;
+  padding:13px 13px 30px;display:none;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.sc::-webkit-scrollbar{display:none}
+.sc.on{display:block}
+#play.on{display:flex;flex-direction:column;align-items:center}
+
+/* PLAY */
+#mpsbar{align-self:stretch;display:flex;align-items:center;justify-content:space-between;
+  background:var(--greenbg);border:1.5px solid var(--greenbrd);border-radius:var(--rsm);
+  padding:7px 13px;margin-bottom:10px}
+.mps-l{font-size:.66rem;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.05em}
+#mpsv{font-size:.95rem;font-weight:800;color:var(--green)}
+#mps-bonus{font-size:.58rem;color:var(--green);opacity:.75;text-align:right}
+#multbadge{align-self:stretch;border-radius:var(--rsm);padding:6px 13px;
+  margin-bottom:8px;text-align:center;font-size:.73rem;font-weight:700;
+  display:none;border:1.5px solid var(--evt-accent);
+  background:linear-gradient(135deg,rgba(255,255,255,.06),transparent)}
+#multbadge.show{display:block}
+#zone{display:flex;flex-direction:column;align-items:center;gap:13px;padding:4px 0 10px;width:100%}
+#blk{width:148px;height:148px;border:none;background:transparent;cursor:pointer;padding:0;transition:transform .1s}
+#blk:active{transform:scale(.89)}
+#blk.shake{animation:sh .25s ease-in-out}
+#blk.pop{animation:pk .38s ease-in-out}
+@keyframes sh{0%,100%{transform:rotate(0)scale(1)}25%{transform:rotate(-7deg)scale(1.08)}75%{transform:rotate(7deg)scale(1.08)}}
+@keyframes pk{0%{transform:scale(1)}30%{transform:scale(1.16)rotate(-4deg)}65%{transform:scale(.87)rotate(4deg)}100%{transform:scale(1)}}
+#blk svg{width:100%;height:100%;filter:drop-shadow(0 0 16px var(--evt-accent))}
+#dots{display:flex;gap:9px}
+.d{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.1);
+  border:2px solid rgba(255,255,255,.2);transition:all .2s cubic-bezier(.34,1.56,.64,1)}
+.d.on{background:var(--evt-accent);border-color:var(--evt-accent);
+  box-shadow:0 0 8px var(--evt-accent);transform:scale(1.3)}
+#costbox{display:flex;flex-direction:column;align-items:center;gap:2px}
+#clbl{font-size:.64rem;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.04em}
+#cval{font-size:1rem;font-weight:800}
+#cval.red{color:var(--red)}
+#cerr{font-size:.66rem;color:var(--red);font-weight:700;min-height:13px;text-align:center}
+#ministat{align-self:stretch;display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px}
+.msb{background:var(--card);border:1px solid rgba(255,255,255,.09);border-radius:var(--rsm);
+  padding:7px 5px;text-align:center}
+.msv{font-size:.88rem;font-weight:800}
+.msl{font-size:.57rem;color:var(--ink3);font-weight:600;margin-top:1px}
+
+/* SHARED */
+.slbl{font-size:.62rem;font-weight:700;color:var(--ink3);text-transform:uppercase;
+  letter-spacing:.06em;margin-bottom:6px;margin-top:13px;display:flex;align-items:center;gap:6px}
+.slbl:first-child{margin-top:0}
+.slbl-badge{background:var(--card);border:1px solid rgba(255,255,255,.11);
+  border-radius:50px;padding:1px 7px;font-size:.58rem;color:var(--ink2)}
+.card{background:var(--card);border:1px solid rgba(255,255,255,.1);border-radius:var(--r)}
+.note{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
+  border-radius:var(--rsm);padding:10px 12px;font-size:.72rem;color:var(--ink2);line-height:1.5}
+.note strong{color:var(--ink)}
+.divider{height:1px;background:rgba(255,255,255,.07);margin:11px 0}
+
+/* RARITY */
+.r-common{color:var(--c-common)}.r-rare{color:var(--c-rare)}
+.r-epic{color:var(--c-epic)}.r-supreme{color:var(--c-supreme)}.r-universe{color:var(--c-universe)}
+.rdot{display:inline-block;width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.rdot.common{background:var(--c-common)}.rdot.rare{background:var(--c-rare)}
+.rdot.epic{background:var(--c-epic)}.rdot.supreme{background:var(--c-supreme)}
+.rdot.universe{background:var(--c-universe);box-shadow:0 0 6px var(--c-universe)}
+.rdot.multiverse{background:var(--c-multiverse);box-shadow:0 0 7px var(--c-multiverse)}
+.rdot.omniverse{background:var(--c-omniverse);box-shadow:0 0 8px var(--c-omniverse)}
+.rdot.ethereal{background:var(--c-ethereal);box-shadow:0 0 10px var(--c-ethereal)}
+.rdot.absolute{background:var(--c-absolute);box-shadow:0 0 12px var(--c-absolute)}
+
+/* BUTTONS */
+.btn{font-family:inherit;font-size:.63rem;font-weight:700;border:none;border-radius:8px;
+  padding:5px 9px;cursor:pointer;transition:all .15s;white-space:nowrap}
+.btn:active{transform:scale(.93)}
+.btn-acc{background:var(--acc);color:#fff}
+.btn-gold{background:var(--goldbg);color:var(--gold);border:1px solid var(--goldbrd)}
+.btn-red{background:var(--redbg);color:var(--red);border:1px solid rgba(255,85,85,.35)}
+.btn-green{background:var(--greenbg);color:var(--green);border:1px solid var(--greenbrd)}
+.btn-dark{background:rgba(255,255,255,.08);color:var(--ink2);border:1px solid rgba(255,255,255,.12)}
+.btn:disabled{opacity:.22;cursor:not-allowed;transform:none}
+
+/* INV ITEM */
+.ii{background:var(--card);border:1px solid rgba(255,255,255,.1);border-radius:var(--rsm);
+  padding:8px 9px;display:flex;align-items:center;gap:7px;margin-bottom:5px}
+.ii.rare{border-color:rgba(85,170,255,.28);background:rgba(85,170,255,.06)}
+.ii.epic{border-color:rgba(204,85,255,.28);background:rgba(204,85,255,.06)}
+.ii.supreme{border-color:rgba(255,153,17,.38);background:rgba(255,153,17,.08)}
+.ii.universe{border-color:rgba(255,51,153,.48);background:rgba(255,51,153,.1);box-shadow:0 0 10px rgba(255,51,153,.18)}
+.ii.multiverse{border-color:rgba(255,102,34,.5);background:rgba(255,102,34,.12);box-shadow:0 0 12px rgba(255,102,34,.22)}
+.ii.omniverse{border-color:rgba(255,170,0,.55);background:rgba(255,170,0,.13);box-shadow:0 0 14px rgba(255,170,0,.28)}
+.ii.ethereal{border-color:rgba(0,255,238,.55);background:rgba(0,255,238,.08);box-shadow:0 0 16px rgba(0,255,238,.3)}
+.ii.absolute{border-color:rgba(255,255,255,.7);background:rgba(255,255,255,.1);box-shadow:0 0 20px rgba(255,255,255,.4)}
+.ii .ico{font-size:1.4rem;flex-shrink:0;width:26px;text-align:center}
+.ii .inf{flex:1;min-width:0}
+.ii .nm{font-size:.72rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ii .sub{font-size:.58rem;color:var(--ink3);margin-top:1px}
+.ii .sub .g{color:var(--green);font-weight:700}
+.ii .sub .pr{color:var(--gold);font-weight:700}
+.ii .rgt{display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0}
+.cnt{font-size:.66rem;font-weight:700;color:var(--ink2)}
+
+/* EQUIP SLOTS */
+.eqgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:3px}
+.eqs{background:var(--card);border:1.5px dashed rgba(255,255,255,.14);border-radius:var(--rsm);
+  min-height:72px;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:2px;padding:6px 3px;position:relative;transition:all .2s}
+.eqs.filled{border-style:solid;border-color:var(--evt-accent);background:rgba(153,102,255,.08)}
+.eqs.locked{opacity:.45}
+.eqs .sn{position:absolute;top:2px;right:4px;font-size:.48rem;color:var(--ink3);font-weight:700}
+.eqs .si{font-size:1.3rem;line-height:1}
+.eqs .sname{font-size:.5rem;font-weight:700;text-align:center;color:var(--ink2);line-height:1.2}
+.eqs .smps{font-size:.54rem;font-weight:700;color:var(--green)}
+.eqs .evoid{font-size:.58rem;color:var(--ink3)}
+.eqs .rmx{position:absolute;bottom:2px;right:2px;width:15px;height:15px;border-radius:50%;
+  background:var(--redbg);border:1px solid rgba(255,85,85,.3);color:var(--red);
+  font-size:.48rem;display:flex;align-items:center;justify-content:center;cursor:pointer}
+
+/* SELL */
+.sell-item{background:var(--card);border:1px solid rgba(255,255,255,.09);
+  border-radius:var(--rsm);padding:8px 9px;display:flex;align-items:center;gap:7px;margin-bottom:5px}
+.qty-btn{width:22px;height:22px;border-radius:6px;border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.07);color:var(--ink);font-size:.85rem;font-weight:700;
+  cursor:pointer;display:flex;align-items:center;justify-content:center}
+.qty-btn:active{background:rgba(255,255,255,.18)}
+.qty-val{font-size:.8rem;font-weight:800;min-width:18px;text-align:center}
+
+/* TRADE */
+.trade-card{background:var(--card);border:1px solid rgba(255,255,255,.11);
+  border-radius:var(--r);padding:13px;margin-bottom:9px}
+.trade-card.special{border-color:var(--c-universe);box-shadow:0 0 14px rgba(255,51,153,.2)}
+
+/* SHOP */
+.shop-item{background:var(--card);border:1px solid rgba(255,255,255,.11);
+  border-radius:var(--r);padding:11px;margin-bottom:7px;
+  display:flex;align-items:center;gap:9px}
+
+/* SLOTS */
+.suc{background:var(--card);border:1.5px solid rgba(255,255,255,.11);
+  border-radius:var(--r);padding:13px;margin-bottom:9px;display:flex;align-items:center;gap:11px}
+.suc.unlocked{border-color:var(--green);background:rgba(68,221,136,.06)}
+.suc.next{border-color:#88EEFF;background:rgba(100,220,255,.07);box-shadow:0 0 12px rgba(100,220,255,.12)}
+.suc-num{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;
+  justify-content:center;font-size:.95rem;font-weight:800;flex-shrink:0}
+.suc-num.on{background:rgba(68,221,136,.2);color:var(--green)}
+.suc-num.nxt{background:rgba(100,220,255,.2);color:#88EEFF}
+.suc-num.lk{background:rgba(255,255,255,.05);color:var(--ink3)}
+.suc-inf{flex:1;min-width:0}
+.suc-title{font-size:.8rem;font-weight:800}
+.suc-sub{font-size:.62rem;color:var(--ink3);margin-top:2px}
+
+/* LUCKY */
+.luck-bar{background:rgba(255,255,255,.06);border-radius:50px;height:9px;
+  margin:7px 0 12px;overflow:hidden}
+.luck-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--gold));
+  border-radius:50px;transition:width .5s}
+.luck-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-top:8px}
+.luck-node{border-radius:7px;padding:5px 3px;text-align:center;
+  font-size:.58rem;font-weight:700;border:1px solid rgba(255,255,255,.07);
+  background:rgba(255,255,255,.04);color:var(--ink3)}
+.luck-node.on{background:rgba(68,221,136,.18);border-color:rgba(68,221,136,.4);color:var(--green)}
+.luck-node.cur{background:rgba(255,215,0,.2);border-color:var(--goldbrd);color:var(--gold);
+  box-shadow:0 0 8px rgba(255,215,0,.3)}
+
+/* EVENTS */
+.evt-card{background:var(--card);border:1px solid rgba(255,255,255,.1);border-radius:var(--r);
+  padding:13px;margin-bottom:8px}
+.evt-card.live{border-color:var(--evt-accent);box-shadow:0 0 14px rgba(0,0,0,.3)}
+.evt-hdr{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.evt-badge{font-size:.56rem;font-weight:700;padding:2px 7px;border-radius:50px;
+  background:var(--greenbg);color:var(--green);border:1px solid var(--greenbrd)}
+.evt-badge.live{background:rgba(255,85,85,.14);color:var(--red);border-color:rgba(255,85,85,.3);
+  animation:blink .9s ease-in-out infinite}
+.evt-badge.mega{background:rgba(255,238,0,.14);color:#FFEE00;border-color:rgba(255,238,0,.4)}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.45}}
+.eff-tag{font-size:.58rem;font-weight:700;padding:2px 6px;border-radius:50px;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:var(--ink2)}
+
+/* COLLECTION */
+.coll-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:4px}
+.coll-cell{border-radius:10px;padding:7px 3px;text-align:center;
+  border:1.5px solid rgba(255,255,255,.07);background:rgba(255,255,255,.03);
+  transition:all .2s}
+.coll-cell.found{background:rgba(255,255,255,.06)}
+.coll-cell .ci{font-size:1.4rem}
+.coll-cell .cn{font-size:.5rem;font-weight:700;margin-top:2px;line-height:1.2}
+.coll-cell .cs{font-size:.46rem;margin-top:1px}
+
+/* STATS */
+.stgrid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px}
+.stc{background:var(--card);border:1px solid rgba(255,255,255,.09);border-radius:var(--rsm);padding:11px}
+.stv{font-size:1.15rem;font-weight:800;margin-bottom:1px}
+.stl{font-size:.58rem;color:var(--ink3);font-weight:600}
+.rtbl{background:var(--card);border:1px solid rgba(255,255,255,.09);border-radius:var(--rsm);overflow:hidden;margin-bottom:9px}
+.rrow{display:flex;align-items:center;gap:8px;padding:9px 11px;border-bottom:1px solid rgba(255,255,255,.05)}
+.rrow:last-child{border-bottom:none}
+.rname{font-size:.74rem;font-weight:600}
+.rpct{margin-left:auto;font-size:.68rem;color:var(--ink3);font-weight:700;text-align:right}
+
+/* INDEX OVERLAY */
+#idx-ov{position:fixed;inset:0;z-index:700;background:rgba(0,0,0,.8);
+  display:flex;align-items:flex-end;opacity:0;pointer-events:none;transition:opacity .22s}
+#idx-ov.on{opacity:1;pointer-events:all}
+#idx-panel{background:linear-gradient(180deg,var(--bg2),var(--bg1));
+  border-radius:22px 22px 0 0;border-top:1.5px solid rgba(255,255,255,.11);
+  padding:18px 16px 36px;width:100%;max-height:86vh;overflow-y:auto;
+  transform:translateY(100%);transition:transform .3s cubic-bezier(.34,1.2,.64,1)}
+#idx-ov.on #idx-panel{transform:translateY(0)}
+#idx-panel::-webkit-scrollbar{display:none}
+.idx-title{font-size:1rem;font-weight:800;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between}
+.idx-close{font-size:.75rem;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.11);
+  color:var(--ink2);border-radius:50px;padding:3px 11px;cursor:pointer}
+.idx-row{display:flex;align-items:flex-start;gap:9px;padding:8px 9px;
+  background:var(--card);border:1px solid rgba(255,255,255,.07);
+  border-radius:var(--rsm);margin-bottom:4px;cursor:pointer;transition:background .14s}
+.idx-row:active{background:rgba(255,255,255,.1)}
+.idx-ico{font-size:1.2rem;flex-shrink:0;width:24px;text-align:center}
+.idx-nm{font-size:.75rem;font-weight:700}
+.idx-desc{font-size:.62rem;color:var(--ink3);margin-top:1px;line-height:1.35}
+.idx-tag{font-size:.56rem;font-weight:700;padding:1px 6px;border-radius:50px;
+  background:rgba(153,102,255,.15);color:var(--acc2);border:1px solid rgba(153,102,255,.28);
+  margin-left:auto;flex-shrink:0;align-self:flex-start}
+.idx-sh{font-size:.62rem;font-weight:700;color:var(--ink3);text-transform:uppercase;
+  letter-spacing:.06em;margin:12px 0 6px}
+
+/* REWARD OVERLAY */
+#rew{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.72);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .2s}
+#rew.on{opacity:1;pointer-events:all}
+#rewcard{background:linear-gradient(145deg,var(--bg2),var(--bg1));
+  border-radius:20px;padding:26px 22px 20px;text-align:center;width:272px;
+  position:relative;border:1.5px solid rgba(255,255,255,.14);
+  transform:scale(.82) translateY(16px);transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
+#rew.on #rewcard{transform:scale(1) translateY(0)}
+#rwstrip{position:absolute;top:0;left:0;right:0;height:4px;border-radius:20px 20px 0 0}
+#rwico{font-size:3.4rem;display:block;margin:6px 0 8px}
+#rwrar{font-size:.6rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;margin-bottom:2px}
+#rwnm{font-size:1.15rem;font-weight:800;margin-bottom:4px}
+#rwmps{font-size:.78rem;font-weight:600;color:var(--green);margin-bottom:3px}
+#rwgain{font-size:.76rem;font-weight:700;color:var(--gold);margin-bottom:4px}
+#rwjack{font-size:.7rem;font-weight:800;color:var(--gold);background:var(--goldbg);
+  border:1px solid var(--goldbrd);border-radius:7px;padding:3px 9px;
+  display:none;margin-bottom:10px}
+#rwok{width:100%;padding:11px;background:var(--acc);color:#fff;border:none;
+  border-radius:11px;font-family:inherit;font-size:.85rem;font-weight:700;cursor:pointer}
+#rwok:active{transform:scale(.97)}
+#rwnew{font-size:.62rem;color:var(--acc2);margin-bottom:6px;display:none;font-weight:700}
+
+/* JACKPOT */
+#jackpot{position:fixed;inset:0;z-index:490;pointer-events:none;
+  display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s}
+#jackpot.show{opacity:1}
+#jtext{font-size:2rem;font-weight:800;text-align:center;
+  background:linear-gradient(135deg,var(--gold),#FF9900,var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  filter:drop-shadow(0 0 20px rgba(255,200,0,.8));
+  animation:jpulse .4s ease-in-out infinite alternate;line-height:1.3;padding:0 24px}
+@keyframes jpulse{from{transform:scale(1)}to{transform:scale(1.06)}}
+
+/* TOAST + FLOAT */
+#tst{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);
+  background:rgba(16,10,32,.95);color:var(--ink);border:1px solid rgba(255,255,255,.11);
+  border-radius:50px;padding:8px 18px;font-size:.73rem;font-weight:600;
+  z-index:600;opacity:0;pointer-events:none;transition:opacity .2s;
+  white-space:nowrap;max-width:92vw;text-align:center}
+#tst.on{opacity:1}
+.ft{position:fixed;pointer-events:none;z-index:450;
+  font-size:1.05rem;font-weight:800;animation:ftu .9s ease-out forwards}
+@keyframes ftu{0%{transform:translateY(0)scale(1);opacity:1}100%{transform:translateY(-48px)scale(.7);opacity:0}}
+.df{position:fixed;pointer-events:none;z-index:450;animation:ftu .9s ease-out forwards}
+
+@supports(padding:max(0px)){#app{padding-bottom:env(safe-area-inset-bottom)}}
+</style>
+</head>
+<body>
+<div id="rot"><div style="font-size:2.6rem">📱</div><div>Gire para <strong>modo retrato</strong></div></div>
+<canvas id="starfield"></canvas>
+<canvas id="pc"></canvas>
+
+<!-- JACKPOT -->
+<div id="jackpot"><div id="jtext">🌌 JACKPOT!</div></div>
+
+<!-- REWARD -->
+<div id="rew" onclick="closeRew()">
+  <div id="rewcard" onclick="event.stopPropagation()">
+    <div id="rwstrip"></div>
+    <span id="rwico">⭐</span>
+    <div id="rwrar">COMUM</div>
+    <div id="rwnm">Item</div>
+    <div id="rwmps">+0/s</div>
+    <div id="rwgain">+0 🪙</div>
+    <div id="rwnew">🆕 NOVO item descoberto!</div>
+    <div id="rwjack">⭐ JACKPOT! ⭐</div>
+    <button id="rwok" onclick="closeRew()">Incrível! ✨</button>
+  </div>
+</div>
+
+<!-- INDEX OVERLAY -->
+<div id="idx-ov" onclick="if(event.target===this)closeIdx()">
+  <div id="idx-panel">
+    <div class="idx-title">📖 Índice do Jogo <span class="idx-close" onclick="closeIdx()">✕</span></div>
+
+    <div class="idx-sh">🎮 Telas do Jogo</div>
+    <div class="idx-row" onclick="closeIdx();go('play')"><span class="idx-ico">🎯</span><div><div class="idx-nm">Jogar</div><div class="idx-desc">Clique 5x na Lucky Block. Custo +5 por abertura. Renda idle dos equipados.</div></div></div>
+    <div class="idx-row" onclick="closeIdx();go('inv')"><span class="idx-ico">🎒</span><div><div class="idx-nm">Itens / Inventário</div><div class="idx-desc">Gerencie itens coletados. Equipe até 6 slots (3 base + 3 via Diamantes).</div></div></div>
+    <div class="idx-row" onclick="closeIdx();go('sell')"><span class="idx-ico">💰</span><div><div class="idx-nm">Vender</div><div class="idx-desc">Venda itens por moedas. Selecione quantidade com − / +. Itens equipados não podem ser vendidos.</div></div></div>
+    <div class="idx-row" onclick="closeIdx();go('trade')"><span class="idx-ico">🔄</span><div><div class="idx-nm">Trocar</div><div class="idx-desc">Converta itens em raridades maiores. O Absoluto exige uma cadeia de 5 crafts!</div></div></div>
+    <div class="idx-row" onclick="closeIdx();go('shop')"><span class="idx-ico">🛒</span><div><div class="idx-nm">Loja</div><div class="idx-desc">Pacotes garantidos, Boost 2x, Reset de custo e Lucky Booster.</div></div></div>
+    <div class="idx-row" onclick="closeIdx();go('lucky')"><span class="idx-ico">🍀</span><div><div class="idx-nm">Lucky — Sistema de Sorte</div><div class="idx-desc">Upgrades de 1x até 100x. Custo = nível × 1.000.000 moedas. Melhora drop de raridades.</div></div><span class="idx-tag">HOT</span></div>
+    <div class="idx-row" onclick="closeIdx();go('slots')"><span class="idx-ico">💎</span><div><div class="idx-nm">Slots</div><div class="idx-desc">Desbloqueie slots 4, 5 e 6 com Diamantes. Ganha 1💎 por minuto.</div></div></div>
+    <div class="idx-row" onclick="closeIdx();go('coll')"><span class="idx-ico">📖</span><div><div class="idx-nm">Coleção</div><div class="idx-desc">Todos os 100+ itens organizados por categoria. Veja o que falta descobrir!</div></div><span class="idx-tag">NOVO</span></div>
+    <div class="idx-row" onclick="closeIdx();go('events')"><span class="idx-ico">🎉</span><div><div class="idx-nm">Eventos</div><div class="idx-desc">Acontecem a cada 5 min por 2 min. Mega Sorte 100x: 1% de chance!</div></div></div>
+    <div class="idx-row" onclick="closeIdx();go('stats')"><span class="idx-ico">📊</span><div><div class="idx-nm">Stats</div><div class="idx-desc">Progresso completo por raridade, renda e total de moedas ganhas.</div></div></div>
+
+    <div class="idx-sh">🌟 Sistema de Raridades</div>
+    <div class="idx-row"><span class="idx-ico">⚪</span><div><div class="idx-nm" style="color:var(--c-common)">Comum — 59% de chance</div><div class="idx-desc">+1~3 moedas/s · Vende por 10🪙 · Drop normal</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🔵</span><div><div class="idx-nm" style="color:var(--c-rare)">Raro — 25% de chance</div><div class="idx-desc">+6~12 moedas/s · Vende por 80🪙 · Lucky melhora chances</div></div></div>
+    <div class="idx-row"><span class="idx-ico">💜</span><div><div class="idx-nm" style="color:var(--c-epic)">Épico — 10% de chance</div><div class="idx-desc">+20~38 moedas/s · Vende por 500🪙 · Eventos podem dobrar</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🔥</span><div><div class="idx-nm" style="color:var(--c-supreme)">Supremo — 5% de chance</div><div class="idx-desc">+100~200 moedas/s · Vende por 5.000🪙 · Eclipse = 4x mais frequente</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🔮</span><div><div class="idx-nm" style="color:var(--c-universe)">Universo — Somente Craft</div><div class="idx-desc">+1 Bilhão/s · 1M🪙 · Requer 1.000.000 Supremos na aba Trocar</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🌠</span><div><div class="idx-nm" style="color:var(--c-multiverse)">Multiverso — Somente Craft</div><div class="idx-desc">+5 Bilhões/s · 5M🪙 · Requer 3 itens Universo</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🔱</span><div><div class="idx-nm" style="color:var(--c-omniverse)">Omniverse — Somente Craft</div><div class="idx-desc">+20 Bilhões/s · 20M🪙 · Requer 5 itens Multiverso</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🌊</span><div><div class="idx-nm" style="color:var(--c-ethereal)">Dimensão Etérea — Craft</div><div class="idx-desc">+100 Bilhões/s · 100M🪙 · Requer 10 itens Omniverse</div></div></div>
+    <div class="idx-row"><span class="idx-ico">⚡</span><div><div class="idx-nm" style="color:var(--c-absolute)">O Absoluto — Raridade Final</div><div class="idx-desc">+1 TRILHÃO/s · 1B🪙 · Requer 5 Dimensões Etéreas · ITEM FINAL DO JOGO</div></div><span class="idx-tag" style="color:#FFF;background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.4)">FINAL</span></div>
+
+    <div class="idx-sh">⚔️ Armas & Ferramentas (Comum)</div>
+    <div class="idx-row"><span class="idx-ico">⛏️</span><div><div class="idx-nm">Picareta Estelar</div><div class="idx-desc">Comum · +1/s · 10🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">⚔️</span><div><div class="idx-nm">Espada Cósmica</div><div class="idx-desc">Comum · +2/s · 15🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🎒</span><div><div class="idx-nm">Mochila Nebular</div><div class="idx-desc">Comum · +1/s · 10🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🛡️</span><div><div class="idx-nm">Escudo Lunar</div><div class="idx-desc">Comum · +3/s · 20🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🏹</span><div><div class="idx-nm">Arco Estelar</div><div class="idx-desc">Comum · +2/s · 14🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🪓</span><div><div class="idx-nm">Machado Cósmico</div><div class="idx-desc">Comum · +2/s · 13🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">💣</span><div><div class="idx-nm">Bomba Espacial</div><div class="idx-desc">Comum · +1/s · 11🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🔫</span><div><div class="idx-nm">Pistola Orbital</div><div class="idx-desc">Comum · +2/s · 15🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🗡️</span><div><div class="idx-nm">Faca Nebular</div><div class="idx-desc">Comum · +1/s · 10🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🪄</span><div><div class="idx-nm">Cajado Lunar</div><div class="idx-desc">Comum · +3/s · 18🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">👑</span><div><div class="idx-nm">Coroa Intergalática</div><div class="idx-desc">Épico · +35/s · 700🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🗡️</span><div><div class="idx-nm">Espada Lendária</div><div class="idx-desc">Épico · +30/s · 600🪙</div></div></div>
+
+    <div class="idx-sh">🐾 Animais (Comum → Supremo)</div>
+    <div class="idx-row"><span class="idx-ico">🐱</span><div><div class="idx-nm">Gato Estelar</div><div class="idx-desc">Comum · +2/s · 12🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🐰</span><div><div class="idx-nm">Coelho Lunar</div><div class="idx-desc">Comum · +1/s · 10🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🐦</span><div><div class="idx-nm">Pássaro Sideral</div><div class="idx-desc">Comum · +2/s · 12🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🐟</span><div><div class="idx-nm">Peixe Cósmico</div><div class="idx-desc">Comum · +1/s · 8🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🐹</span><div><div class="idx-nm">Hamster Orbital</div><div class="idx-desc">Comum · +1/s · 9🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🐢</span><div><div class="idx-nm">Tartaruga Galáctica</div><div class="idx-desc">Comum · +2/s · 11🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🦆</span><div><div class="idx-nm">Pato Estelar</div><div class="idx-desc">Comum · +1/s · 8🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🐸</span><div><div class="idx-nm">Sapo Nebular</div><div class="idx-desc">Comum · +2/s · 10🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🦊</span><div><div class="idx-nm">Raposa Galáctica</div><div class="idx-desc">Raro · +10/s · 95🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🦉</span><div><div class="idx-nm">Coruja Cósmica</div><div class="idx-desc">Raro · +8/s · 80🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🐺</span><div><div class="idx-nm">Lobo Nebular</div><div class="idx-desc">Raro · +12/s · 115🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🐻</span><div><div class="idx-nm">Urso Sideral</div><div class="idx-desc">Raro · +10/s · 100🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🦌</span><div><div class="idx-nm">Cervo Estelar</div><div class="idx-desc">Raro · +9/s · 90🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🐼</span><div><div class="idx-nm">Panda Orbital</div><div class="idx-desc">Raro · +8/s · 85🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🐉</span><div><div class="idx-nm">Dragão Nebular</div><div class="idx-desc">Épico · +30/s · 600🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🐯</span><div><div class="idx-nm">Tigre Cósmico</div><div class="idx-desc">Épico · +26/s · 520🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🦄</span><div><div class="idx-nm">Unicórnio Sideral</div><div class="idx-desc">Épico · +38/s · 750🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🦈</span><div><div class="idx-nm">Tubarão Cósmico</div><div class="idx-desc">Épico · +28/s · 550🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🐺</span><div><div class="idx-nm">Lobo Alfa Galáctico</div><div class="idx-desc">Épico · +35/s · 700🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🦅</span><div><div class="idx-nm">Fênix Estelar</div><div class="idx-desc">Supremo · +160/s · 8.000🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🦁</span><div><div class="idx-nm">Leão Galáctico</div><div class="idx-desc">Supremo · +140/s · 7.000🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🐲</span><div><div class="idx-nm">Dragão Supremo</div><div class="idx-desc">Supremo · +170/s · 8.500🪙</div></div></div>
+
+    <div class="idx-sh">🪐 Planetas & Estrelas</div>
+    <div class="idx-row"><span class="idx-ico">🪨</span><div><div class="idx-nm">Mercúrio</div><div class="idx-desc">Raro · +9/s · 90🪙 · Planeta mais próximo do sol</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🔴</span><div><div class="idx-nm">Marte</div><div class="idx-desc">Raro · +11/s · 110🪙 · Planeta Vermelho</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🌙</span><div><div class="idx-nm">A Lua</div><div class="idx-desc">Raro · +8/s · 80🪙 · Satélite natural da Terra</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🌕</span><div><div class="idx-nm">Vênus</div><div class="idx-desc">Raro · +10/s · 100🪙 · Planeta mais quente</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🔵</span><div><div class="idx-nm">Urano</div><div class="idx-desc">Raro · +9/s · 95🪙 · Planeta girado de lado</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🪐</span><div><div class="idx-nm">Saturno</div><div class="idx-desc">Épico · +28/s · 550🪙 · Com seus anéis magnéticos</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🌍</span><div><div class="idx-nm">Júpiter</div><div class="idx-desc">Épico · +32/s · 650🪙 · Maior planeta do sistema solar</div></div></div>
+    <div class="idx-row"><span class="idx-ico">☀️</span><div><div class="idx-nm">O Sol</div><div class="idx-desc">Supremo · +180/s · 9.000🪙 · Estrela do nosso sistema</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🔵</span><div><div class="idx-nm">Netuno Supremo</div><div class="idx-desc">Supremo · +120/s · 6.000🪙 · Planeta mais distante</div></div></div>
+
+    <div class="idx-sh">🌌 Cosmos & Fenômenos</div>
+    <div class="idx-row"><span class="idx-ico">⭐</span><div><div class="idx-nm">Estrela Cadente</div><div class="idx-desc">Comum · +2/s · 12🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🌑</span><div><div class="idx-nm">Lua Nova</div><div class="idx-desc">Comum · +1/s · 9🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">⛅</span><div><div class="idx-nm">Nuvem Estelar</div><div class="idx-desc">Comum · +2/s · 11🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">☄️</span><div><div class="idx-nm">Cometa Raro</div><div class="idx-desc">Raro · +12/s · 120🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🌈</span><div><div class="idx-nm">Aurora Boreal</div><div class="idx-desc">Raro · +10/s · 100🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🌀</span><div><div class="idx-nm">Buraco Negro</div><div class="idx-desc">Épico · +20/s · 400🪙 · Distorce espaço-tempo</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🌪️</span><div><div class="idx-nm">Tornado Nebular</div><div class="idx-desc">Épico · +31/s · 620🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">💥</span><div><div class="idx-nm">Supernova</div><div class="idx-desc">Supremo · +100/s · 5.000🪙 · Explosão estelar massiva</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🌟</span><div><div class="idx-nm">Pulsar Dourado</div><div class="idx-desc">Supremo · +150/s · 7.500🪙 · Estrela de nêutrons giratória</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🌌</span><div><div class="idx-nm">Nebulosa Arcana</div><div class="idx-desc">Supremo · +200/s · 10.000🪙 · Berço de estrelas</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🌀</span><div><div class="idx-nm">Galáxia Pessoal</div><div class="idx-desc">Supremo · +200/s · 10.000🪙 · Uma galáxia inteira!</div></div></div>
+
+    <div class="idx-sh">🤖 Tecnologia (Raro → Épico)</div>
+    <div class="idx-row"><span class="idx-ico">🤖</span><div><div class="idx-nm">Robô Sideral</div><div class="idx-desc">Raro · +8/s · 80🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🛸</span><div><div class="idx-nm">Satélite de Ouro</div><div class="idx-desc">Raro · +10/s · 100🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🚁</span><div><div class="idx-nm">Drone Quântico</div><div class="idx-desc">Raro · +9/s · 90🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🔦</span><div><div class="idx-nm">Canhão Laser</div><div class="idx-desc">Raro · +11/s · 110🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">💻</span><div><div class="idx-nm">Processador Galáctico</div><div class="idx-desc">Raro · +7/s · 70🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">📡</span><div><div class="idx-nm">Rádio Interestelar</div><div class="idx-desc">Raro · +9/s · 95🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">⚡</span><div><div class="idx-nm">Reator Quasar</div><div class="idx-desc">Épico · +25/s · 500🪙</div></div></div>
+
+    <div class="idx-sh">💎 Gemas & Minerais</div>
+    <div class="idx-row"><span class="idx-ico">🔴</span><div><div class="idx-nm">Rubi Estelar</div><div class="idx-desc">Comum · +2/s · 14🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🟡</span><div><div class="idx-nm">Topázio Orbital</div><div class="idx-desc">Comum · +1/s · 10🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🪨</span><div><div class="idx-nm">Quartzo Cósmico</div><div class="idx-desc">Comum · +2/s · 12🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🟣</span><div><div class="idx-nm">Ametista Lunar</div><div class="idx-desc">Comum · +2/s · 13🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">💎</span><div><div class="idx-nm">Cristal Galáctico</div><div class="idx-desc">Raro · +6/s · 60🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🔷</span><div><div class="idx-nm">Safira Cósmica</div><div class="idx-desc">Raro · +8/s · 85🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">💚</span><div><div class="idx-nm">Esmeralda Nebular</div><div class="idx-desc">Raro · +9/s · 90🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🔮</span><div><div class="idx-nm">Cristal Supremo</div><div class="idx-desc">Épico · +28/s · 560🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">💠</span><div><div class="idx-nm">Diamante Estelar</div><div class="idx-desc">Épico · +22/s · 440🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">❤️</span><div><div class="idx-nm">Rubi Supremo</div><div class="idx-desc">Supremo · +110/s · 5.500🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">⬛</span><div><div class="idx-nm">Obsidiana Infinita</div><div class="idx-desc">Supremo · +135/s · 6.800🪙</div></div></div>
+
+    <div class="idx-sh">🧙 Magias & Feitiços (Épico → Supremo)</div>
+    <div class="idx-row"><span class="idx-ico">🧙</span><div><div class="idx-nm">Mago Galáctico</div><div class="idx-desc">Épico · +30/s · 600🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🔯</span><div><div class="idx-nm">Feitiço Cósmico</div><div class="idx-desc">Épico · +25/s · 500🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🧙‍♀️</span><div><div class="idx-nm">Bruxa das Estrelas</div><div class="idx-desc">Épico · +29/s · 580🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🧿</span><div><div class="idx-nm">Runa Estelar</div><div class="idx-desc">Épico · +24/s · 480🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">✨</span><div><div class="idx-nm">Varinha Cósmica</div><div class="idx-desc">Épico · +26/s · 520🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🧙</span><div><div class="idx-nm">Arquimago Estelar</div><div class="idx-desc">Supremo · +155/s · 7.800🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">📖</span><div><div class="idx-nm">Grimório Cósmico</div><div class="idx-desc">Supremo · +125/s · 6.200🪙</div></div></div>
+
+    <div class="idx-sh">👾 Criaturas (Raro → Supremo)</div>
+    <div class="idx-row"><span class="idx-ico">🫧</span><div><div class="idx-nm">Slime Cósmico</div><div class="idx-desc">Raro · +7/s · 75🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🗿</span><div><div class="idx-nm">Golem de Pedra Estelar</div><div class="idx-desc">Raro · +11/s · 110🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🧚</span><div><div class="idx-nm">Fada Sideral</div><div class="idx-desc">Raro · +9/s · 90🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">👻</span><div><div class="idx-nm">Fantasma Lunar</div><div class="idx-desc">Raro · +8/s · 80🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🧜</span><div><div class="idx-nm">Sereia Galáctica</div><div class="idx-desc">Épico · +32/s · 640🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🤺</span><div><div class="idx-nm">Golem de Ouro</div><div class="idx-desc">Épico · +27/s · 540🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🧛</span><div><div class="idx-nm">Vampiro Sideral</div><div class="idx-desc">Épico · +33/s · 660🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🐙</span><div><div class="idx-nm">Kraken Cósmico</div><div class="idx-desc">Supremo · +130/s · 6.500🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🗿</span><div><div class="idx-nm">Titã das Estrelas</div><div class="idx-desc">Supremo · +190/s · 9.500🪙</div></div></div>
+    <div class="idx-row"><span class="idx-ico">💀</span><div><div class="idx-nm">Lich Galáctico</div><div class="idx-desc">Supremo · +145/s · 7.200🪙</div></div></div>
+
+    <div class="idx-sh">🔮 Universo (5 itens — Craft: 1M Supremos)</div>
+    <div class="idx-row"><span class="idx-ico">🔮</span><div><div class="idx-nm">O Universo</div><div class="idx-desc">+1B/s · Vende por 1M🪙 · Craft: 1.000.000 Supremos</div></div></div>
+    <div class="idx-row"><span class="idx-ico">✨</span><div><div class="idx-nm">Cosmos Absoluto</div><div class="idx-desc">+1B/s · Vende por 1M🪙 · Craft: 1.000.000 Supremos</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🌐</span><div><div class="idx-nm">O Vazio Eterno</div><div class="idx-desc">+1B/s · Vende por 1M🪙 · Craft: 1.000.000 Supremos</div></div></div>
+    <div class="idx-row"><span class="idx-ico">💫</span><div><div class="idx-nm">A Origem</div><div class="idx-desc">+1B/s · Vende por 1M🪙 · Craft: 1.000.000 Supremos</div></div></div>
+    <div class="idx-row"><span class="idx-ico">♾️</span><div><div class="idx-nm">O Infinito</div><div class="idx-desc">+1B/s · Vende por 1M🪙 · Craft: 1.000.000 Supremos</div></div></div>
+
+    <div class="idx-sh">🌠 Multiverso (4 itens — Craft: 3 Universos)</div>
+    <div class="idx-row"><span class="idx-ico">🌠</span><div><div class="idx-nm">Multiverso Alfa</div><div class="idx-desc">+5B/s · Vende por 5M🪙 · Craft: 3 Universos</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🪞</span><div><div class="idx-nm">Espelho Dimensional</div><div class="idx-desc">+5B/s · Vende por 5M🪙 · Craft: 3 Universos</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🌀</span><div><div class="idx-nm">Portal Infinito</div><div class="idx-desc">+5B/s · Vende por 5M🪙 · Craft: 3 Universos</div></div></div>
+    <div class="idx-row"><span class="idx-ico">〰️</span><div><div class="idx-nm">Onda Quântica</div><div class="idx-desc">+5B/s · Vende por 5M🪙 · Craft: 3 Universos</div></div></div>
+
+    <div class="idx-sh">🔱 Omniverse (3 itens — Craft: 5 Multiversos)</div>
+    <div class="idx-row"><span class="idx-ico">🔱</span><div><div class="idx-nm">Omniverse Supremo</div><div class="idx-desc">+20B/s · Vende por 20M🪙 · Craft: 5 Multiversos</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🕸️</span><div><div class="idx-nm">Tecido do Espaço</div><div class="idx-desc">+20B/s · Vende por 20M🪙 · Craft: 5 Multiversos</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🧠</span><div><div class="idx-nm">Consciência Cósmica</div><div class="idx-desc">+20B/s · Vende por 20M🪙 · Craft: 5 Multiversos</div></div></div>
+
+    <div class="idx-sh">🌊 Dimensão Etérea (3 itens — Craft: 10 Omniversos)</div>
+    <div class="idx-row"><span class="idx-ico">🌊</span><div><div class="idx-nm">Dimensão Etérea</div><div class="idx-desc">+100B/s · Vende por 100M🪙 · Craft: 10 Omniversos</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🌙</span><div><div class="idx-nm">Plano Astral</div><div class="idx-desc">+100B/s · Vende por 100M🪙 · Craft: 10 Omniversos</div></div></div>
+    <div class="idx-row"><span class="idx-ico">💜</span><div><div class="idx-nm">Vórtice Eterno</div><div class="idx-desc">+100B/s · Vende por 100M🪙 · Craft: 10 Omniversos</div></div></div>
+
+    <div class="idx-sh">⚡ O Absoluto (2 itens — Craft: 5 Dimensões Etéreas)</div>
+    <div class="idx-row"><span class="idx-ico">⚡</span><div><div class="idx-nm" style="color:var(--c-absolute)">O Absoluto</div><div class="idx-desc">+1 TRILHÃO/s · 1B🪙 · O item final do jogo. Craft: 5 Dimensões Etéreas</div></div><span class="idx-tag" style="color:#FFF;background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.35)">FINAL</span></div>
+    <div class="idx-row"><span class="idx-ico">🌌</span><div><div class="idx-nm" style="color:var(--c-absolute)">Criador de Mundos</div><div class="idx-desc">+1 TRILHÃO/s · 1B🪙 · Craft: 5 Dimensões Etéreas</div></div><span class="idx-tag" style="color:#FFF;background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.35)">FINAL</span></div>
+
+    <div class="idx-sh">🔄 Sistema de Craft (Trocar)</div>
+    <div class="idx-row"><span class="idx-ico">1️⃣</span><div><div class="idx-nm">8 Comuns → 1 Raro</div><div class="idx-desc">Primeira troca disponível. Bom para converter acúmulo de comuns.</div></div></div>
+    <div class="idx-row"><span class="idx-ico">2️⃣</span><div><div class="idx-nm">5 Raros → 1 Épico</div><div class="idx-desc">Boa forma de obter Épicos se você não tem sorte.</div></div></div>
+    <div class="idx-row"><span class="idx-ico">3️⃣</span><div><div class="idx-nm">4 Épicos → 1 Supremo</div><div class="idx-desc">Troca eficiente para quem acumula Épicos.</div></div></div>
+    <div class="idx-row"><span class="idx-ico">4️⃣</span><div><div class="idx-nm">1.000.000 Supremos → Universo</div><div class="idx-desc">⚠️ Mais difícil do jogo! Jogue por muito tempo ou use Lucky alto.</div></div></div>
+    <div class="idx-row"><span class="idx-ico">5️⃣</span><div><div class="idx-nm">3 Universos → Multiverso</div><div class="idx-desc">Precisa de 3 itens do tier Universo.</div></div></div>
+    <div class="idx-row"><span class="idx-ico">6️⃣</span><div><div class="idx-nm">5 Multiversos → Omniverse</div><div class="idx-desc">Precisa de 5 Multiversos.</div></div></div>
+    <div class="idx-row"><span class="idx-ico">7️⃣</span><div><div class="idx-nm">10 Omniversos → Dimensão Etérea</div><div class="idx-desc">A troca mais exigente em quantidade.</div></div></div>
+    <div class="idx-row"><span class="idx-ico">8️⃣</span><div><div class="idx-nm">5 Dimensões → O Absoluto</div><div class="idx-desc">🏆 Topo da cadeia! O maior item possível do jogo.</div></div></div>
+
+    <div class="idx-sh">🎉 Eventos (a cada 5 min, duram 2 min)</div>
+    <div class="idx-row"><span class="idx-ico">🌌</span><div><div class="idx-nm">Tempestade Cósmica</div><div class="idx-desc">Supremo 2x · Lucky +50% · Tema roxo espacial</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🎆</span><div><div class="idx-nm">Ano Novo Galáctico</div><div class="idx-desc">Moedas 2x · Lucky 2x · Tema dourado festivo</div></div></div>
+    <div class="idx-row"><span class="idx-ico">☄️</span><div><div class="idx-nm">Chuva de Meteoros</div><div class="idx-desc">Raros 2x · Épicos 1.5x · Lucky +25%</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🌙</span><div><div class="idx-nm">Eclipse Supremo</div><div class="idx-desc">Supremo 4x · Épico 2x · Tema roxo escuro</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🎃</span><div><div class="idx-nm">Halloween Estelar</div><div class="idx-desc">Épico 2x · Supremo 2x · Moedas 1.5x · Tema laranja</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🍀</span><div><div class="idx-nm">Onda de Sorte</div><div class="idx-desc">Lucky 2x · Raros 1.5x · Épicos 1.5x · Supremos 1.5x</div></div></div>
+    <div class="idx-row"><span class="idx-ico">💫</span><div><div class="idx-nm">⚡ MEGA SORTE 100x</div><div class="idx-desc">1% de aparecer! Lucky 100x · Supremo 15x · Épico 8x · Moedas 5x</div></div><span class="idx-tag" style="color:#FFEE00;background:rgba(255,238,0,.15);border-color:rgba(255,238,0,.4)">1% RARO</span></div>
+
+    <div class="idx-sh">💡 Dicas de Jogo</div>
+    <div class="idx-row"><span class="idx-ico">💰</span><div><div class="idx-nm">Farming de Moedas</div><div class="idx-desc">Equipe os itens com maior /s primeiro. Supremos e acima rendem muito mais.</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🍀</span><div><div class="idx-nm">Lucky antes de tudo</div><div class="idx-desc">Invista em Lucky cedo — melhora drasticamente suas chances de Épicos e Supremos.</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🎉</span><div><div class="idx-nm">Aproveite eventos</div><div class="idx-desc">Durante Eclipse abra o máximo de blocos para farmar Supremos. Ano Novo = moedas 2x!</div></div></div>
+    <div class="idx-row"><span class="idx-ico">💎</span><div><div class="idx-nm">Priorize slots extras</div><div class="idx-desc">Cada slot extra = muito mais renda/s. Slot 6 com O Absoluto equipado = 1T/s!</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🔄</span><div><div class="idx-nm">Venda o excesso</div><div class="idx-desc">Acumulou muitos comuns? Venda ou troque por Raros. Não deixe ficar parado.</div></div></div>
+    <div class="idx-row"><span class="idx-ico">🏆</span><div><div class="idx-nm">Meta final</div><div class="idx-desc">Conseguir O Absoluto equipado nos 6 slots = renda de 6 Trilhões/s. Isso é vencer!</div></div></div>
+  </div>
+</div>
+
+<div id="tst"></div>
+
+<div id="app">
+  <div id="evtbanner"></div>
+
+  <!-- HEADER -->
+  <div id="hdr">
+    <div style="display:flex;align-items:center;gap:6px">
+      <div class="logo">🌌 Cosmos Block</div>
+      <div class="hdr-btns">
+        <button class="hdr-ico-btn" onclick="openIdx()">📖</button>
+        <button class="hdr-ico-btn" id="music-btn" onclick="toggleMusic()">🎵</button>
+      </div>
+    </div>
+    <div class="hdr-pills">
+      <div class="pill pill-green">🍀<span id="lucky-disp">1x</span></div>
+      <div class="pill pill-blue">💎<span id="diams">0</span><span id="diam-timer" style="font-size:.56rem;opacity:.7;margin-left:2px">1:00</span></div>
+      <div class="pill pill-gold">🪙<span id="money">0</span><span id="sdot"></span></div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div id="tabs">
+    <button class="tab on" id="t-play"   onclick="go('play')">🎯 Jogar</button>
+    <button class="tab"    id="t-inv"    onclick="go('inv')">🎒 Itens</button>
+    <button class="tab"    id="t-sell"   onclick="go('sell')">💰 Vender</button>
+    <button class="tab"    id="t-trade"  onclick="go('trade')">🔄 Trocar</button>
+    <button class="tab"    id="t-shop"   onclick="go('shop')">🛒 Loja</button>
+    <button class="tab"    id="t-lucky"  onclick="go('lucky')">🍀 Lucky</button>
+    <button class="tab"    id="t-slots"  onclick="go('slots')">💎 Slots</button>
+    <button class="tab"    id="t-coll"   onclick="go('coll')">📖 Coleção</button>
+    <button class="tab"    id="t-events" onclick="go('events')">🎉 Eventos</button>
+    <button class="tab"    id="t-stats"  onclick="go('stats')">📊 Stats</button>
+  </div>
+
+  <div id="scr">
+
+    <!-- PLAY -->
+    <div class="sc on" id="play">
+      <div id="mpsbar">
+        <span class="mps-l">⚡ Renda</span>
+        <div style="text-align:right">
+          <div id="mpsv">0/s</div>
+          <div id="mps-bonus"></div>
+        </div>
+      </div>
+      <div id="multbadge"></div>
+      <div id="zone">
+        <button id="blk" onclick="tap()" aria-label="Lucky Block">
+          <svg viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="80" cy="80" r="74" fill="none" stroke="rgba(153,102,255,.18)" stroke-width="8"/>
+            <ellipse cx="80" cy="154" rx="48" ry="6" fill="rgba(0,0,0,.32)"/>
+            <rect x="10" y="10" width="140" height="140" rx="26" fill="url(#bg1)"/>
+            <rect x="12" y="12" width="136" height="136" rx="24" fill="url(#bg2)"/>
+            <rect x="18" y="18" width="124" height="46" rx="18" fill="rgba(255,255,255,.13)"/>
+            <rect x="10" y="10" width="140" height="140" rx="26" fill="none" stroke="url(#border)" stroke-width="3.5"/>
+            <rect x="32" y="32" width="96" height="96" rx="16" fill="rgba(0,0,0,.17)"/>
+            <g opacity=".55"><circle cx="52" cy="52" r="1.5" fill="white"/><circle cx="108" cy="48" r="1" fill="white"/><circle cx="44" cy="108" r="1" fill="white"/><circle cx="116" cy="110" r="1.5" fill="white"/><circle cx="80" cy="40" r="1" fill="white"/></g>
+            <g id="cg" opacity="0">
+              <path d="M80 10 L66 84 L46 150" stroke="rgba(255,255,255,.48)" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+              <path d="M80 10 L96 88 L116 150" stroke="rgba(255,255,255,.38)" stroke-width="2" stroke-linecap="round" fill="none"/>
+              <line x1="66" y1="84" x2="42" y2="100" stroke="rgba(255,255,255,.32)" stroke-width="1.8" stroke-linecap="round"/>
+            </g>
+            <text x="80" y="108" text-anchor="middle" font-family="system-ui" font-weight="900" font-size="70" fill="rgba(255,255,255,.14)">?</text>
+            <text x="80" y="106" text-anchor="middle" font-family="system-ui" font-weight="900" font-size="70" fill="url(#qmark)">?</text>
+            <text x="22" y="38" font-size="11" opacity=".48">✦</text><text x="132" y="38" font-size="11" opacity=".48">✦</text>
+            <defs>
+              <linearGradient id="bg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#2A1A5E"/><stop offset="100%" stop-color="#0E0820"/></linearGradient>
+              <linearGradient id="bg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3D2878"/><stop offset="100%" stop-color="#1A0E3A"/></linearGradient>
+              <linearGradient id="border" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#9966FF"/><stop offset="50%" stop-color="#CC88FF"/><stop offset="100%" stop-color="#FFD700"/></linearGradient>
+              <linearGradient id="qmark" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#CC88FF"/><stop offset="100%" stop-color="#9966FF"/></linearGradient>
+            </defs>
+          </svg>
+        </button>
+        <div id="dots"><div class="d" id="d0"></div><div class="d" id="d1"></div><div class="d" id="d2"></div><div class="d" id="d3"></div><div class="d" id="d4"></div></div>
+        <div id="costbox">
+          <div id="clbl">Custo para abrir</div>
+          <div id="cval">0 🪙</div>
+          <div id="cerr"></div>
+        </div>
+      </div>
+      <div id="ministat">
+        <div class="msb"><div class="msv" id="ms-bl" style="color:var(--gold)">0</div><div class="msl">Blocos</div></div>
+        <div class="msb"><div class="msv" id="ms-it" style="color:var(--c-rare)">0</div><div class="msl">Itens</div></div>
+        <div class="msb"><div class="msv" id="ms-to" style="color:var(--green)">0</div><div class="msl">Total 🪙</div></div>
+      </div>
+    </div>
+
+    <!-- INVENTORY -->
+    <div class="sc" id="inv">
+      <div class="slbl">⚔️ Equipados <span class="slbl-badge" id="eqlbl">0/3</span></div>
+      <div class="eqgrid">
+        <div class="eqs" id="sl0"><span class="sn">1</span><span class="evoid">Vazio</span></div>
+        <div class="eqs" id="sl1"><span class="sn">2</span><span class="evoid">Vazio</span></div>
+        <div class="eqs" id="sl2"><span class="sn">3</span><span class="evoid">Vazio</span></div>
+        <div class="eqs locked" id="sl3"><span class="sn">4</span><span class="evoid" style="font-size:.5rem">🔒</span></div>
+        <div class="eqs locked" id="sl4"><span class="sn">5</span><span class="evoid" style="font-size:.5rem">🔒</span></div>
+        <div class="eqs locked" id="sl5"><span class="sn">6</span><span class="evoid" style="font-size:.5rem">🔒</span></div>
+      </div>
+      <div class="divider"></div>
+      <div class="slbl">🎒 Mochila <span class="slbl-badge" id="baglbl">0</span></div>
+      <div id="baglist"></div>
+    </div>
+
+    <!-- SELL -->
+    <div class="sc" id="sell">
+      <div class="note" style="margin-bottom:10px">💡 Venda itens da mochila por <strong>moedas</strong>. Equipados não podem ser vendidos.</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <span style="font-size:.73rem;color:var(--ink3);font-weight:600">Total a receber:</span>
+        <span id="sell-preview" style="font-size:.92rem;font-weight:800;color:var(--gold)">0 🪙</span>
+      </div>
+      <button class="btn btn-gold" style="width:100%;padding:11px;font-size:.82rem;margin-bottom:10px" onclick="sellAll()">💰 Vender Selecionados</button>
+      <div id="selllist"></div>
+    </div>
+
+    <!-- TRADE -->
+    <div class="sc" id="trade">
+      <div class="note" style="margin-bottom:10px">🔄 Troque itens menores por raridades superiores. <strong>Universo exige 1.000.000 Supremos!</strong></div>
+      <div id="tradelist"></div>
+    </div>
+
+    <!-- SHOP -->
+    <div class="sc" id="shop">
+      <div class="note" style="margin-bottom:10px">🛒 Gaste moedas em pacotes e melhorias!</div>
+      <div id="shoplist"></div>
+    </div>
+
+    <!-- LUCKY -->
+    <div class="sc" id="lucky">
+      <div id="lucky-screen"></div>
+    </div>
+
+    <!-- SLOTS -->
+    <div class="sc" id="slots">
+      <div class="note" style="margin-bottom:12px">💎 <strong>Diamantes:</strong> 1 por minuto com o jogo aberto. Use para desbloquear slots extras!</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;
+        background:rgba(100,220,255,.08);border:1.5px solid rgba(100,220,255,.28);
+        border-radius:var(--rsm);padding:11px 13px;margin-bottom:14px">
+        <div>
+          <div style="font-size:.64rem;color:rgba(100,220,255,.7);font-weight:700;text-transform:uppercase;letter-spacing:.04em">Diamantes</div>
+          <div style="font-size:1.5rem;font-weight:800;color:#88EEFF" id="slots-diam-big">0 💎</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:.64rem;color:rgba(100,220,255,.7);font-weight:700">Próximo em</div>
+          <div style="font-size:1.05rem;font-weight:800;color:#88EEFF" id="slots-diam-timer">1:00</div>
+        </div>
+      </div>
+      <div class="slbl">🔓 Slots de Equipamento</div>
+      <div id="slots-list"></div>
+    </div>
+
+    <!-- COLLECTION -->
+    <div class="sc" id="coll">
+      <div id="coll-screen"></div>
+    </div>
+
+    <!-- EVENTS -->
+    <div class="sc" id="events">
+      <div class="slbl">🔴 Ao vivo</div>
+      <div id="evt-live-area"></div>
+      <div class="slbl" style="margin-top:14px">📅 Todos os Eventos</div>
+      <div id="evt-all-area"></div>
+    </div>
+
+    <!-- STATS -->
+    <div class="sc" id="stats">
+      <div class="slbl">📈 Progresso</div>
+      <div class="stgrid">
+        <div class="stc"><div class="stv" id="st-bl" style="color:var(--gold)">0</div><div class="stl">Blocos abertos</div></div>
+        <div class="stc"><div class="stv" id="st-to" style="color:var(--green)">0</div><div class="stl">Total ganho</div></div>
+        <div class="stc"><div class="stv" id="st-it" style="color:var(--c-rare)">0</div><div class="stl">Itens obtidos</div></div>
+        <div class="stc"><div class="stv" id="st-mp" style="color:var(--green)">0</div><div class="stl">Moedas/s</div></div>
+        <div class="stc"><div class="stv" id="st-ra" style="color:var(--c-rare)">0</div><div class="stl">Raros</div></div>
+        <div class="stc"><div class="stv" id="st-ep" style="color:var(--c-epic)">0</div><div class="stl">Épicos</div></div>
+        <div class="stc"><div class="stv" id="st-su" style="color:var(--c-supreme)">0</div><div class="stl">Supremos</div></div>
+        <div class="stc"><div class="stv" id="st-un" style="color:var(--c-universe)">0</div><div class="stl">Universos</div></div>
+        <div class="stc"><div class="stv" id="st-mv" style="color:var(--c-multiverse)">0</div><div class="stl">Multiversos</div></div>
+        <div class="stc"><div class="stv" id="st-ov" style="color:var(--c-omniverse)">0</div><div class="stl">Omniversos</div></div>
+        <div class="stc"><div class="stv" id="st-et" style="color:var(--c-ethereal)">0</div><div class="stl">Etéreos</div></div>
+        <div class="stc"><div class="stv" id="st-ab" style="color:var(--c-absolute)">0</div><div class="stl">Absolutos</div></div>
+      </div>
+      <div class="slbl">💎 Raridades</div>
+      <div class="rtbl">
+        <div class="rrow"><span class="rdot common"></span><span class="rname">Comum</span><span class="rpct">base 59% · +1~3/s · 10🪙</span></div>
+        <div class="rrow"><span class="rdot rare"></span><span class="rname">Raro</span><span class="rpct">base 25% · +6~12/s · 80🪙</span></div>
+        <div class="rrow"><span class="rdot epic"></span><span class="rname">Épico</span><span class="rpct">base 10% · +20~38/s · 500🪙</span></div>
+        <div class="rrow"><span class="rdot supreme"></span><span class="rname">Supremo</span><span class="rpct">base 5% · +100~200/s · 5K🪙</span></div>
+        <div class="rrow"><span class="rdot universe"></span><span class="rname">Universo</span><span class="rpct">CRAFT 1M Supremos · +1B/s</span></div>
+        <div class="rrow"><span class="rdot multiverse"></span><span class="rname">Multiverso</span><span class="rpct">CRAFT 3 Universos · +5B/s</span></div>
+        <div class="rrow"><span class="rdot omniverse"></span><span class="rname">Omniverse</span><span class="rpct">CRAFT 5 Multiversos · +20B/s</span></div>
+        <div class="rrow"><span class="rdot ethereal"></span><span class="rname">Dimensão Etérea</span><span class="rpct">CRAFT 10 Omni · +100B/s</span></div>
+        <div class="rrow"><span class="rdot absolute"></span><span class="rname">⚡ O Absoluto</span><span class="rpct">CRAFT 5 Etéreos · +1T/s</span></div>
+      </div>
+      <div class="divider"></div>
+      <div class="note">
+        <strong>💾 Save</strong> automático a cada 10s.<br><br>
+        <button class="btn btn-red" style="padding:7px 13px;font-size:.73rem" onclick="doReset()">🗑 Apagar progresso</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ═══ ITEMS ═══
+const ITEMS=[
+  // ══ COMUM — armas (15) ══
+  {id:'pick',   name:'Picareta Estelar',    icon:'⛏️',rar:'common', mps:1,  sell:10,  cat:'armas'},
+  {id:'sw',     name:'Espada Cósmica',      icon:'⚔️',rar:'common', mps:2,  sell:15,  cat:'armas'},
+  {id:'bag',    name:'Mochila Nebular',     icon:'🎒',rar:'common', mps:1,  sell:10,  cat:'armas'},
+  {id:'shld',   name:'Escudo Lunar',        icon:'🛡️',rar:'common', mps:3,  sell:20,  cat:'armas'},
+  {id:'bow',    name:'Arco Estelar',        icon:'🏹',rar:'common', mps:2,  sell:14,  cat:'armas'},
+  {id:'axe',    name:'Machado Cósmico',     icon:'🪓',rar:'common', mps:2,  sell:13,  cat:'armas'},
+  {id:'bomb',   name:'Bomba Espacial',      icon:'💣',rar:'common', mps:1,  sell:11,  cat:'armas'},
+  {id:'gun',    name:'Pistola Orbital',     icon:'🔫',rar:'common', mps:2,  sell:15,  cat:'armas'},
+  {id:'knife',  name:'Faca Nebular',        icon:'🗡️',rar:'common', mps:1,  sell:10,  cat:'armas'},
+  {id:'staff',  name:'Cajado Lunar',        icon:'🪄',rar:'common', mps:3,  sell:18,  cat:'armas'},
+  // ══ COMUM — animais (12) ══
+  {id:'cat',    name:'Gato Estelar',        icon:'🐱',rar:'common', mps:2,  sell:12,  cat:'animais'},
+  {id:'bunny',  name:'Coelho Lunar',        icon:'🐰',rar:'common', mps:1,  sell:10,  cat:'animais'},
+  {id:'bird',   name:'Pássaro Sideral',     icon:'🐦',rar:'common', mps:2,  sell:12,  cat:'animais'},
+  {id:'fish',   name:'Peixe Cósmico',      icon:'🐟',rar:'common', mps:1,  sell:8,   cat:'animais'},
+  {id:'hamster',name:'Hamster Orbital',     icon:'🐹',rar:'common', mps:1,  sell:9,   cat:'animais'},
+  {id:'turtle', name:'Tartaruga Galáctica', icon:'🐢',rar:'common', mps:2,  sell:11,  cat:'animais'},
+  {id:'duck',   name:'Pato Estelar',        icon:'🦆',rar:'common', mps:1,  sell:8,   cat:'animais'},
+  {id:'frog',   name:'Sapo Nebular',        icon:'🐸',rar:'common', mps:2,  sell:10,  cat:'animais'},
+  // ══ COMUM — cosmos/gems (8) ══
+  {id:'star',   name:'Estrela Cadente',     icon:'⭐',rar:'common', mps:2,  sell:12,  cat:'cosmos'},
+  {id:'moons',  name:'Lua Nova',            icon:'🌑',rar:'common', mps:1,  sell:9,   cat:'cosmos'},
+  {id:'cloud',  name:'Nuvem Estelar',       icon:'⛅',rar:'common', mps:2,  sell:11,  cat:'cosmos'},
+  {id:'ruby',   name:'Rubi Estelar',        icon:'🔴',rar:'common', mps:2,  sell:14,  cat:'gemas'},
+  {id:'topaz',  name:'Topázio Orbital',     icon:'🟡',rar:'common', mps:1,  sell:10,  cat:'gemas'},
+  {id:'quartz', name:'Quartzo Cósmico',     icon:'🪨',rar:'common', mps:2,  sell:12,  cat:'gemas'},
+  {id:'ameth',  name:'Ametista Lunar',      icon:'🟣',rar:'common', mps:2,  sell:13,  cat:'gemas'},
+  // ══ RARO — tech (8) ══
+  {id:'rob',    name:'Robô Sideral',        icon:'🤖',rar:'rare',   mps:8,  sell:80,  cat:'tech'},
+  {id:'sat',    name:'Satélite de Ouro',    icon:'🛸',rar:'rare',   mps:10, sell:100, cat:'tech'},
+  {id:'drone',  name:'Drone Quântico',      icon:'🚁',rar:'rare',   mps:9,  sell:90,  cat:'tech'},
+  {id:'laser',  name:'Canhão Laser',        icon:'🔦',rar:'rare',   mps:11, sell:110, cat:'tech'},
+  {id:'cpu',    name:'Processador Galáctico',icon:'💻',rar:'rare',  mps:7,  sell:70,  cat:'tech'},
+  {id:'radio',  name:'Rádio Interestelar',  icon:'📡',rar:'rare',   mps:9,  sell:95,  cat:'tech'},
+  // ══ RARO — planetas (8) ══
+  {id:'mercury',name:'Mercúrio',            icon:'🪨',rar:'rare',   mps:9,  sell:90,  cat:'planetas'},
+  {id:'mars',   name:'Marte',               icon:'🔴',rar:'rare',   mps:11, sell:110, cat:'planetas'},
+  {id:'moon',   name:'A Lua',               icon:'🌙',rar:'rare',   mps:8,  sell:80,  cat:'planetas'},
+  {id:'venus',  name:'Vênus',               icon:'🌕',rar:'rare',   mps:10, sell:100, cat:'planetas'},
+  {id:'uranus', name:'Urano',               icon:'🔵',rar:'rare',   mps:9,  sell:95,  cat:'planetas'},
+  // ══ RARO — animais (8) ══
+  {id:'fox',    name:'Raposa Galáctica',    icon:'🦊',rar:'rare',   mps:10, sell:95,  cat:'animais'},
+  {id:'owl',    name:'Coruja Cósmica',      icon:'🦉',rar:'rare',   mps:8,  sell:80,  cat:'animais'},
+  {id:'wolf',   name:'Lobo Nebular',        icon:'🐺',rar:'rare',   mps:12, sell:115, cat:'animais'},
+  {id:'bear',   name:'Urso Sideral',        icon:'🐻',rar:'rare',   mps:10, sell:100, cat:'animais'},
+  {id:'deer',   name:'Cervo Estelar',       icon:'🦌',rar:'rare',   mps:9,  sell:90,  cat:'animais'},
+  {id:'panda',  name:'Panda Orbital',       icon:'🐼',rar:'rare',   mps:8,  sell:85,  cat:'animais'},
+  // ══ RARO — cosmos/gemas (8) ══
+  {id:'gem',    name:'Cristal Galáctico',   icon:'💎',rar:'rare',   mps:6,  sell:60,  cat:'gemas'},
+  {id:'comet',  name:'Cometa Raro',         icon:'☄️',rar:'rare',   mps:12, sell:120, cat:'cosmos'},
+  {id:'aurore', name:'Aurora Boreal',       icon:'🌈',rar:'rare',   mps:10, sell:100, cat:'cosmos'},
+  {id:'sapph',  name:'Safira Cósmica',      icon:'🔷',rar:'rare',   mps:8,  sell:85,  cat:'gemas'},
+  {id:'emerald',name:'Esmeralda Nebular',   icon:'💚',rar:'rare',   mps:9,  sell:90,  cat:'gemas'},
+  // ══ RARO — criaturas (6) ══
+  {id:'slime',  name:'Slime Cósmico',       icon:'🫧',rar:'rare',   mps:7,  sell:75,  cat:'criaturas'},
+  {id:'golem',  name:'Golem de Pedra Estelar',icon:'🗿',rar:'rare', mps:11, sell:110, cat:'criaturas'},
+  {id:'sprite', name:'Fada Sideral',        icon:'🧚',rar:'rare',   mps:9,  sell:90,  cat:'criaturas'},
+  {id:'ghost',  name:'Fantasma Lunar',      icon:'👻',rar:'rare',   mps:8,  sell:80,  cat:'criaturas'},
+  // ══ ÉPICO (28) ══
+  {id:'gen',    name:'Reator Quasar',       icon:'⚡',rar:'epic',   mps:25, sell:500, cat:'tech'},
+  {id:'dra',    name:'Dragão Nebular',      icon:'🐉',rar:'epic',   mps:30, sell:600, cat:'animais'},
+  {id:'crw',    name:'Coroa Intergalática', icon:'👑',rar:'epic',   mps:35, sell:700, cat:'armas'},
+  {id:'hole',   name:'Buraco Negro',        icon:'🌀',rar:'epic',   mps:20, sell:400, cat:'cosmos'},
+  {id:'saturn', name:'Saturno',             icon:'🪐',rar:'epic',   mps:28, sell:550, cat:'planetas'},
+  {id:'jupiter',name:'Júpiter',             icon:'🌍',rar:'epic',   mps:32, sell:650, cat:'planetas'},
+  {id:'tiger',  name:'Tigre Cósmico',       icon:'🐯',rar:'epic',   mps:26, sell:520, cat:'animais'},
+  {id:'unicorn',name:'Unicórnio Sideral',   icon:'🦄',rar:'epic',   mps:38, sell:750, cat:'animais'},
+  {id:'wizard', name:'Mago Galáctico',      icon:'🧙',rar:'epic',   mps:30, sell:600, cat:'magias'},
+  {id:'spell',  name:'Feitiço Cósmico',     icon:'🔯',rar:'epic',   mps:25, sell:500, cat:'magias'},
+  {id:'crystal',name:'Cristal Supremo',     icon:'🔮',rar:'epic',   mps:28, sell:560, cat:'gemas'},
+  {id:'mermaid',name:'Sereia Galáctica',    icon:'🧜',rar:'epic',   mps:32, sell:640, cat:'criaturas'},
+  {id:'golem2', name:'Golem de Ouro',       icon:'🤺',rar:'epic',   mps:27, sell:540, cat:'criaturas'},
+  {id:'witch',  name:'Bruxa das Estrelas',  icon:'🧙‍♀️',rar:'epic', mps:29, sell:580, cat:'magias'},
+  {id:'rune',   name:'Runa Estelar',        icon:'🧿',rar:'epic',   mps:24, sell:480, cat:'magias'},
+  {id:'vampire',name:'Vampiro Sideral',     icon:'🧛',rar:'epic',   mps:33, sell:660, cat:'criaturas'},
+  {id:'shark',  name:'Tubarão Cósmico',     icon:'🦈',rar:'epic',   mps:28, sell:550, cat:'animais'},
+  {id:'wolf2',  name:'Lobo Alfa Galáctico', icon:'🐺',rar:'epic',   mps:35, sell:700, cat:'animais'},
+  {id:'sword2', name:'Espada Lendária',     icon:'🗡️',rar:'epic',   mps:30, sell:600, cat:'armas'},
+  {id:'wand',   name:'Varinha Cósmica',     icon:'✨',rar:'epic',   mps:26, sell:520, cat:'magias'},
+  {id:'diamond2',name:'Diamante Estelar',   icon:'💠',rar:'epic',   mps:22, sell:440, cat:'gemas'},
+  {id:'tornado',name:'Tornado Nebular',     icon:'🌪️',rar:'epic',   mps:31, sell:620, cat:'cosmos'},
+  // ══ SUPREMO (20) ══
+  {id:'nova',   name:'Supernova',           icon:'💥',rar:'supreme',mps:100,sell:5000, cat:'cosmos'},
+  {id:'pulsar', name:'Pulsar Dourado',      icon:'🌟',rar:'supreme',mps:150,sell:7500, cat:'cosmos'},
+  {id:'neb',    name:'Nebulosa Arcana',     icon:'🌌',rar:'supreme',mps:200,sell:10000,cat:'cosmos'},
+  {id:'sun',    name:'O Sol',               icon:'☀️',rar:'supreme',mps:180,sell:9000, cat:'planetas'},
+  {id:'neptune',name:'Netuno Supremo',      icon:'🔵',rar:'supreme',mps:120,sell:6000, cat:'planetas'},
+  {id:'phoenix',name:'Fênix Estelar',       icon:'🦅',rar:'supreme',mps:160,sell:8000, cat:'animais'},
+  {id:'lion',   name:'Leão Galáctico',      icon:'🦁',rar:'supreme',mps:140,sell:7000, cat:'animais'},
+  {id:'dragon2',name:'Dragão Supremo',      icon:'🐲',rar:'supreme',mps:170,sell:8500, cat:'animais'},
+  {id:'kraken', name:'Kraken Cósmico',      icon:'🐙',rar:'supreme',mps:130,sell:6500, cat:'criaturas'},
+  {id:'titan',  name:'Titã das Estrelas',   icon:'🗿',rar:'supreme',mps:190,sell:9500, cat:'criaturas'},
+  {id:'lich',   name:'Lich Galáctico',      icon:'💀',rar:'supreme',mps:145,sell:7200, cat:'criaturas'},
+  {id:'archmage',name:'Arquimago Estelar',  icon:'🧙',rar:'supreme',mps:155,sell:7800, cat:'magias'},
+  {id:'grimoire',name:'Grimório Cósmico',   icon:'📖',rar:'supreme',mps:125,sell:6200, cat:'magias'},
+  {id:'ruby2',  name:'Rubi Supremo',        icon:'❤️',rar:'supreme',mps:110,sell:5500, cat:'gemas'},
+  {id:'obsid',  name:'Obsidiana Infinita',  icon:'⬛',rar:'supreme',mps:135,sell:6800, cat:'gemas'},
+  {id:'galaxy', name:'Galáxia Pessoal',     icon:'🌀',rar:'supreme',mps:200,sell:10000,cat:'cosmos'},
+  // ══ UNIVERSO — via craft 1M supremos (5) ══
+  {id:'univ',   name:'O Universo',          icon:'🔮',rar:'universe',mps:1000000000,sell:1000000,cat:'univcat'},
+  {id:'cosmos', name:'Cosmos Absoluto',     icon:'✨',rar:'universe',mps:1000000000,sell:1000000,cat:'univcat'},
+  {id:'void',   name:'O Vazio Eterno',      icon:'🌐',rar:'universe',mps:1000000000,sell:1000000,cat:'univcat'},
+  {id:'origin', name:'A Origem',            icon:'💫',rar:'universe',mps:1000000000,sell:1000000,cat:'univcat'},
+  {id:'infinity',name:'O Infinito',         icon:'♾️',rar:'universe',mps:1000000000,sell:1000000,cat:'univcat'},
+  // ══ MULTIVERSO — via craft 3 Universos (4) ══
+  {id:'multi1', name:'Multiverso Alfa',     icon:'🌠',rar:'multiverse',mps:5000000000,sell:5000000,cat:'multiverso'},
+  {id:'multi2', name:'Espelho Dimensional', icon:'🪞',rar:'multiverse',mps:5000000000,sell:5000000,cat:'multiverso'},
+  {id:'multi3', name:'Portal Infinito',     icon:'🌀',rar:'multiverse',mps:5000000000,sell:5000000,cat:'multiverso'},
+  {id:'multi4', name:'Onda Quântica',       icon:'〰️',rar:'multiverse',mps:5000000000,sell:5000000,cat:'multiverso'},
+  // ══ OMNIVERSE — via craft 5 Multiversos (3) ══
+  {id:'omni1',  name:'Omniverse Supremo',   icon:'🔱',rar:'omniverse',mps:20000000000,sell:20000000,cat:'multiverso'},
+  {id:'omni2',  name:'Tecido do Espaço',    icon:'🕸️',rar:'omniverse',mps:20000000000,sell:20000000,cat:'multiverso'},
+  {id:'omni3',  name:'Consciência Cósmica', icon:'🧠',rar:'omniverse',mps:20000000000,sell:20000000,cat:'multiverso'},
+  // ══ DIMENSÃO ETÉREA — via craft 10 Omniversos (3) ══
+  {id:'ether1', name:'Dimensão Etérea',     icon:'🌊',rar:'ethereal',mps:100000000000,sell:100000000,cat:'multiverso'},
+  {id:'ether2', name:'Plano Astral',        icon:'🌙',rar:'ethereal',mps:100000000000,sell:100000000,cat:'multiverso'},
+  {id:'ether3', name:'Vórtice Eterno',      icon:'💜',rar:'ethereal',mps:100000000000,sell:100000000,cat:'multiverso'},
+  // ══ O ABSOLUTO — via craft 5 Dimensões (2) ══
+  {id:'abs1',   name:'O Absoluto',          icon:'⚡',rar:'absolute',mps:1000000000000,sell:1000000000,cat:'multiverso'},
+  {id:'abs2',   name:'Criador de Mundos',   icon:'🌌',rar:'absolute',mps:1000000000000,sell:1000000000,cat:'multiverso'},
+];
+const IM={};ITEMS.forEach(x=>IM[x.id]=x);
+const RARITY_ORDER={common:0,rare:1,epic:2,supreme:3,universe:4,multiverse:5,omniverse:6,ethereal:7,absolute:8};
+const RARITY_COLOR={
+  common:'var(--c-common)',rare:'var(--c-rare)',epic:'var(--c-epic)',
+  supreme:'var(--c-supreme)',universe:'var(--c-universe)',
+  multiverse:'#FF6622',omniverse:'#FFAA00',ethereal:'#00FFEE',absolute:'#FFFFFF'
+};
+const RARITY_LABEL={
+  common:'COMUM',rare:'RARO',epic:'ÉPICO',supreme:'SUPREMO',
+  universe:'UNIVERSO',multiverse:'MULTIVERSO',omniverse:'OMNIVERSE',
+  ethereal:'DIMENSÃO ETÉREA',absolute:'O ABSOLUTO'
+};
+const CAT_LABEL={
+  armas:'⚔️ Armas & Ferramentas',tech:'🤖 Tecnologia',
+  cosmos:'🌌 Cosmos',planetas:'🪐 Planetas',animais:'🐾 Animais',
+  gemas:'💎 Gemas & Minerais',criaturas:'👾 Criaturas',
+  magias:'🧙 Magias & Feitiços',univcat:'🌌 Universo',
+  multiverso:'♾️ Além do Universo'
+};
+
+const TRADES=[
+  {id:'t1',from:'common',    fromN:8,      to:'rare',       special:false},
+  {id:'t2',from:'rare',      fromN:5,      to:'epic',       special:false},
+  {id:'t3',from:'epic',      fromN:4,      to:'supreme',    special:false},
+  {id:'t4',from:'supreme',   fromN:1000000,to:'universe',   special:true},
+  {id:'t5',from:'universe',  fromN:3,      to:'multiverse', special:true},
+  {id:'t6',from:'multiverse',fromN:5,      to:'omniverse',  special:true},
+  {id:'t7',from:'omniverse', fromN:10,     to:'ethereal',   special:true},
+  {id:'t8',from:'ethereal',  fromN:5,      to:'absolute',   special:true},
+];
+
+const SHOP_ITEMS=[
+  {id:'sh1',name:'Pacote Estelar',    desc:'3 itens aleatórios agora!',          icon:'📦',price:200,   type:'blocks',   val:3},
+  {id:'sh2',name:'Pacote Raro',       desc:'1 item Raro garantido!',             icon:'🎁',price:500,   type:'rarepack', val:1},
+  {id:'sh3',name:'Pacote Épico',      desc:'1 item Épico garantido!',            icon:'🎆',price:3000,  type:'epicpack', val:1},
+  {id:'sh4',name:'Boost 2x (2min)',   desc:'Dobra a renda por 2 minutos.',       icon:'⚡',price:1000,  type:'boost',    val:120},
+  {id:'sh5',name:'Pacote Supremo',    desc:'1 item Supremo garantido!',          icon:'💫',price:20000, type:'supremepack',val:1},
+  {id:'sh6',name:'Custo Reset',       desc:'Reseta o custo de blocos para 0.',   icon:'🔄',price:800,   type:'costreset',val:1},
+  {id:'sh7',name:'Lucky Booster',     desc:'+5 níveis de Lucky de uma vez!',     icon:'🍀',price:10000000,type:'luckyboost',val:5},
+];
+
+const EVENTS=[
+  {id:'universe',name:'Tempestade Cósmica',icon:'🌌',desc:'O cosmos se agita! Supremos mais frequentes e Lucky aumentado.',
+   effects:['Supremo 2x','Lucky +50%'],theme:'evt-universe',rarMod:{supreme:2},moneyMult:1,luckyMult:1.5,rare:false},
+  {id:'newyear',name:'Ano Novo Galáctico',icon:'🎆',desc:'O universo celebra! Moedas 2x e Lucky dobrado!',
+   effects:['Moedas 2x','Lucky 2x'],theme:'evt-newyear',rarMod:{},moneyMult:2,luckyMult:2,rare:false},
+  {id:'meteor',name:'Chuva de Meteoros',icon:'☄️',desc:'Meteoros raros cruzam o céu. Raros e Épicos mais frequentes!',
+   effects:['Raros 2x','Épicos 1.5x','Lucky +25%'],theme:'evt-meteor',rarMod:{rare:2,epic:1.5},moneyMult:1,luckyMult:1.25,rare:false},
+  {id:'eclipse',name:'Eclipse Supremo',icon:'🌙',desc:'A lua cobre o sol. Supremos muito mais frequentes!',
+   effects:['Supremo 4x','Épico 2x'],theme:'evt-eclipse',rarMod:{supreme:4,epic:2},moneyMult:1,luckyMult:1,rare:false},
+  {id:'halloween',name:'Halloween Estelar',icon:'🎃',desc:'Espíritos cósmicos vagam! Itens especiais aumentados.',
+   effects:['Épico 2x','Supremo 2x','Moedas 1.5x'],theme:'evt-halloween',rarMod:{epic:2,supreme:2},moneyMult:1.5,luckyMult:1,rare:false},
+  {id:'lucky2x',name:'Onda de Sorte',icon:'🍀',desc:'A sorte está com você! Lucky 2x para todos os drops!',
+   effects:['Lucky 2x','Raros 1.5x','Épicos 1.5x'],theme:'evt-lucky',rarMod:{rare:1.5,epic:1.5,supreme:1.5},moneyMult:1,luckyMult:2,rare:false},
+  {id:'megasort',name:'⚡ MEGA SORTE 100x',icon:'💫',desc:'EVENTO RARÍSIMO! Lucky 100x por 2 minutos! Chance de Supremo explode!',
+   effects:['Lucky 100x!!!','Supremo 15x','Épico 8x','Moedas 5x','LENDÁRIO'],
+   theme:'evt-mega',rarMod:{rare:5,epic:8,supreme:15},moneyMult:5,luckyMult:100,rare:true},
+];
+
+// ═══ STATE ═══
+let G={
+  money:0,mps:0,earned:0,
+  blocks:0,items:0,rares:0,epics:0,supremes:0,universes:0,
+  multiverses:0,omniverses:0,ethereals:0,absolutes:0,
+  cost:0,clicks:0,
+  inv:[],eq:[null,null,null,null,null,null],maxSlots:3,
+  boostEnd:0,sellQty:{},
+  diamonds:0,diamNextAt:0,
+  luckyLevel:1,
+  collected:{},
+};
+
+// ═══ SAVE / LOAD ═══
+const SAVE_KEY='cosmos2';
+function save(){try{localStorage.setItem(SAVE_KEY,JSON.stringify(G));flashDot();}catch(e){}}
+function load(){
+  try{
+    const d=JSON.parse(localStorage.getItem(SAVE_KEY)||'null');
+    if(!d)return;
+    Object.assign(G,d);
+    G.clicks=0;
+    if(!G.sellQty)G.sellQty={};
+    if(!G.maxSlots)G.maxSlots=3;
+    if(!G.luckyLevel||G.luckyLevel<1)G.luckyLevel=1;
+    if(!G.collected)G.collected={};
+    if(!G.diamonds)G.diamonds=0;
+    if(!G.diamNextAt||G.diamNextAt<Date.now())G.diamNextAt=Date.now()+60000;
+    while(G.eq.length<6)G.eq.push(null);
+    calcMps();toast('💾 Jogo carregado!');
+  }catch(e){}
+}
+let sdtmr;
+function flashDot(){const d=document.getElementById('sdot');d.classList.add('on');clearTimeout(sdtmr);sdtmr=setTimeout(()=>d.classList.remove('on'),1500);}
+setInterval(save,10000);
+
+function calcMps(){G.mps=0;for(let i=0;i<G.maxSlots;i++){const id=G.eq[i];if(id&&IM[id])G.mps+=IM[id].mps;}}
+function doReset(){if(confirm('Apagar TODO o progresso?')){localStorage.removeItem(SAVE_KEY);location.reload();}}
+
+// ═══ LUCKY ═══
+function luckyCost(lvl){return lvl*1000000;}
+function getLuckyMult(){
+  const base=G.luckyLevel;
+  const evtB=currentEvt?currentEvt.luckyMult:1;
+  return base*evtB;
+}
+function upgradeLucky(){
+  if(G.luckyLevel>=100){toast('🍀 Lucky já está no MÁXIMO (100x)!');return;}
+  const cost=luckyCost(G.luckyLevel);
+  if(G.money<cost){beep('no');toast('❌ Precisa de '+ff(cost)+' 🪙!');return;}
+  G.money-=cost;G.luckyLevel++;
+  beep('lucky');spawn(innerWidth/2,innerHeight*.4,'epic');
+  floatT('🍀 LUCKY '+G.luckyLevel+'x!',innerWidth/2,innerHeight*.4);
+  toast('🍀 Lucky '+G.luckyLevel+'x desbloqueado!');
+  refresh();renderLucky();save();
+}
+function renderLucky(){
+  const el=document.getElementById('lucky-screen');if(!el)return;
+  const lv=G.luckyLevel,isMax=lv>=100,cost=isMax?0:luckyCost(lv);
+  const canBuy=!isMax&&G.money>=cost;
+  const eff=getLuckyMult();
+  const nodes=[1,10,20,30,40,50,60,70,80,90,100];
+  el.innerHTML='';
+  // Header card
+  const hc=document.createElement('div');
+  hc.style.cssText='text-align:center;padding:16px 0 10px';
+  hc.innerHTML='<div style="font-size:2.8rem">🍀</div>'
+    +'<div style="font-size:1.5rem;font-weight:800;color:var(--green);margin-top:4px">Lucky '+lv+'x</div>'
+    +'<div style="font-size:.68rem;color:var(--ink3);margin-top:2px">'+(isMax?'🏆 NÍVEL MÁXIMO!':'Nível '+lv+' de 100')+'</div>';
+  el.appendChild(hc);
+  // Progress bar
+  const pb=document.createElement('div');pb.className='luck-bar';
+  const pf=document.createElement('div');pf.className='luck-fill';pf.style.width=lv+'%';
+  pb.appendChild(pf);el.appendChild(pb);
+  // Info
+  const info=document.createElement('div');info.className='note';info.style.marginBottom='12px';
+  info.innerHTML='🍀 <strong>Lucky</strong> melhora chances de itens raros. Cada nível = custo base × nível em moedas.<br>'
+    +(currentEvt&&currentEvt.luckyMult>1?'<span style="color:var(--green)">Bônus evento ativo: '+currentEvt.luckyMult+'x 🎉 → Total: '+ff(eff)+'x</span>':'Lucky efetivo: <strong style="color:var(--green)">'+ff(eff)+'x</strong>');
+  el.appendChild(info);
+  // Node grid
+  const ng=document.createElement('div');ng.className='luck-grid';
+  nodes.forEach(n=>{
+    const nd=document.createElement('div');
+    nd.className='luck-node'+(lv>n?'on':lv===n?' cur':'');
+    nd.textContent=n+'x';ng.appendChild(nd);
+  });
+  el.appendChild(ng);
+  el.appendChild(document.createElement('div')).style.height='12px';
+  // Buy button
+  if(!isMax){
+    const bb=document.createElement('button');
+    bb.className='btn '+(canBuy?'btn-acc':'btn-dark');
+    bb.style.cssText='width:100%;padding:13px;font-size:.88rem;margin-top:10px';
+    bb.disabled=!canBuy;
+    bb.textContent=canBuy?'🍀 Upgrade para Lucky '+(lv+1)+'x — '+ff(cost)+' 🪙':'❌ Precisa de '+ff(cost)+' 🪙 (tem '+ff(G.money)+')';
+    bb.onclick=upgradeLucky;
+    el.appendChild(bb);
+  }else{
+    const mx=document.createElement('div');
+    mx.style.cssText='text-align:center;padding:14px;background:rgba(255,215,0,.1);border:1px solid var(--goldbrd);border-radius:var(--rsm);font-size:.82rem;font-weight:700;color:var(--gold);margin-top:10px';
+    mx.textContent='🏆 Lucky Máximo! 100x Sorte SUPREMA!';el.appendChild(mx);
+  }
+}
+
+// ═══ DIAMONDS & SLOTS ═══
+const SLOT_COSTS={4:5,5:15,6:30};
+function tickDiamonds(){
+  const now=Date.now();
+  if(!G.diamNextAt)G.diamNextAt=now+60000;
+  if(now>=G.diamNextAt){
+    G.diamonds++;G.diamNextAt=now+60000;
+    const h=document.getElementById('hdr').getBoundingClientRect();
+    dfloat(h.right-50,h.bottom+5);
+    beep('eq');toast('💎 +1 Diamante! Total: '+G.diamonds);
+    renderDiamUI();
+  }
+}
+function dfloat(x,y){
+  const el=document.createElement('div');el.className='df';
+  el.textContent='+1 💎';el.style.cssText='left:'+(x-20)+'px;top:'+y+'px;color:#88EEFF;font-size:1rem;font-weight:800';
+  document.body.appendChild(el);setTimeout(()=>el.remove(),950);
+}
+function renderDiamUI(){
+  document.getElementById('diams').textContent=G.diamonds;
+  const rem=Math.max(0,Math.ceil((G.diamNextAt-Date.now())/1000));
+  const ts=(Math.floor(rem/60))+':'+(rem%60<10?'0':'')+(rem%60);
+  document.getElementById('diam-timer').textContent=ts;
+  const t2=document.getElementById('slots-diam-timer');const t3=document.getElementById('slots-diam-big');
+  if(t2)t2.textContent=ts;if(t3)t3.textContent=G.diamonds+' 💎';
+}
+function buySlot(num){
+  const cost=SLOT_COSTS[num];if(!cost)return;
+  if(G.maxSlots>=num){toast('✅ Slot '+num+' já desbloqueado!');return;}
+  if(G.maxSlots<num-1){beep('no');toast('⚠️ Desbloqueie o slot '+(num-1)+' primeiro!');return;}
+  if(G.diamonds<cost){beep('no');toast('❌ Precisa de '+cost+' 💎! Você tem '+G.diamonds+'.');return;}
+  G.diamonds-=cost;G.maxSlots=num;calcMps();
+  beep('universe');spawn(innerWidth/2,innerHeight/2,'epic');
+  toast('🎉 Slot '+num+' desbloqueado!');
+  renderDiamUI();renderSlots();renderInv();refresh();save();
+}
+function renderSlots(){
+  const list=document.getElementById('slots-list');if(!list)return;
+  const info=[
+    {num:3,label:'Slots 1–3',desc:'Slots iniciais — já desbloqueados.',icon:'⚔️'},
+    {num:4,label:'Slot 4',desc:'Equipe um 4º item para mais renda.',icon:'🔓'},
+    {num:5,label:'Slot 5',desc:'Equipe um 5º item.',icon:'🔓'},
+    {num:6,label:'Slot 6 — MÁXIMO',desc:'Último slot. 6 equipados = renda máxima!',icon:'👑'},
+  ];
+  list.innerHTML='';
+  info.forEach(si=>{
+    const unlocked=G.maxSlots>=si.num,isNext=G.maxSlots===si.num-1,cost=SLOT_COSTS[si.num];
+    const div=document.createElement('div');
+    div.className='suc'+(unlocked?' unlocked':isNext?' next':'');
+    if(unlocked){
+      div.innerHTML='<div class="suc-num on">✔</div><div class="suc-inf"><div class="suc-title">'+si.icon+' '+si.label+'</div><div class="suc-sub" style="color:var(--green)">Desbloqueado!</div></div>';
+    }else if(isNext){
+      const can=G.diamonds>=cost;
+      div.innerHTML='<div class="suc-num nxt">'+si.num+'</div><div class="suc-inf"><div class="suc-title">'+si.icon+' '+si.label+'</div><div class="suc-sub">'+si.desc+'</div></div>'
+        +'<div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0">'
+        +'<div style="font-size:.76rem;font-weight:800;color:#88EEFF">💎 '+cost+'</div>'
+        +'<button class="btn '+(can?'btn-acc':'btn-dark')+'" onclick="buySlot('+si.num+')" '+(can?'':'disabled')+'>'+(can?'Comprar!':'Sem 💎')+'</button></div>';
+    }else{
+      div.innerHTML='<div class="suc-num lk">🔒</div><div class="suc-inf"><div class="suc-title" style="color:var(--ink3)">'+si.icon+' '+si.label+'</div><div class="suc-sub">Desbloqueie o slot '+(si.num-1)+' primeiro.</div></div><div style="font-size:.74rem;font-weight:800;color:rgba(100,220,255,.4)">💎 '+cost+'</div>';
+    }
+    list.appendChild(div);
+  });
+}
+
+// ═══ EVENTS ═══
+let currentEvt=null,evtEnd=0,evtCooldown=0;
+const EVT_DUR=120000,EVT_INT=300000;
+
+function tickEvents(){
+  const now=Date.now();
+  if(currentEvt&&now>=evtEnd)endEvent();
+  if(!currentEvt&&now>=evtCooldown)startEvent();
+  renderEvtBanner();
+}
+function startEvent(){
+  const r=Math.random()*100;
+  currentEvt=r<1?EVENTS.find(e=>e.id==='megasort'):EVENTS.filter(e=>!e.rare)[Math.floor(Math.random()*EVENTS.filter(e=>!e.rare).length)];
+  evtEnd=Date.now()+EVT_DUR;evtCooldown=evtEnd+EVT_INT;
+  document.body.className=currentEvt.theme;
+  if(currentEvt.rare){
+    const jk=document.getElementById('jackpot');
+    document.getElementById('jtext').textContent='💫 MEGA SORTE!\n100x LUCKY!\n💫';
+    jk.classList.add('show');setTimeout(()=>jk.classList.remove('show'),3000);
+    spawn(innerWidth/2,innerHeight/2,'universe');
+  }
+  showEvtBanner();toast('🎉 EVENTO: '+currentEvt.name+'!');renderEvtBanner();
+}
+function endEvent(){
+  const n=currentEvt.name;currentEvt=null;
+  document.body.className='';hideEvtBanner();
+  toast('✅ Evento encerrado: '+n);renderEvtBanner();
+}
+function showEvtBanner(){
+  const b=document.getElementById('evtbanner');
+  b.style.background='linear-gradient(90deg,'+RARITY_COLOR_CSS(currentEvt.theme)+',transparent)';
+  b.style.color='#fff';b.classList.add('show');
+}
+function RARITY_COLOR_CSS(theme){
+  const m={
+    'evt-universe':'rgba(255,51,153,.5)',
+    'evt-newyear':'rgba(255,215,0,.5)',
+    'evt-meteor':'rgba(85,170,255,.5)',
+    'evt-eclipse':'rgba(204,85,255,.5)',
+    'evt-halloween':'rgba(255,102,17,.5)',
+    'evt-lucky':'rgba(68,221,136,.5)',
+    'evt-mega':'rgba(255,238,0,.5)'
+  };
+  return m[theme]||'rgba(153,102,255,.5)';
+}
+function hideEvtBanner(){document.getElementById('evtbanner').classList.remove('show');}
+function renderEvtBanner(){
+  const b=document.getElementById('evtbanner');
+  if(!currentEvt){b.innerHTML='';b.classList.remove('show');return;}
+  const rem=Math.max(0,Math.ceil((evtEnd-Date.now())/1000));
+  const ts=Math.floor(rem/60)+':'+(rem%60<10?'0':'')+(rem%60);
+  b.innerHTML=currentEvt.icon+' <strong>'+currentEvt.name+'</strong> <span style="opacity:.75;font-size:.68rem;margin-left:4px">'+ts+'</span>';
+  b.classList.add('show');
+}
+function renderEvents(){
+  const live=document.getElementById('evt-live-area');
+  const all=document.getElementById('evt-all-area');
+  if(!live||!all)return;
+  if(currentEvt){
+    const rem=Math.max(0,Math.ceil((evtEnd-Date.now())/1000));
+    const ts=Math.floor(rem/60)+':'+(rem%60<10?'0':'')+(rem%60);
+    live.innerHTML='<div class="evt-card live">'
+      +'<div class="evt-hdr"><span style="font-size:1.5rem">'+currentEvt.icon+'</span><div><div style="font-size:.82rem;font-weight:800">'+currentEvt.name+'</div>'
+      +'<span class="evt-badge live '+(currentEvt.rare?'mega':'')+'">🔴 AO VIVO — '+ts+'</span></div></div>'
+      +'<div style="font-size:.7rem;color:var(--ink2);line-height:1.5;margin-bottom:8px">'+currentEvt.desc+'</div>'
+      +'<div style="display:flex;gap:5px;flex-wrap:wrap">'+currentEvt.effects.map(e=>'<span class="eff-tag">✦ '+e+'</span>').join('')+'</div></div>';
+  }else{
+    const nxt=Math.max(0,Math.ceil((evtCooldown-Date.now())/1000));
+    const ts=Math.floor(nxt/60)+':'+(nxt%60<10?'0':'')+(nxt%60);
+    live.innerHTML='<div class="note">Nenhum evento ativo. Próximo em: <strong>'+ts+'</strong></div>';
+  }
+  all.innerHTML='';
+  EVENTS.forEach(ev=>{
+    const isA=currentEvt&&currentEvt.id===ev.id;
+    const div=document.createElement('div');div.className='evt-card'+(isA?' live':'');
+    div.innerHTML='<div class="evt-hdr"><span style="font-size:1.4rem">'+ev.icon+'</span><div><div style="font-size:.8rem;font-weight:800">'+ev.name+'</div>'
+      +'<span class="evt-badge '+(isA?'live ':'')+(ev.rare?'mega':'')+'">'+( isA?'🔴 AO VIVO':ev.rare?'⭐ 1% DE CHANCE':'Em espera')+'</span></div></div>'
+      +'<div style="font-size:.68rem;color:var(--ink2);line-height:1.4;margin-bottom:7px">'+ev.desc+'</div>'
+      +'<div style="display:flex;gap:4px;flex-wrap:wrap">'+ev.effects.map(e=>'<span class="eff-tag">✦ '+e+'</span>').join('')+'</div>';
+    all.appendChild(div);
+  });
+}
+
+// ═══ PICK ITEM ═══
+function getChances(){
+  let w={common:59,rare:25,epic:10,supreme:5};
+  const lm=getLuckyMult();
+  if(lm>1){
+    const b=Math.min(lm-1,99);
+    w.rare   =Math.min(w.rare   +b*0.35,65);
+    w.epic   =Math.min(w.epic   +b*0.18,45);
+    w.supreme=Math.min(w.supreme+b*0.07,25);
+    w.common =Math.max(5,100-w.rare-w.epic-w.supreme);
+  }
+  if(currentEvt&&currentEvt.rarMod)
+    Object.entries(currentEvt.rarMod).forEach(([k,v])=>{if(w[k]!==undefined)w[k]*=v;});
+  return w;
+}
+function pickItem(){
+  const w=getChances(),tot=Object.values(w).reduce((a,b)=>a+b,0);
+  let r=Math.random()*tot,rar='common';
+  for(const[k,v]of Object.entries(w)){r-=v;if(r<=0){rar=k;break;}}
+  const pool=ITEMS.filter(x=>x.rar===rar&&!['universe','multiverse','omniverse','ethereal','absolute'].includes(x.rar));
+  return pool[Math.floor(Math.random()*pool.length)]||ITEMS[0];
+}
+
+// ═══ CLICK ═══
+let busy=false;
+function tap(){
+  if(busy)return;ensAC();
+  const cost=G.cost,last=(G.clicks===4);
+  if(last&&G.money<cost){
+    beep('no');shakeBlk();
+    document.getElementById('cerr').textContent='Faltam '+ff(cost-G.money)+' 🪙';
+    setTimeout(()=>{document.getElementById('cerr').textContent='';},1700);
+    return;
+  }
+  G.clicks++;renderDots();
+  document.getElementById('cg').setAttribute('opacity',(G.clicks/5)*.9);
+  const b=document.getElementById('blk');
+  b.classList.remove('shake');void b.offsetWidth;b.classList.add('shake');
+  beep('tick');
+  if(G.clicks>=5){
+    busy=true;G.money-=cost;G.cost=cost+5;G.blocks++;G.clicks=0;
+    setTimeout(()=>{
+      b.classList.remove('shake');b.classList.add('pop');
+      document.getElementById('cg').setAttribute('opacity','0');
+      const item=pickItem();
+      const jack=item.rar==='supreme'&&Math.random()<.12||item.rar==='epic'&&Math.random()<.07;
+      const rect=b.getBoundingClientRect();
+      const cx=rect.left+rect.width/2,cy=rect.top+rect.height/2;
+      spawn(cx,cy,item.rar);
+      let mult=currentEvt?currentEvt.moneyMult:1;
+      if(G.boostEnd>Date.now())mult*=2;
+      const base=1+(item.rar==='universe'?1000:item.rar==='supreme'?50:item.rar==='epic'?10:item.rar==='rare'?3:0);
+      const gain=Math.round(base*(jack?3:1)*mult);
+      G.money+=gain;G.earned+=gain;G.items++;
+      if(item.rar==='rare')G.rares++;
+      if(item.rar==='epic')G.epics++;
+      if(item.rar==='supreme')G.supremes++;
+      if(item.rar==='universe')G.universes++;
+      if(item.rar==='multiverse')G.multiverses++;
+      if(item.rar==='omniverse')G.omniverses++;
+      if(item.rar==='ethereal')G.ethereals++;
+      if(item.rar==='absolute')G.absolutes++;
+      addInv(item.id);
+      beep(item.rar);
+      if(jack){
+        const jk=document.getElementById('jackpot');
+        document.getElementById('jtext').textContent='⭐ JACKPOT!\n'+RARITY_LABEL[item.rar]+'\n+'+ff(gain)+' 🪙';
+        jk.classList.add('show');setTimeout(()=>jk.classList.remove('show'),2200);
+        spawn(cx,cy,item.rar);
+      }
+      showRew(item,gain,jack);
+      floatT('+'+ff(gain),cx,cy-52);
+      refresh();save();
+      setTimeout(()=>{b.classList.remove('pop');busy=false;renderDots();},430);
+    },180);
+  }else refresh();
+}
+function shakeBlk(){const b=document.getElementById('blk');b.classList.remove('shake');void b.offsetWidth;b.classList.add('shake');setTimeout(()=>b.classList.remove('shake'),280);}
+function renderDots(){for(let i=0;i<5;i++)document.getElementById('d'+i).classList.toggle('on',i<G.clicks);}
+
+// ═══ INVENTORY ═══
+function addInv(id){
+  const e=G.inv.find(x=>x.id===id);
+  if(e)e.c++;else G.inv.push({id,c:1});
+  if(!G.collected)G.collected={};
+  const isNew=!G.collected[id];
+  if(isNew)G.collected[id]=true;
+  return isNew;
+}
+function removeInv(id,n=1){const e=G.inv.find(x=>x.id===id);if(e){e.c=Math.max(0,e.c-n);if(e.c===0)G.inv=G.inv.filter(x=>x.id!==id);}}
+function eqC(id){return G.eq.filter(x=>x===id).length;}
+function avail(id){const e=G.inv.find(x=>x.id===id);return(e?e.c:0)-eqC(id);}
+function invCount(rar){return G.inv.filter(x=>IM[x.id]&&IM[x.id].rar===rar).reduce((s,x)=>s+avail(x.id),0);}
+
+function doEquip(id){
+  let sl=-1;for(let i=0;i<G.maxSlots;i++){if(G.eq[i]===null){sl=i;break;}}
+  if(sl===-1){beep('no');toast('❌ Slots cheios! Desequipe algo ou compre mais em 💎 Slots.');return;}
+  if(avail(id)<=0){beep('no');toast('❌ Sem cópias disponíveis.');return;}
+  G.eq[sl]=id;calcMps();beep('eq');
+  toast('✅ '+IM[id].name+' equipado!');refresh();renderInv();save();
+}
+function doUnequip(i){
+  const id=G.eq[i];if(!id)return;
+  G.eq[i]=null;calcMps();beep('eq');
+  toast('🔓 '+IM[id].name+' desequipado');refresh();renderInv();save();
+}
+function renderInv(){
+  for(let i=0;i<6;i++){
+    const el=document.getElementById('sl'+i);if(!el)continue;
+    const id=G.eq[i],active=i<G.maxSlots;
+    el.className='eqs'+(id?' filled':'')+(active?'':' locked');
+    if(!active){el.innerHTML='<span class="sn">'+(i+1)+'</span><span class="evoid" style="font-size:.5rem">🔒</span>';continue;}
+    if(id&&IM[id]){
+      const it=IM[id];
+      el.innerHTML='<span class="sn">'+(i+1)+'</span><span class="si">'+it.icon+'</span>'
+        +'<span class="sname" style="color:'+RARITY_COLOR[it.rar]+'">'+it.name+'</span>'
+        +'<span class="smps">+'+ff(it.mps)+'/s</span>'
+        +'<span class="rmx" onclick="doUnequip('+i+')">✕</span>';
+    }else{
+      el.innerHTML='<span class="sn">'+(i+1)+'</span><span class="evoid">Vazio</span>';
+    }
+  }
+  const used=G.eq.slice(0,G.maxSlots).filter(x=>x!==null).length;
+  document.getElementById('eqlbl').textContent=used+'/'+G.maxSlots;
+  const bag=document.getElementById('baglist');
+  const sorted=[...G.inv].sort((a,b)=>RARITY_ORDER[IM[b.id].rar]-RARITY_ORDER[IM[a.id].rar]);
+  const free=G.eq.slice(0,G.maxSlots).filter(x=>x===null).length;
+  document.getElementById('baglbl').textContent=G.inv.reduce((s,x)=>s+x.c,0)+' itens';
+  if(!sorted.length){bag.innerHTML='<div style="text-align:center;padding:20px 0;color:var(--ink3);font-size:.78rem">Abra Lucky Blocks para ganhar itens!</div>';return;}
+  bag.innerHTML='';
+  sorted.forEach(({id,c})=>{
+    const it=IM[id];if(!it)return;
+    const av=avail(id),eq=eqC(id),can=av>0&&free>0;
+    const div=document.createElement('div');div.className='ii '+it.rar;
+    div.innerHTML='<span class="ico">'+it.icon+'</span>'
+      +'<div class="inf"><div class="nm" style="color:'+RARITY_COLOR[it.rar]+'">'+it.name+'</div>'
+      +'<div class="sub"><span class="g">+'+ff(it.mps)+'/s</span> · <span class="pr">'+ff(it.sell)+'🪙</span>'+(eq>0?' · '+eq+' eq.':'')+'</div></div>'
+      +'<div class="rgt"><span class="cnt">×'+c+(av<c?' ('+av+'liv.)':'')+'</span>'
+      +'<button class="btn btn-acc" style="font-size:.58rem;padding:4px 7px" onclick="doEquip(\''+id+'\')" '+(can?'':'disabled')+'>'+(can?'Equip.':'—')+'</button></div>';
+    bag.appendChild(div);
+  });
+}
+
+// ═══ SELL ═══
+function renderSell(){
+  if(!G.sellQty)G.sellQty={};
+  const list=document.getElementById('selllist');
+  const sorted=[...G.inv].sort((a,b)=>RARITY_ORDER[IM[b.id].rar]-RARITY_ORDER[IM[a.id].rar]);
+  list.innerHTML='';let totalPrev=0;
+  sorted.forEach(({id,c})=>{
+    const it=IM[id];if(!it)return;
+    const av=avail(id);if(av<=0)return;
+    if(!G.sellQty[id])G.sellQty[id]=0;
+    G.sellQty[id]=Math.min(G.sellQty[id],av);
+    const qty=G.sellQty[id];totalPrev+=qty*it.sell;
+    const div=document.createElement('div');div.className='sell-item '+it.rar;
+    div.innerHTML='<span style="font-size:1.35rem;flex-shrink:0;width:24px;text-align:center">'+it.icon+'</span>'
+      +'<div style="flex:1;min-width:0"><div style="font-size:.72rem;font-weight:700;color:'+RARITY_COLOR[it.rar]+'">'+it.name+'</div>'
+      +'<div style="font-size:.6rem;color:var(--gold);font-weight:700">'+ff(it.sell)+' 🪙 · '+av+' disp.</div></div>'
+      +'<div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0">'
+      +'<div style="display:flex;align-items:center;gap:5px">'
+      +'<div class="qty-btn" onclick="adjSell(\''+id+'\',-1)">−</div>'
+      +'<div class="qty-val" id="sqv-'+id+'">'+qty+'</div>'
+      +'<div class="qty-btn" onclick="adjSell(\''+id+'\',1)">+</div></div>'
+      +'<div style="font-size:.64rem;color:var(--gold);font-weight:700" id="sqt-'+id+'">'+(qty>0?'+'+ff(qty*it.sell)+' 🪙':'')+'</div>'
+      +'<button class="btn btn-green" style="font-size:.58rem;padding:3px 7px" onclick="sellOne(\''+id+'\')">Tudo</button></div>';
+    list.appendChild(div);
+  });
+  if(!list.children.length)list.innerHTML='<div style="text-align:center;padding:20px 0;color:var(--ink3);font-size:.78rem">Nenhum item para vender.</div>';
+  document.getElementById('sell-preview').textContent=ff(totalPrev)+' 🪙';
+}
+function adjSell(id,d){
+  if(!G.sellQty)G.sellQty={};
+  const av=avail(id);G.sellQty[id]=Math.max(0,Math.min(av,(G.sellQty[id]||0)+d));
+  const qe=document.getElementById('sqv-'+id);if(qe)qe.textContent=G.sellQty[id];
+  const te=document.getElementById('sqt-'+id);if(te)te.textContent=G.sellQty[id]>0?'+'+ff(G.sellQty[id]*IM[id].sell)+' 🪙':'';
+  let tot=0;Object.entries(G.sellQty).forEach(([k,v])=>{if(IM[k])tot+=v*IM[k].sell;});
+  document.getElementById('sell-preview').textContent=ff(tot)+' 🪙';
+}
+function sellOne(id){
+  const av=avail(id);if(av<=0)return;
+  const gain=av*IM[id].sell;removeInv(id,av);G.money+=gain;G.earned+=gain;
+  beep('sell');toast('💰 Vendeu '+av+'× '+IM[id].name+' por '+ff(gain)+' 🪙!');
+  if(G.sellQty)G.sellQty[id]=0;refresh();renderSell();save();
+}
+function sellAll(){
+  if(!G.sellQty)return;
+  let tot=0,cnt=0;
+  Object.entries(G.sellQty).forEach(([id,qty])=>{
+    if(!qty||!IM[id])return;
+    const av=avail(id),q=Math.min(qty,av);if(!q)return;
+    const gain=q*IM[id].sell;removeInv(id,q);G.money+=gain;G.earned+=gain;tot+=gain;cnt+=q;G.sellQty[id]=0;
+  });
+  if(!cnt){toast('⚠️ Selecione itens para vender!');return;}
+  beep('sell');toast('💰 Vendeu '+cnt+' itens por '+ff(tot)+' 🪙!');
+  floatT('+'+ff(tot),innerWidth/2,innerHeight/2);refresh();renderSell();save();
+}
+
+// ═══ TRADE ═══
+function renderTrade(){
+  const list=document.getElementById('tradelist');list.innerHTML='';
+  TRADES.forEach(tr=>{
+    const have=invCount(tr.from);
+    const pool=ITEMS.filter(x=>x.rar===tr.to);
+    const ex=pool[0];
+    const can=have>=tr.fromN;
+    const div=document.createElement('div');
+    div.className='trade-card'+(tr.special?' special':'');
+    div.innerHTML='<div style="font-size:.78rem;font-weight:800;margin-bottom:9px">'
+      +'<span style="color:'+RARITY_COLOR[tr.from]+'">'+RARITY_LABEL[tr.from]+'</span>'
+      +' → <span style="color:'+RARITY_COLOR[tr.to]+'">'+RARITY_LABEL[tr.to]+'</span>'
+      +(tr.special?'<span style="font-size:.6rem;color:var(--c-universe);margin-left:6px">✦ LENDÁRIO</span>':'')+'</div>'
+      +'<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">'
+      +'<div style="text-align:center"><div style="font-size:1.5rem">'+ex.icon+'×'+tr.fromN+'</div>'
+      +'<div style="font-size:.58rem;font-weight:700;color:'+RARITY_COLOR[tr.from]+'">'+tr.fromN+' '+RARITY_LABEL[tr.from]+'</div></div>'
+      +'<div style="font-size:1.1rem;color:var(--ink3);margin:0 4px">→</div>'
+      +'<div style="text-align:center"><div style="font-size:1.5rem">'+ex.icon+'</div>'
+      +'<div style="font-size:.58rem;font-weight:700;color:'+RARITY_COLOR[tr.to]+'">1 '+RARITY_LABEL[tr.to]+'</div></div>'
+      +'<button class="btn '+(can?'btn-acc':'btn-dark')+'" style="margin-left:auto" onclick="doTrade(\''+tr.id+'\')" '+(can?'':'disabled')+'>'+(can?'Trocar!':'Sem itens')+'</button></div>'
+      +'<div style="font-size:.62rem;color:var(--ink3);margin-top:7px">Você tem: <strong style="color:'+RARITY_COLOR[tr.from]+'">'+have+'</strong> / '+tr.fromN+(tr.special?'<br>⚠️ <strong style="color:var(--c-universe)">Item de craftar mais difícil do jogo!</strong>':'')+'</div>';
+    list.appendChild(div);
+  });
+}
+function doTrade(tid){
+  const tr=TRADES.find(x=>x.id===tid);if(!tr)return;
+  const have=invCount(tr.from);
+  if(have<tr.fromN){toast('❌ Itens insuficientes!');beep('no');return;}
+  let toRem=tr.fromN;
+  for(const e of G.inv.filter(x=>IM[x.id]&&IM[x.id].rar===tr.from&&avail(x.id)>0)){
+    const r=Math.min(toRem,avail(e.id));removeInv(e.id,r);toRem-=r;if(toRem<=0)break;
+  }
+  const pool=ITEMS.filter(x=>x.rar===tr.to);
+  const item=pool[Math.floor(Math.random()*pool.length)];
+  const isNew=addInv(item.id);G.items++;
+  if(item.rar==='rare')G.rares++;if(item.rar==='epic')G.epics++;
+  if(item.rar==='supreme')G.supremes++;if(item.rar==='universe')G.universes++;
+  if(item.rar==='multiverse')G.multiverses++;if(item.rar==='omniverse')G.omniverses++;
+  if(item.rar==='ethereal')G.ethereals++;if(item.rar==='absolute')G.absolutes++;
+  beep(item.rar);toast('🔄 Você ganhou: '+item.icon+' '+item.name+'!');
+  spawn(innerWidth/2,innerHeight/2,item.rar);
+  showRew(item,0,false,isNew);refresh();renderTrade();save();
+}
+
+// ═══ SHOP ═══
+function renderShop(){
+  const list=document.getElementById('shoplist');list.innerHTML='';
+  SHOP_ITEMS.forEach(si=>{
+    const can=G.money>=si.price;
+    const div=document.createElement('div');div.className='shop-item';
+    div.innerHTML='<div style="font-size:1.85rem;flex-shrink:0">'+si.icon+'</div>'
+      +'<div style="flex:1;min-width:0"><div style="font-size:.78rem;font-weight:800">'+si.name+'</div>'
+      +'<div style="font-size:.62rem;color:var(--ink3);margin-top:2px;line-height:1.4">'+si.desc+'</div></div>'
+      +'<div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0">'
+      +'<div style="font-size:.78rem;font-weight:800;color:var(--gold)">'+ff(si.price)+' 🪙</div>'
+      +'<button class="btn '+(can?'btn-acc':'btn-dark')+'" onclick="buyShop(\''+si.id+'\')" '+(can?'':'disabled')+'>'+(can?'Comprar':'Sem 🪙')+'</button></div>';
+    list.appendChild(div);
+  });
+}
+function buyShop(sid){
+  const si=SHOP_ITEMS.find(x=>x.id===sid);if(!si)return;
+  if(G.money<si.price){beep('no');toast('❌ Moedas insuficientes!');return;}
+  G.money-=si.price;
+  if(si.type==='blocks'){
+    for(let i=0;i<si.val;i++){const it=pickItem();addInv(it.id);G.items++;}
+    toast('📦 Você ganhou '+si.val+' itens!');beep('common');
+  }else if(si.type==='rarepack'||si.type==='epicpack'||si.type==='supremepack'){
+    const rar={rarepack:'rare',epicpack:'epic',supremepack:'supreme'}[si.type];
+    const pool=ITEMS.filter(x=>x.rar===rar);
+    const it=pool[Math.floor(Math.random()*pool.length)];
+    const isNew=addInv(it.id);G.items++;
+    if(rar==='rare')G.rares++;if(rar==='epic')G.epics++;if(rar==='supreme')G.supremes++;
+    showRew(it,0,false,isNew);beep(rar);
+  }else if(si.type==='boost'){
+    G.boostEnd=Date.now()+si.val*1000;toast('⚡ Renda 2x por 2 minutos!');beep('eq');
+  }else if(si.type==='costreset'){
+    G.cost=0;toast('🔄 Custo resetado para 0!');beep('eq');
+  }else if(si.type==='luckyboost'){
+    const newLv=Math.min(100,G.luckyLevel+si.val);
+    if(G.luckyLevel>=100){G.money+=si.price;toast('🍀 Lucky já está no máximo!');return;}
+    G.luckyLevel=newLv;beep('lucky');
+    spawn(innerWidth/2,innerHeight/2,'supreme');
+    toast('🍀 Lucky agora é '+G.luckyLevel+'x!');renderLucky();
+  }
+  spawn(innerWidth/2,innerHeight*.4,'common');
+  floatT('-'+ff(si.price),innerWidth/2,innerHeight/2);
+  refresh();renderShop();save();
+}
+
+// ═══ COLLECTION ═══
+function renderCollection(){
+  const el=document.getElementById('coll-screen');if(!el)return;
+  const tot=ITEMS.length,got=Object.keys(G.collected||{}).length;
+  el.innerHTML='';
+  const hd=document.createElement('div');
+  hd.style.cssText='text-align:center;margin-bottom:13px';
+  hd.innerHTML='<div style="font-size:1rem;font-weight:800">📖 Coleção de Itens</div>'
+    +'<div style="font-size:.72rem;color:var(--ink3);margin-top:2px">'+got+' / '+tot+' descobertos</div>'
+    +'<div style="background:rgba(255,255,255,.06);border-radius:50px;height:7px;margin:7px 20px 0;overflow:hidden">'
+    +'<div style="height:100%;width:'+Math.round(got/tot*100)+'%;background:linear-gradient(90deg,var(--acc),var(--acc2));border-radius:50px;transition:width .5s"></div></div>';
+  el.appendChild(hd);
+  ['armas','tech','cosmos','planetas','animais','gemas','criaturas','magias','univcat','multiverso'].forEach(cat=>{
+    const catItems=ITEMS.filter(x=>x.cat===cat);
+    const catGot=catItems.filter(x=>G.collected&&G.collected[x.id]).length;
+    const sec=document.createElement('div');sec.style.marginBottom='14px';
+    const lbl=document.createElement('div');lbl.className='slbl';
+    lbl.innerHTML=CAT_LABEL[cat]+' <span class="slbl-badge">'+catGot+'/'+catItems.length+'</span>';
+    sec.appendChild(lbl);
+    const grid=document.createElement('div');grid.className='coll-grid';
+    catItems.forEach(item=>{
+      const disc=!!(G.collected&&G.collected[item.id]);
+      const cell=document.createElement('div');
+      cell.className='coll-cell'+(disc?' found':'');
+      if(disc){
+        cell.style.borderColor=RARITY_COLOR[item.rar];
+        if(item.rar==='universe')cell.style.boxShadow='0 0 12px var(--c-universe)';
+        if(item.rar==='supreme')cell.style.boxShadow='0 0 7px rgba(255,153,17,.4)';
+      }
+      cell.innerHTML='<div class="ci" style="'+(disc?'':'filter:grayscale(1);opacity:.28')+'">'+item.icon+'</div>'
+        +'<div class="cn" style="color:'+(disc?RARITY_COLOR[item.rar]:'var(--ink3)')+'">'+( disc?item.name:'???')+'</div>'
+        +(disc?'<div class="cs" style="color:var(--green)">+'+ff(item.mps)+'/s</div>':'');
+      grid.appendChild(cell);
+    });
+    sec.appendChild(grid);el.appendChild(sec);
+  });
+}
+
+// ═══ REWARD OVERLAY ═══
+function showRew(item,gain,jack,isNew){
+  document.getElementById('rwico').textContent=item.icon;
+  document.getElementById('rwnm').textContent=jack?'⭐ '+item.name+' ⭐':item.name;
+  document.getElementById('rwnm').style.color=RARITY_COLOR[item.rar];
+  document.getElementById('rwrar').textContent=RARITY_LABEL[item.rar];
+  document.getElementById('rwrar').style.color=RARITY_COLOR[item.rar];
+  document.getElementById('rwstrip').style.background=RARITY_COLOR[item.rar];
+  document.getElementById('rwmps').textContent='+'+ff(item.mps)+' moedas/s';
+  document.getElementById('rwgain').textContent=gain>0?'+'+ff(gain)+' 🪙':'Adicionado ao inventário';
+  document.getElementById('rwjack').style.display=jack?'block':'none';
+  document.getElementById('rwnew').style.display=(isNew&&!jack)?'block':'none';
+  document.getElementById('rew').classList.add('on');
+}
+function closeRew(){document.getElementById('rew').classList.remove('on');}
+
+// ═══ STATS ═══
+function renderStats(){
+  document.getElementById('st-bl').textContent=ff(G.blocks);
+  document.getElementById('st-to').textContent=ff(G.earned);
+  document.getElementById('st-it').textContent=G.items;
+  document.getElementById('st-mp').textContent=ff(G.mps);
+  document.getElementById('st-ra').textContent=G.rares||0;
+  document.getElementById('st-ep').textContent=G.epics||0;
+  document.getElementById('st-su').textContent=G.supremes||0;
+  document.getElementById('st-un').textContent=G.universes||0;
+  document.getElementById('st-mv').textContent=G.multiverses||0;
+  document.getElementById('st-ov').textContent=G.omniverses||0;
+  document.getElementById('st-et').textContent=G.ethereals||0;
+  document.getElementById('st-ab').textContent=G.absolutes||0;
+}
+
+// ═══ TABS ═══
+function go(t){
+  const all=['play','inv','sell','trade','shop','lucky','slots','coll','events','stats'];
+  all.forEach(s=>{document.getElementById(s).classList.toggle('on',s===t);document.getElementById('t-'+s).classList.toggle('on',s===t);});
+  if(t==='inv')renderInv();if(t==='sell')renderSell();if(t==='trade')renderTrade();
+  if(t==='shop')renderShop();if(t==='lucky')renderLucky();if(t==='slots'){renderSlots();renderDiamUI();}
+  if(t==='coll')renderCollection();if(t==='events')renderEvents();if(t==='stats')renderStats();
+  beep('btn');
+}
+
+// ═══ INDEX ═══
+function openIdx(){document.getElementById('idx-ov').classList.add('on');}
+function closeIdx(){document.getElementById('idx-ov').classList.remove('on');}
+
+// ═══ MUSIC ═══
+let musOn=false,musNodes=[];
+function ensAC(){if(!Ac)Ac=new(window.AudioContext||window.webkitAudioContext)();if(Ac.state==='suspended')Ac.resume();}
+let Ac;
+function startMusic(){
+  try{
+    ensAC();stopMusic();musOn=true;
+    const master=Ac.createGain();master.gain.value=.15;master.connect(Ac.destination);
+    musNodes=[master];
+    [[55,.32,'sine'],[82.5,.18,'sine'],[110,.1,'sine'],[165,.06,'triangle']].forEach(([f,g,t])=>{
+      const o=Ac.createOscillator(),gn=Ac.createGain();
+      o.type=t;o.frequency.value=f;gn.gain.value=g;
+      o.connect(gn);gn.connect(master);o.start();musNodes.push(o,gn);
+    });
+    const lfo=Ac.createOscillator(),lfg=Ac.createGain();
+    lfo.frequency.value=.06;lfo.type='sine';lfg.gain.value=.06;
+    lfo.connect(lfg);lfg.connect(master.gain);lfo.start();musNodes.push(lfo,lfg);
+    twinkle();
+  }catch(e){}
+}
+let twT;
+function twinkle(){
+  if(!musOn)return;
+  try{
+    ensAC();
+    const notes=[880,1046,1174,1318,1568,1760];
+    const f=notes[Math.floor(Math.random()*notes.length)];
+    const o=Ac.createOscillator(),g=Ac.createGain();
+    o.type='sine';o.frequency.value=f;
+    g.gain.setValueAtTime(0,Ac.currentTime);
+    g.gain.linearRampToValueAtTime(.035,Ac.currentTime+.08);
+    g.gain.exponentialRampToValueAtTime(.001,Ac.currentTime+1.1);
+    o.connect(g);g.connect(Ac.destination);o.start();o.stop(Ac.currentTime+1.1);
+  }catch(e){}
+  twT=setTimeout(twinkle,1800+Math.random()*2800);
+}
+function stopMusic(){musOn=false;clearTimeout(twT);musNodes.forEach(n=>{try{n.stop?n.stop():n.disconnect();}catch(e){}});musNodes=[];}
+function toggleMusic(){ensAC();if(musOn){stopMusic();toast('🔇 Música pausada');}else{startMusic();toast('🎵 Música ligada!');}document.getElementById('music-btn').textContent=musOn?'🔇':'🎵';}
+
+// ═══ SOUNDS ═══
+function beep(type){
+  try{
+    ensAC();const o=Ac.createOscillator(),g=Ac.createGain();
+    o.connect(g);g.connect(Ac.destination);const t=Ac.currentTime;
+    if(type==='tick'){
+      o.type='sine';o.frequency.setValueAtTime(360,t);o.frequency.exponentialRampToValueAtTime(500,t+.07);
+      g.gain.setValueAtTime(.08,t);g.gain.exponentialRampToValueAtTime(.001,t+.09);
+      o.start();o.stop(t+.09);
+    }else if(type==='no'){
+      o.type='square';o.frequency.setValueAtTime(200,t);o.frequency.exponentialRampToValueAtTime(100,t+.14);
+      g.gain.setValueAtTime(.08,t);g.gain.exponentialRampToValueAtTime(.001,t+.14);
+      o.start();o.stop(t+.14);
+    }else if(type==='btn'){
+      o.type='sine';o.frequency.setValueAtTime(520,t);o.frequency.exponentialRampToValueAtTime(640,t+.05);
+      g.gain.setValueAtTime(.05,t);g.gain.exponentialRampToValueAtTime(.001,t+.07);
+      o.start();o.stop(t+.07);
+    }else if(type==='common'){
+      o.type='sine';o.frequency.setValueAtTime(440,t);o.frequency.exponentialRampToValueAtTime(880,t+.2);
+      g.gain.setValueAtTime(.14,t);g.gain.exponentialRampToValueAtTime(.001,t+.28);
+      o.start();o.stop(t+.28);
+    }else if(type==='rare'){
+      o.type='triangle';o.frequency.setValueAtTime(520,t);o.frequency.exponentialRampToValueAtTime(1300,t+.3);
+      g.gain.setValueAtTime(.17,t);g.gain.exponentialRampToValueAtTime(.001,t+.38);
+      o.start();o.stop(t+.38);
+    }else if(type==='epic'||type==='supreme'){
+      [0,4,7].forEach((s,i)=>{
+        const o2=Ac.createOscillator(),g2=Ac.createGain();
+        o2.connect(g2);g2.connect(Ac.destination);o2.type='sawtooth';
+        const f=440*Math.pow(2,s/12);
+        o2.frequency.setValueAtTime(f,t+i*.06);o2.frequency.exponentialRampToValueAtTime(f*2,t+.54);
+        g2.gain.setValueAtTime(0,t);g2.gain.linearRampToValueAtTime(.09,t+.06+i*.06);
+        g2.gain.exponentialRampToValueAtTime(.001,t+.64);
+        o2.start(t);o2.stop(t+.64);
+      });return;
+    }else if(type==='universe'){
+      [0,3,7,10].forEach((s,i)=>{
+        const o2=Ac.createOscillator(),g2=Ac.createGain();
+        o2.connect(g2);g2.connect(Ac.destination);o2.type='sawtooth';
+        const f=220*Math.pow(2,s/12);
+        o2.frequency.setValueAtTime(f,t+i*.08);o2.frequency.exponentialRampToValueAtTime(f*3,t+1.2);
+        g2.gain.setValueAtTime(0,t);g2.gain.linearRampToValueAtTime(.12,t+.08+i*.08);
+        g2.gain.exponentialRampToValueAtTime(.001,t+1.5);
+        o2.start(t);o2.stop(t+1.5);
+      });return;
+    }else if(type==='eq'){
+      o.type='sine';o.frequency.setValueAtTime(600,t);o.frequency.exponentialRampToValueAtTime(1000,t+.15);
+      g.gain.setValueAtTime(.1,t);g.gain.exponentialRampToValueAtTime(.001,t+.2);
+      o.start();o.stop(t+.2);
+    }else if(type==='sell'){
+      o.type='sine';o.frequency.setValueAtTime(700,t);o.frequency.exponentialRampToValueAtTime(1100,t+.12);
+      g.gain.setValueAtTime(.09,t);g.gain.exponentialRampToValueAtTime(.001,t+.17);
+      o.start();o.stop(t+.17);
+    }else if(type==='lucky'){
+      [0,4,7,12].forEach((s,i)=>{
+        const o2=Ac.createOscillator(),g2=Ac.createGain();
+        o2.connect(g2);g2.connect(Ac.destination);o2.type='sine';
+        const f=440*Math.pow(2,s/12);
+        o2.frequency.setValueAtTime(f,t+i*.08);
+        g2.gain.setValueAtTime(0,t);g2.gain.linearRampToValueAtTime(.1,t+.02+i*.08);
+        g2.gain.exponentialRampToValueAtTime(.001,t+.18+i*.08);
+        o2.start(t+i*.08);o2.stop(t+.22+i*.08);
+      });return;
+    }
+  }catch(e){}
+}
+
+// ═══ PARTICLES ═══
+const pc=document.getElementById('pc'),px=pc.getContext('2d');
+let PP=[];
+function iPC(){pc.width=innerWidth;pc.height=innerHeight;}
+const PCOLS={
+  common:['#90A0B0','#C0D0E0','#FFF'],
+  rare:['#55AAFF','#88CCFF','#FFF'],
+  epic:['#CC55FF','#DD88FF','#EEB8FF'],
+  supreme:['#FF9911','#FFBB44','#FFDD88'],
+  universe:['#FF3399','#FF66BB','#FFAADD','#FFD700','#FFF'],
+  multiverse:['#FF6622','#FF9955','#FFCC88','#FFD700'],
+  omniverse:['#FFAA00','#FFDD44','#FFFFFF','#FFE066'],
+  ethereal:['#00FFEE','#66FFEE','#AAFFEE','#FFFFFF','#88EEFF'],
+  absolute:['#FFFFFF','#FFEEAA','#AAFFFF','#FFAAFF','#FFFFFF'],
+};
+function spawn(x,y,rar){
+  const cols=PCOLS[rar]||PCOLS.common;
+  const n={common:16,rare:28,epic:42,supreme:52,universe:78}[rar]||16;
+  for(let i=0;i<n;i++){
+    const a=Math.random()*Math.PI*2,sp=Math.random()*7+2;
+    PP.push({x,y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-Math.random()*3,
+      r:Math.random()*4.5+2,color:cols[Math.floor(Math.random()*cols.length)],
+      life:1,dec:Math.random()*.022+.013,grav:.18,sq:Math.random()<.3});
+  }
+}
+function drawPP(){
+  px.clearRect(0,0,pc.width,pc.height);PP=PP.filter(p=>p.life>0);
+  PP.forEach(p=>{
+    p.x+=p.vx;p.y+=p.vy;p.vy+=p.grav;p.vx*=.97;p.life-=p.dec;
+    px.globalAlpha=Math.max(0,p.life);px.fillStyle=p.color;
+    if(p.sq)px.fillRect(p.x-p.r/2,p.y-p.r/2,p.r,p.r);
+    else{px.beginPath();px.arc(p.x,p.y,p.r,0,Math.PI*2);px.fill();}
+  });
+  px.globalAlpha=1;
+}
+
+// ═══ STARFIELD ═══
+const sf=document.getElementById('starfield'),sx=sf.getContext('2d');
+let STARS=[];
+function initStars(){
+  sf.width=innerWidth;sf.height=innerHeight;STARS=[];
+  for(let i=0;i<160;i++)STARS.push({x:Math.random()*sf.width,y:Math.random()*sf.height,
+    r:Math.random()*1.4+.2,sp:Math.random()*.004+.001,ph:Math.random()*Math.PI*2,tw:Math.random()>.55});
+}
+let ST=0;
+function drawStars(){
+  ST+=.016;sx.clearRect(0,0,sf.width,sf.height);
+  const bg=sx.createRadialGradient(sf.width/2,sf.height/2,0,sf.width/2,sf.height/2,sf.width*.8);
+  const cs=getComputedStyle(document.body);
+  bg.addColorStop(0,cs.getPropertyValue('--bg1').trim()||'#0D0820');
+  bg.addColorStop(1,cs.getPropertyValue('--bg0').trim()||'#06040F');
+  sx.fillStyle=bg;sx.fillRect(0,0,sf.width,sf.height);
+  STARS.forEach(s=>{
+    const a=s.tw?.28+.58*(0.5+0.5*Math.sin(ST*s.sp*20+s.ph)):.65;
+    sx.beginPath();sx.arc(s.x,s.y,s.r,0,Math.PI*2);
+    sx.fillStyle='rgba(255,255,255,'+a+')';sx.fill();
+  });
+}
+
+// ═══ REFRESH ═══
+function refresh(){
+  document.getElementById('money').textContent=ff(G.money);
+  const now=Date.now(),boosted=G.boostEnd>now;
+  const em=currentEvt?currentEvt.moneyMult:1;
+  const eff=G.mps*em*(boosted?2:1);
+  document.getElementById('mpsv').textContent=ff(eff)+'/s';
+  document.getElementById('mps-bonus').textContent=(boosted?'⚡2x boost ':'')+( em>1?'🎉'+em+'x evento':'');
+  if(currentEvt){const mb=document.getElementById('multbadge');mb.textContent=currentEvt.icon+' '+currentEvt.name+' ATIVO!';mb.classList.add('show');}
+  else document.getElementById('multbadge').classList.remove('show');
+  document.getElementById('cval').textContent=ff(G.cost)+' 🪙';
+  document.getElementById('cval').className=G.money<G.cost?'red':'';
+  document.getElementById('ms-bl').textContent=ff(G.blocks);
+  document.getElementById('ms-it').textContent=G.items;
+  document.getElementById('ms-to').textContent=ff(G.earned);
+  document.getElementById('lucky-disp').textContent=ff(getLuckyMult())+'x';
+  renderDots();
+}
+
+// ═══ IDLE ═══
+setInterval(()=>{
+  const now=Date.now();let m=currentEvt?currentEvt.moneyMult:1;
+  if(G.boostEnd>now)m*=2;
+  if(G.mps>0){const g=G.mps*m/10;G.money+=g;G.earned+=g;document.getElementById('money').textContent=ff(G.money);}
+},100);
+
+// ═══ FORMAT ═══
+function ff(n){
+  n=Math.floor(n);
+  if(n>=1e15)return(n/1e15).toFixed(1)+'Qa';
+  if(n>=1e12)return(n/1e12).toFixed(1)+'T';
+  if(n>=1e9)return(n/1e9).toFixed(2)+'B';
+  if(n>=1e6)return(n/1e6).toFixed(1)+'M';
+  if(n>=1e3)return(n/1e3).toFixed(1)+'K';
+  return n+'';
+}
+
+// ═══ TOAST + FLOAT ═══
+let ttmr;
+function toast(msg){
+  const el=document.getElementById('tst');el.textContent=msg;el.classList.add('on');
+  clearTimeout(ttmr);ttmr=setTimeout(()=>el.classList.remove('on'),2500);
+}
+function floatT(txt,x,y){
+  const el=document.createElement('div');el.className='ft';
+  el.textContent=txt+' 🪙';el.style.cssText='left:'+(x-16)+'px;top:'+y+'px;color:var(--gold)';
+  document.body.appendChild(el);setTimeout(()=>el.remove(),950);
+}
+
+// ═══ MAIN LOOP ═══
+let frame=0;
+function loop(){
+  frame++;drawStars();drawPP();
+  if(frame%60===0){tickEvents();tickDiamonds();renderEvtBanner();renderDiamUI();refresh();}
+  requestAnimationFrame(loop);
+}
+
+// ═══ INIT ═══
+window.addEventListener('resize',()=>{iPC();initStars();});
+evtCooldown=Date.now()+30000;
+iPC();initStars();load();
+if(!G.diamNextAt||G.diamNextAt<Date.now())G.diamNextAt=Date.now()+60000;
+renderDiamUI();refresh();
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>
