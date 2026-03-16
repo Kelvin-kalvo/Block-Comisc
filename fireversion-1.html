@@ -1,0 +1,1673 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>🔥 Fire Version</title>
+<style>
+@media(orientation:landscape){#rot{display:flex!important}#app{display:none!important}}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+:root{
+  --bg0:#0A0200;--bg1:#180600;--bg2:#220A00;
+  --card:rgba(255,80,0,.08);--ink:#FFF0E0;--ink2:#CC8855;--ink3:#885533;
+  --acc:#FF4400;--acc2:#FF8800;--acc3:#FFBB00;
+  --gold:#FFD700;--goldbg:rgba(255,215,0,.13);--goldbrd:rgba(255,215,0,.4);
+  --green:#44DD88;--greenbg:rgba(68,221,136,.13);--greenbrd:rgba(68,221,136,.4);
+  --red:#FF2200;
+  --c-ember:#FF9966;--c-flame:#FF5500;--c-blaze:#FF2200;
+  --c-inferno:#CC0000;--c-phoenix:#FF8800;--c-volcano:#FF4400;
+  --c-magma:#FF6600;--c-solar:#FFCC00;--c-nova:#FF0044;--c-godfire:#FFFFFF;
+  --evt-accent:#FF4400;
+}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--bg0);
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+  color:var(--ink);touch-action:manipulation}
+#rot{display:none;position:fixed;inset:0;z-index:9999;background:var(--bg0);
+  flex-direction:column;align-items:center;justify-content:center;gap:12px;
+  text-align:center;padding:24px;color:var(--ink2);font-size:.9rem}
+#starfield{position:fixed;inset:0;pointer-events:none;z-index:0}
+#pc{position:fixed;inset:0;pointer-events:none;z-index:400}
+
+#app{display:flex;flex-direction:column;height:100vh;height:100svh;
+  max-width:430px;margin:0 auto;position:relative;z-index:1;overflow:hidden}
+
+/* FIRE BADGE */
+#fire-badge{position:absolute;top:0;left:8px;
+  background:linear-gradient(90deg,#FF2200,#FF8800,#FFCC00);color:#000;
+  font-size:.55rem;font-weight:900;padding:2px 10px;border-radius:0 0 8px 8px;
+  letter-spacing:.06em;z-index:20;pointer-events:none;
+  box-shadow:0 2px 12px rgba(255,68,0,.6)}
+
+/* HEADER */
+#hdr{flex-shrink:0;display:flex;align-items:center;justify-content:space-between;
+  padding:10px 14px 8px;border-bottom:1px solid rgba(255,80,0,.2);
+  background:rgba(0,0,0,.4);backdrop-filter:blur(12px);position:relative}
+.logo{font-size:.92rem;font-weight:800;
+  background:linear-gradient(135deg,#FF2200,#FF8800,#FFCC00);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  filter:drop-shadow(0 0 8px rgba(255,100,0,.5))}
+.pill{display:flex;align-items:center;gap:3px;border-radius:50px;padding:4px 9px;
+  font-size:.74rem;font-weight:800}
+.pill-fire{background:rgba(255,68,0,.15);border:1.5px solid rgba(255,68,0,.4);color:#FF8800}
+.pill-gold{background:var(--goldbg);border:1.5px solid var(--goldbrd);color:var(--gold)}
+.pill-ember{background:rgba(255,150,50,.12);border:1.5px solid rgba(255,150,50,.35);color:#FFAA55}
+.hdr-btns{display:flex;gap:4px;margin-left:4px}
+.hdr-ico-btn{background:rgba(255,68,0,.12);border:1px solid rgba(255,68,0,.25);
+  border-radius:8px;padding:4px 7px;font-size:.72rem;cursor:pointer;color:var(--ink2)}
+
+/* TABS */
+#tabs{flex-shrink:0;display:flex;background:rgba(0,0,0,.3);
+  border-bottom:1px solid rgba(255,68,0,.15);overflow-x:auto;scrollbar-width:none}
+#tabs::-webkit-scrollbar{display:none}
+.tab{flex:0 0 auto;padding:8px 10px;border:none;background:transparent;
+  font-family:inherit;font-size:.68rem;font-weight:600;color:var(--ink3);
+  border-bottom:2.5px solid transparent;cursor:pointer;transition:all .18s;white-space:nowrap}
+.tab.on{color:var(--ink);border-bottom-color:var(--acc2)}
+
+/* SCREENS */
+#scr{flex:1;overflow:hidden;position:relative}
+.sc{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;
+  padding:12px 12px 30px;display:none;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.sc::-webkit-scrollbar{display:none}
+.sc.on{display:block}
+#play.on{display:flex;flex-direction:column;align-items:center}
+
+/* SHARED */
+.slbl{font-size:.6rem;font-weight:700;color:var(--ink3);text-transform:uppercase;
+  letter-spacing:.06em;margin-bottom:5px;margin-top:12px;display:flex;align-items:center;gap:5px}
+.slbl:first-child{margin-top:0}
+.slbl-badge{background:rgba(255,68,0,.1);border:1px solid rgba(255,68,0,.2);
+  border-radius:50px;padding:1px 6px;font-size:.56rem;color:var(--acc2)}
+.card{background:var(--card);border:1px solid rgba(255,80,0,.18);border-radius:14px}
+.note{background:rgba(255,68,0,.07);border:1px solid rgba(255,68,0,.18);
+  border-radius:10px;padding:9px 11px;font-size:.7rem;color:var(--ink2);line-height:1.5}
+.note strong{color:var(--ink)}
+.divider{height:1px;background:rgba(255,68,0,.15);margin:10px 0}
+.btn{font-family:inherit;font-size:.62rem;font-weight:700;border:none;border-radius:8px;
+  padding:5px 9px;cursor:pointer;transition:all .14s;white-space:nowrap}
+.btn:active{transform:scale(.92)}
+.btn-fire{background:linear-gradient(135deg,#FF2200,#FF6600);color:#fff;box-shadow:0 2px 8px rgba(255,68,0,.4)}
+.btn-gold{background:var(--goldbg);color:var(--gold);border:1px solid var(--goldbrd)}
+.btn-dark{background:rgba(255,255,255,.06);color:var(--ink2);border:1px solid rgba(255,255,255,.1)}
+.btn-ember{background:rgba(255,150,50,.15);color:#FFAA55;border:1px solid rgba(255,150,50,.3)}
+.btn:disabled{opacity:.25;cursor:not-allowed;transform:none}
+
+/* RARITY COLORS */
+.r-ember{color:var(--c-ember)}.r-flame{color:var(--c-flame)}.r-blaze{color:var(--c-blaze)}
+.r-inferno{color:var(--c-inferno)}.r-phoenix{color:var(--c-phoenix)}.r-volcano{color:var(--c-volcano)}
+.r-magma{color:var(--c-magma)}.r-solar{color:var(--c-solar)}.r-nova{color:var(--c-nova)}
+.r-godfire{color:var(--c-godfire)}
+
+/* FIRE BLOCK */
+#blk{width:148px;height:148px;border:none;background:transparent;cursor:pointer;padding:0}
+#blk:active{transform:scale(.88)}
+#blk.shake{animation:fsh .26s ease-in-out}
+#blk.pop{animation:fpk .42s ease-in-out}
+@keyframes fsh{0%,100%{transform:rotate(0)scale(1)}25%{transform:rotate(-8deg)scale(1.1)}75%{transform:rotate(8deg)scale(1.1)}}
+@keyframes fpk{0%{transform:scale(1)}30%{transform:scale(1.2)rotate(-5deg)}60%{transform:scale(.88)rotate(5deg)}100%{transform:scale(1)}}
+@keyframes fireglow{0%,100%{filter:drop-shadow(0 0 14px #FF4400) drop-shadow(0 0 28px rgba(255,100,0,.4))}50%{filter:drop-shadow(0 0 26px #FF8800) drop-shadow(0 0 50px rgba(255,200,0,.35)) brightness(1.12)}}
+#blk svg{width:100%;height:100%;animation:fireglow 1.8s ease-in-out infinite}
+
+#dots{display:flex;gap:8px}
+.d{width:9px;height:9px;border-radius:50%;background:rgba(255,100,0,.12);
+  border:2px solid rgba(255,100,0,.2);transition:all .2s cubic-bezier(.34,1.56,.64,1)}
+.d.on{background:#FF6600;border-color:#FF8800;box-shadow:0 0 8px #FF4400;transform:scale(1.3)}
+
+/* ITEM CARDS */
+.ii{background:rgba(255,50,0,.06);border:1px solid rgba(255,80,0,.15);border-radius:10px;
+  padding:8px 9px;display:flex;align-items:center;gap:7px;margin-bottom:5px}
+.ii.flame{border-color:rgba(255,85,0,.35);background:rgba(255,85,0,.09)}
+.ii.blaze{border-color:rgba(255,34,0,.4);background:rgba(255,34,0,.1)}
+.ii.inferno{border-color:rgba(204,0,0,.45);background:rgba(200,0,0,.1);box-shadow:0 0 8px rgba(200,0,0,.2)}
+.ii.phoenix{border-color:rgba(255,136,0,.45);background:rgba(255,136,0,.1);box-shadow:0 0 10px rgba(255,136,0,.2)}
+.ii.nova{border-color:rgba(255,0,68,.5);background:rgba(255,0,68,.1);box-shadow:0 0 14px rgba(255,0,68,.25)}
+.ii.godfire{border-color:rgba(255,255,255,.7);background:rgba(255,255,255,.07);box-shadow:0 0 20px rgba(255,200,0,.5)}
+.ii .ico{font-size:1.38rem;flex-shrink:0;width:25px;text-align:center}
+.ii .inf{flex:1;min-width:0}
+.ii .nm{font-size:.7rem;font-weight:700}
+.ii .sub{font-size:.57rem;color:var(--ink3);margin-top:1px}
+.ii .sub .g{color:var(--green);font-weight:700}
+.ii .sub .pr{color:var(--gold);font-weight:700}
+.ii .rgt{display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0}
+
+/* EQUIP SLOTS */
+.eqgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-bottom:3px}
+.eqs{background:rgba(255,50,0,.06);border:1.5px dashed rgba(255,80,0,.2);border-radius:10px;
+  min-height:70px;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:2px;padding:5px 3px;position:relative;transition:all .2s}
+.eqs.filled{border-style:solid;border-color:var(--acc2);background:rgba(255,100,0,.1);
+  box-shadow:0 0 10px rgba(255,80,0,.2)}
+.eqs.locked{opacity:.4}
+.eqs .sn{position:absolute;top:2px;right:4px;font-size:.46rem;color:var(--ink3);font-weight:700}
+.eqs .si{font-size:1.3rem;line-height:1}
+.eqs .sname{font-size:.48rem;font-weight:700;text-align:center;line-height:1.2}
+.eqs .smps{font-size:.52rem;font-weight:700;color:var(--green)}
+.eqs .evoid{font-size:.56rem;color:var(--ink3)}
+.eqs .rmx{position:absolute;bottom:2px;right:2px;width:14px;height:14px;border-radius:50%;
+  background:rgba(255,50,0,.15);border:1px solid rgba(255,50,0,.3);color:#FF6644;
+  font-size:.46rem;display:flex;align-items:center;justify-content:center;cursor:pointer}
+
+/* ROULETTE */
+.roulette-wrap{display:flex;flex-direction:column;align-items:center;gap:12px}
+#roulette-canvas{border-radius:50%;box-shadow:0 0 30px rgba(255,80,0,.5),0 0 60px rgba(255,50,0,.25);
+  border:3px solid rgba(255,120,0,.6)}
+#roulette-spin{padding:14px 30px;font-size:.95rem;font-weight:900;letter-spacing:.04em;
+  background:linear-gradient(135deg,#FF2200,#FF8800,#FFCC00);color:#000;border:none;
+  border-radius:14px;cursor:pointer;transition:all .18s;
+  box-shadow:0 4px 20px rgba(255,80,0,.5);font-family:inherit}
+#roulette-spin:active{transform:scale(.94)}
+#roulette-spin:disabled{opacity:.35;cursor:not-allowed;transform:none}
+#roulette-result{text-align:center;min-height:56px;padding:8px 0}
+.rou-prize{font-size:1.1rem;font-weight:800;animation:slideup .35s ease-out}
+@keyframes slideup{from{transform:translateY(16px);opacity:0}to{transform:translateY(0);opacity:1}}
+
+/* ARENA */
+.arena-fighter{background:rgba(255,50,0,.06);border:1.5px solid rgba(255,80,0,.2);
+  border-radius:14px;padding:12px;text-align:center}
+.arena-fighter.player{border-color:rgba(255,136,0,.45);background:rgba(255,136,0,.07)}
+.arena-fighter.enemy{border-color:rgba(255,34,0,.4);background:rgba(200,0,0,.08)}
+.af-icon{font-size:2.8rem;margin-bottom:4px;display:block}
+.hp-bar-wrap{background:rgba(255,255,255,.08);border-radius:50px;height:11px;overflow:hidden}
+.hp-bar{height:100%;border-radius:50px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.hp-bar.player-hp{background:linear-gradient(90deg,#FF8800,#FFCC00)}
+.hp-bar.enemy-hp{background:linear-gradient(90deg,#FF2200,#FF6600)}
+.hp-text{font-size:.62rem;font-weight:700;text-align:center;margin-top:3px}
+.arena-vs{text-align:center;font-size:1rem;font-weight:800;color:var(--acc2);
+  padding:2px 0;animation:pulse .7s ease-in-out infinite alternate}
+@keyframes pulse{from{transform:scale(1)}to{transform:scale(1.08)}}
+.arena-log{background:rgba(0,0,0,.3);border:1px solid rgba(255,80,0,.12);
+  border-radius:10px;padding:8px 10px;max-height:90px;overflow-y:auto;scrollbar-width:none}
+.arena-log::-webkit-scrollbar{display:none}
+.log-entry{font-size:.62rem;padding:2px 0;border-bottom:1px solid rgba(255,80,0,.08);line-height:1.4}
+.arena-actions{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.arena-btn{border:none;border-radius:12px;padding:11px 6px;font-family:inherit;
+  font-size:.7rem;font-weight:800;cursor:pointer;transition:all .14s;
+  display:flex;flex-direction:column;align-items:center;gap:3px}
+.arena-btn:active{transform:scale(.92)}
+.arena-btn:disabled{opacity:.28;cursor:not-allowed;transform:none}
+.arena-btn .ab-ico{font-size:1.3rem}
+.arena-btn.atk{background:linear-gradient(135deg,#FF3300,#FF6600);color:#fff}
+.arena-btn.spec{background:linear-gradient(135deg,#FF6600,#FFAA00);color:#fff}
+.arena-btn.heal{background:linear-gradient(135deg,#44BB66,#22AA55);color:#fff}
+.arena-btn.flee{background:rgba(255,255,255,.07);color:var(--ink2);border:1px solid rgba(255,255,255,.1)}
+@keyframes atkshake{0%,100%{transform:translateX(0)}20%{transform:translateX(-7px)}50%{transform:translateX(7px)}80%{transform:translateX(-3px)}}
+@keyframes healshine{0%{filter:brightness(1)}50%{filter:brightness(2) saturate(1.5)}100%{filter:brightness(1)}}
+.hit-anim{animation:atkshake .28s ease-in-out}
+.heal-anim{animation:healshine .45s ease-in-out}
+.ap-card{background:rgba(255,50,0,.06);border:1.5px solid rgba(255,80,0,.15);border-radius:10px;
+  padding:7px 4px;text-align:center;cursor:pointer;transition:all .17s}
+.ap-card:active{transform:scale(.92)}
+.ap-card.chosen{border-color:#FF8800;background:rgba(255,136,0,.13);box-shadow:0 0 10px rgba(255,136,0,.3)}
+.arena-petsel{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-top:6px}
+.arena-result{text-align:center;padding:18px}
+.arena-result .res-ico{font-size:3rem;display:block;margin-bottom:8px}
+.arena-result .res-title{font-size:1.3rem;font-weight:800;margin-bottom:6px}
+
+/* SELL / SHOP */
+.sell-item{background:rgba(255,50,0,.06);border:1px solid rgba(255,80,0,.12);
+  border-radius:10px;padding:8px 9px;display:flex;align-items:center;gap:7px;margin-bottom:5px}
+.qty-btn{width:21px;height:21px;border-radius:6px;border:1px solid rgba(255,80,0,.2);
+  background:rgba(255,80,0,.08);color:var(--ink);font-size:.85rem;font-weight:700;
+  cursor:pointer;display:flex;align-items:center;justify-content:center}
+.shop-item{background:rgba(255,50,0,.06);border:1px solid rgba(255,80,0,.15);
+  border-radius:14px;padding:10px;margin-bottom:7px;display:flex;align-items:center;gap:9px}
+
+/* REWARD */
+#rew{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.78);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .2s}
+#rew.on{opacity:1;pointer-events:all}
+#rewcard{background:linear-gradient(145deg,#1A0500,#0A0200);
+  border-radius:22px;padding:24px 20px 20px;text-align:center;width:272px;
+  position:relative;border:1.5px solid rgba(255,80,0,.25);
+  transform:scale(.78) translateY(28px);transition:transform .36s cubic-bezier(.34,1.56,.64,1)}
+#rew.on #rewcard{transform:scale(1) translateY(0)}
+#rwstrip{position:absolute;top:0;left:0;right:0;height:5px;border-radius:22px 22px 0 0}
+#rwico{font-size:3.3rem;display:block;margin:5px 0 8px;animation:iconbounce .55s ease-out}
+@keyframes iconbounce{0%,100%{transform:scale(1) translateY(0)}35%{transform:scale(1.35) translateY(-10px)}70%{transform:scale(.9) translateY(3px)}}
+#rwrar{font-size:.6rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;margin-bottom:2px}
+#rwnm{font-size:1.1rem;font-weight:800;margin-bottom:5px}
+#rwmps{font-size:.76rem;font-weight:600;color:var(--green);margin-bottom:3px}
+#rwgain{font-size:.74rem;font-weight:700;color:var(--gold);margin-bottom:4px}
+#rwnew{font-size:.6rem;color:var(--acc2);margin-bottom:5px;display:none;font-weight:700}
+#rwok{width:100%;padding:12px;background:linear-gradient(135deg,#FF2200,#FF8800);color:#fff;border:none;
+  border-radius:12px;font-family:inherit;font-size:.85rem;font-weight:700;cursor:pointer}
+#rwok:active{transform:scale(.96)}
+
+/* JACKPOT */
+#jackpot{position:fixed;inset:0;z-index:490;pointer-events:none;
+  display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s}
+#jackpot.show{opacity:1}
+#jtext{font-size:1.85rem;font-weight:800;text-align:center;white-space:pre-line;
+  background:linear-gradient(135deg,#FF2200,#FF8800,#FFCC00);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  filter:drop-shadow(0 0 20px rgba(255,100,0,.9));
+  animation:jpulse .4s ease-in-out infinite alternate;line-height:1.3;padding:0 20px}
+@keyframes jpulse{from{transform:scale(1)}to{transform:scale(1.06)}}
+
+/* TOAST / FLOAT */
+#tst{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);
+  background:rgba(20,5,0,.95);color:var(--ink);border:1px solid rgba(255,80,0,.2);
+  border-radius:50px;padding:7px 16px;font-size:.7rem;font-weight:600;
+  z-index:600;opacity:0;pointer-events:none;transition:opacity .2s;
+  white-space:nowrap;max-width:94vw;text-align:center}
+#tst.on{opacity:1}
+.ft{position:fixed;pointer-events:none;z-index:450;font-size:1rem;font-weight:800;animation:ftu .9s ease-out forwards}
+@keyframes ftu{0%{transform:translateY(0)scale(1);opacity:1}100%{transform:translateY(-46px)scale(.7);opacity:0}}
+.df{position:fixed;pointer-events:none;z-index:450;animation:ftu .9s ease-out forwards}
+
+/* MPSBAR */
+#mpsbar{align-self:stretch;display:flex;align-items:center;justify-content:space-between;
+  background:rgba(68,221,136,.1);border:1.5px solid rgba(68,221,136,.3);border-radius:10px;
+  padding:7px 12px;margin-bottom:8px}
+#mpsv{font-size:.92rem;font-weight:800;color:var(--green)}
+.mps-l{font-size:.64rem;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.05em}
+#ministat{align-self:stretch;display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;margin-top:10px}
+.msb{background:rgba(255,50,0,.07);border:1px solid rgba(255,80,0,.12);border-radius:10px;padding:7px 5px;text-align:center}
+.msv{font-size:.86rem;font-weight:800}
+.msl{font-size:.55rem;color:var(--ink3);font-weight:600;margin-top:1px}
+#zone{display:flex;flex-direction:column;align-items:center;gap:12px;padding:4px 0 10px;width:100%}
+#costbox{display:flex;flex-direction:column;align-items:center;gap:2px}
+#clbl{font-size:.62rem;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.04em}
+#cval{font-size:.98rem;font-weight:800}
+#cval.red{color:var(--red)}
+#cerr{font-size:.64rem;color:var(--red);font-weight:700;min-height:13px;text-align:center}
+#multbadge{align-self:stretch;border-radius:10px;padding:5px 12px;margin-bottom:7px;
+  text-align:center;font-size:.7rem;font-weight:700;display:none;
+  border:1.5px solid var(--acc2);background:rgba(255,100,0,.07)}
+#multbadge.show{display:block}
+/* ICE EVENT THEME */
+body.evt-ice{--bg0:#000A1A;--bg1:#001530;--bg2:#002040;--acc:#44AAFF;--acc2:#88CCFF;--evt-accent:#44AAFF}
+body.evt-ice #fire-badge{background:linear-gradient(90deg,#44AAFF,#88EEFF,#FFFFFF);color:#000}
+body.evt-inferno-evt{--bg0:#1A0000;--bg1:#300000;--bg2:#420000;--acc:#FF0000;--acc2:#FF4400}
+body.evt-volcano-evt{--bg0:#1A0500;--bg1:#2A0800;--bg2:#380B00;--acc:#FF6600;--acc2:#FFAA00}
+body.evt-golden{--bg0:#0A0800;--bg1:#181200;--bg2:#221800;--acc:#FFD700;--acc2:#FFEE44}
+
+/* EVENT BANNER */
+#evtbanner{flex-shrink:0;max-height:0;overflow:hidden;transition:max-height .4s;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  font-size:.74rem;font-weight:700;padding:0 16px}
+#evtbanner.show{max-height:32px;padding:6px 16px}
+
+/* LUCKY SCREEN */
+.luck-bar{background:rgba(255,255,255,.08);border-radius:50px;height:8px;margin:6px 0 10px;overflow:hidden}
+.luck-fill{height:100%;background:linear-gradient(90deg,#FF4400,#FF8800,#FFCC00);border-radius:50px;transition:width .5s}
+.luck-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:3px;margin-top:7px}
+.luck-node{border-radius:6px;padding:4px 2px;text-align:center;
+  font-size:.56rem;font-weight:700;border:1px solid rgba(255,80,0,.1);
+  background:rgba(255,80,0,.04);color:var(--ink3)}
+.luck-node.on{background:rgba(255,136,0,.18);border-color:rgba(255,136,0,.4);color:#FF8800}
+.luck-node.cur{background:rgba(255,204,0,.22);border-color:rgba(255,204,0,.5);color:#FFCC00;
+  box-shadow:0 0 6px rgba(255,204,0,.3)}
+
+/* DIAMOND SHOP */
+.diam-pack{background:rgba(100,200,255,.06);border:1.5px solid rgba(100,200,255,.2);
+  border-radius:14px;padding:14px;margin-bottom:8px;display:flex;align-items:center;gap:10px;
+  transition:all .18s}
+.diam-pack:active{transform:scale(.97)}
+.diam-pack.featured{border-color:rgba(255,215,0,.5);background:rgba(255,215,0,.07);
+  box-shadow:0 0 16px rgba(255,215,0,.15)}
+.diam-badge{font-size:.54rem;font-weight:700;padding:2px 7px;border-radius:50px;
+  background:rgba(255,215,0,.15);color:#FFD700;border:1px solid rgba(255,215,0,.35)}
+
+@supports(padding:max(0px)){#app{padding-bottom:env(safe-area-inset-bottom)}}
+</style>
+</head>
+<body>
+<div id="rot"><div style="font-size:2.4rem">📱</div><div>Gire para <strong>modo retrato</strong></div></div>
+<canvas id="starfield"></canvas>
+<canvas id="pc"></canvas>
+
+<div id="jackpot"><div id="jtext">🔥 JACKPOT!</div></div>
+
+<!-- REWARD -->
+<div id="rew" onclick="closeRew()">
+  <div id="rewcard" onclick="event.stopPropagation()">
+    <div id="rwstrip"></div>
+    <span id="rwico">🔥</span>
+    <div id="rwrar">EMBER</div>
+    <div id="rwnm">Item</div>
+    <div id="rwmps">+0/s</div>
+    <div id="rwgain">+0 🪙</div>
+    <div id="rwnew">🆕 NOVO item descoberto!</div>
+    <button id="rwok" onclick="closeRew()">Incrível! 🔥</button>
+  </div>
+</div>
+
+<div id="tst"></div>
+
+<div id="app">
+  <div id="fire-badge">🔥 FIRE VERSION</div>
+  <div id="evtbanner"></div>
+
+  <div id="hdr">
+    <div style="display:flex;align-items:center;gap:5px">
+      <div class="logo">🔥 Fire Block</div>
+      <div class="hdr-btns">
+        <a href="index.html" style="text-decoration:none">
+          <button class="hdr-ico-btn" title="Versão Normal">🌌</button>
+        </a>
+        <button class="hdr-ico-btn" id="music-btn" onclick="toggleMusic()">🎵</button>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:4px">
+      <div class="pill pill-ember">🔥<span id="luck-disp">1x</span></div>
+      <div class="pill" style="background:rgba(100,200,255,.1);border:1.5px solid rgba(100,200,255,.3);color:#88CCFF">💎<span id="diamonds-disp">0</span></div>
+      <div class="pill pill-gold">🪙<span id="money">0</span></div>
+    </div>
+  </div>
+
+  <div id="tabs">
+    <button class="tab on" id="t-play"    onclick="go('play')">🔥 Jogar</button>
+    <button class="tab"    id="t-inv"     onclick="go('inv')">🎒 Itens</button>
+    <button class="tab"    id="t-sell"    onclick="go('sell')">💰 Vender</button>
+    <button class="tab"    id="t-roulette"onclick="go('roulette')">🎰 Roleta</button>
+    <button class="tab"    id="t-arena"   onclick="go('arena')">⚔️ Arena</button>
+    <button class="tab"    id="t-lucky"   onclick="go('lucky')">🍀 Lucky</button>
+    <button class="tab"    id="t-diamonds"onclick="go('diamonds')">💎 Diamantes</button>
+    <button class="tab"    id="t-shop"    onclick="go('shop')">🛒 Loja</button>
+    <button class="tab"    id="t-coll"    onclick="go('coll')">📖 Coleção</button>
+    <button class="tab"    id="t-stats"   onclick="go('stats')">📊 Stats</button>
+  </div>
+
+  <div id="scr">
+    <!-- PLAY -->
+    <div class="sc on" id="play">
+      <div id="mpsbar">
+        <span class="mps-l">🔥 Renda</span>
+        <div style="text-align:right"><div id="mpsv">0/s</div></div>
+      </div>
+      <div id="multbadge"></div>
+      <div id="zone">
+        <button id="blk" onclick="tap()" aria-label="Fire Block">
+          <svg viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="fbg" cx="50%" cy="40%" r="60%"><stop offset="0%" stop-color="#FF6600"/><stop offset="60%" stop-color="#CC2200"/><stop offset="100%" stop-color="#440000"/></radialGradient>
+              <radialGradient id="fbg2" cx="50%" cy="30%" r="55%"><stop offset="0%" stop-color="#FF9900"/><stop offset="100%" stop-color="#880000"/></radialGradient>
+              <linearGradient id="fborder" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#FF2200"/><stop offset="50%" stop-color="#FF8800"/><stop offset="100%" stop-color="#FFCC00"/></linearGradient>
+            </defs>
+            <ellipse cx="80" cy="154" rx="48" ry="6" fill="rgba(0,0,0,.35)"/>
+            <rect x="10" y="10" width="140" height="140" rx="26" fill="url(#fbg)"/>
+            <rect x="14" y="14" width="132" height="132" rx="22" fill="url(#fbg2)" opacity=".7"/>
+            <rect x="10" y="10" width="140" height="140" rx="26" fill="none" stroke="url(#fborder)" stroke-width="3.5"/>
+            <!-- Flames -->
+            <g opacity=".85">
+              <ellipse cx="80" cy="105" rx="22" ry="35" fill="#FF2200" opacity=".6"/>
+              <ellipse cx="80" cy="98" rx="15" ry="28" fill="#FF6600" opacity=".8"/>
+              <ellipse cx="80" cy="92" rx="9" ry="20" fill="#FFCC00" opacity=".9"/>
+              <ellipse cx="68" cy="108" rx="13" ry="24" fill="#FF3300" opacity=".5"/>
+              <ellipse cx="92" cy="110" rx="12" ry="22" fill="#FF4400" opacity=".5"/>
+              <ellipse cx="80" cy="86" rx="5" ry="14" fill="#FFFFFF" opacity=".6"/>
+            </g>
+            <!-- ? mark -->
+            <text x="80" y="70" text-anchor="middle" font-family="system-ui" font-weight="900" font-size="52" fill="rgba(255,255,255,.15)">?</text>
+            <text x="80" y="68" text-anchor="middle" font-family="system-ui" font-weight="900" font-size="52" fill="#FFCC00" opacity=".9">?</text>
+            <!-- Sparks -->
+            <g opacity=".7">
+              <circle cx="55" cy="45" r="2" fill="#FFAA00"/><circle cx="108" cy="38" r="1.5" fill="#FF8800"/>
+              <circle cx="44" cy="80" r="1.5" fill="#FF6600"/><circle cx="118" cy="75" r="2" fill="#FFCC00"/>
+              <circle cx="80" cy="30" r="1.5" fill="#FF8800"/>
+            </g>
+            <g id="fcg" opacity="0">
+              <path d="M80 10 L65 80 L45 148" stroke="rgba(255,150,0,.5)" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+              <path d="M80 10 L95 80 L115 148" stroke="rgba(255,100,0,.4)" stroke-width="2" stroke-linecap="round" fill="none"/>
+            </g>
+          </svg>
+        </button>
+        <div id="dots"><div class="d" id="d0"></div><div class="d" id="d1"></div><div class="d" id="d2"></div><div class="d" id="d3"></div><div class="d" id="d4"></div></div>
+        <div id="costbox">
+          <div id="clbl">Custo para abrir</div>
+          <div id="cval">0 🪙</div>
+          <div id="cerr"></div>
+        </div>
+      </div>
+      <div id="ministat">
+        <div class="msb"><div class="msv" id="ms-bl" style="color:var(--acc2)">0</div><div class="msl">Blocos</div></div>
+        <div class="msb"><div class="msv" id="ms-it" style="color:#FF8866">0</div><div class="msl">Itens</div></div>
+        <div class="msb"><div class="msv" id="ms-to" style="color:var(--green)">0</div><div class="msl">Total 🪙</div></div>
+      </div>
+    </div>
+
+    <!-- INVENTORY -->
+    <div class="sc" id="inv">
+      <div class="slbl">🔥 Equipados <span class="slbl-badge" id="eqlbl">0/3</span></div>
+      <div class="eqgrid">
+        <div class="eqs" id="sl0"><span class="sn">1</span><span class="evoid">Vazio</span></div>
+        <div class="eqs" id="sl1"><span class="sn">2</span><span class="evoid">Vazio</span></div>
+        <div class="eqs" id="sl2"><span class="sn">3</span><span class="evoid">Vazio</span></div>
+      </div>
+      <div class="divider"></div>
+      <div class="slbl">🎒 Mochila <span class="slbl-badge" id="baglbl">0</span></div>
+      <div id="baglist"></div>
+    </div>
+
+    <!-- SELL -->
+    <div class="sc" id="sell">
+      <div class="note" style="margin-bottom:9px">🔥 Venda itens de fogo por moedas!</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px">
+        <span style="font-size:.7rem;color:var(--ink3);font-weight:600">Total a receber:</span>
+        <span id="sell-preview" style="font-size:.9rem;font-weight:800;color:var(--gold)">0 🪙</span>
+      </div>
+      <button class="btn btn-gold" style="width:100%;padding:10px;font-size:.8rem;margin-bottom:9px" onclick="sellAll()">💰 Vender Selecionados</button>
+      <div id="selllist"></div>
+    </div>
+
+    <!-- ROULETTE -->
+    <div class="sc" id="roulette">
+      <div style="text-align:center;margin-bottom:12px">
+        <div style="font-size:1rem;font-weight:800;color:var(--acc2)">🎰 Roleta de Fogo</div>
+        <div style="font-size:.65rem;color:var(--ink3);margin-top:2px">Gire e tente a sorte! Prêmios de fogo te esperam!</div>
+      </div>
+      <div class="roulette-wrap">
+        <canvas id="roulette-canvas" width="260" height="260"></canvas>
+        <div id="roulette-result"></div>
+        <div style="display:flex;align-items:center;gap:10px;width:100%;justify-content:center">
+          <div style="font-size:.7rem;color:var(--ink3)">Custo: <strong style="color:var(--acc2)" id="spin-cost">1.000 🪙</strong></div>
+          <button id="roulette-spin" onclick="spinRoulette()">🔥 GIRAR!</button>
+        </div>
+        <div class="note" style="width:100%;text-align:left">
+          <strong>Prêmios possíveis:</strong><br>
+          🪙 Moedas (500 ~ 50.000) · 🔥 Pet de Fogo · 💎 +1 Ember<br>
+          🌋 Pet Raro · 💀 NADA (azar!) · ⚡ Jackpot (x10 moedas!)
+        </div>
+      </div>
+    </div>
+
+    <!-- ARENA -->
+    <div class="sc" id="arena"><div id="arena-screen"></div></div>
+
+    <!-- LUCKY -->
+    <div class="sc" id="lucky"><div id="lucky-screen"></div></div>
+
+    <!-- DIAMONDS -->
+    <div class="sc" id="diamonds"><div id="diamonds-screen"></div></div>
+
+    <!-- SHOP -->
+    <div class="sc" id="shop">
+      <div class="note" style="margin-bottom:9px">🔥 Loja de Fogo — gaste moedas em itens especiais!</div>
+      <div id="shoplist"></div>
+    </div>
+
+    <!-- COLLECTION -->
+    <div class="sc" id="coll"><div id="coll-screen"></div></div>
+
+    <!-- STATS -->
+    <div class="sc" id="stats">
+      <div class="slbl">📊 Estatísticas</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px">
+        <div class="msb"><div class="msv" id="st-bl" style="color:var(--acc2)">0</div><div class="msl">Blocos abertos</div></div>
+        <div class="msb"><div class="msv" id="st-to" style="color:var(--green)">0</div><div class="msl">Total ganho</div></div>
+        <div class="msb"><div class="msv" id="st-it" style="color:#FF8866">0</div><div class="msl">Itens</div></div>
+        <div class="msb"><div class="msv" id="st-mp" style="color:var(--green)">0</div><div class="msl">Moedas/s</div></div>
+        <div class="msb"><div class="msv" id="st-sp" style="color:#FF4444">0</div><div class="msl">Spins Roleta</div></div>
+        <div class="msb"><div class="msv" id="st-ar" style="color:var(--acc2)">0</div><div class="msl">Arenas jogadas</div></div>
+      </div>
+      <div class="note">
+        <strong>💾 Save</strong> automático a cada 10s.<br><br>
+        <button class="btn btn-fire" style="margin-right:8px;padding:6px 12px;font-size:.7rem" onclick="doReset()">🗑 Apagar</button>
+        <a href="index.html" style="text-decoration:none">
+          <button class="btn btn-dark" style="padding:6px 12px;font-size:.7rem">🌌 Ir pro Normal</button>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══ FIRE ITEMS ═══
+const RARITIES=[
+  {id:'ember',  label:'EMBER',   color:'#FF9966',order:0},
+  {id:'flame',  label:'CHAMA',   color:'#FF5500',order:1},
+  {id:'blaze',  label:'BLAZE',   color:'#FF2200',order:2},
+  {id:'inferno',label:'INFERNO', color:'#CC0000',order:3},
+  {id:'phoenix',label:'FÊNIX',   color:'#FF8800',order:4},
+  {id:'volcano',label:'VULCÃO',  color:'#FF4400',order:5},
+  {id:'magma',  label:'MAGMA',   color:'#FF6600',order:6},
+  {id:'solar',  label:'SOLAR',   color:'#FFCC00',order:7},
+  {id:'nova',   label:'NOVA',    color:'#FF0044',order:8},
+  {id:'godfire',label:'DEUS DO FOGO',color:'#FFFFFF',order:9},
+];
+const RC={};RARITIES.forEach(r=>RC[r.id]=r.color);
+const RL={};RARITIES.forEach(r=>RL[r.id]=r.label);
+const RO={};RARITIES.forEach(r=>RO[r.id]=r.order);
+
+const ITEMS=[
+  // EMBER (common)
+  {id:'torch',    name:'Tocha Simples',     icon:'🔦',rar:'ember',  mps:2,   sell:12,  isPet:false},
+  {id:'match',    name:'Fósforo Mágico',    icon:'🪄',rar:'ember',  mps:1,   sell:8,   isPet:false},
+  {id:'candle',   name:'Vela Estelar',      icon:'🕯️',rar:'ember',  mps:2,   sell:10,  isPet:false},
+  {id:'campfire', name:'Fogueira',          icon:'🏕️',rar:'ember',  mps:3,   sell:18,  isPet:false},
+  {id:'firebug',  name:'Vagalume de Fogo',  icon:'🐛',rar:'ember',  mps:2,   sell:12,  isPet:true},
+  {id:'firerat',  name:'Rato de Chamas',    icon:'🐀',rar:'ember',  mps:1,   sell:9,   isPet:true},
+  {id:'firefly',  name:'Mosca-Fogo',        icon:'🦟',rar:'ember',  mps:2,   sell:10,  isPet:true},
+  {id:'salamander',name:'Salamandra',       icon:'🦎',rar:'ember',  mps:3,   sell:15,  isPet:true},
+  // FLAME (uncommon)
+  {id:'flamepup', name:'Filhote Chama',     icon:'🐶',rar:'flame',  mps:8,   sell:80,  isPet:true},
+  {id:'firecat',  name:'Gato de Fogo',      icon:'🐱',rar:'flame',  mps:10,  sell:95,  isPet:true},
+  {id:'firefox',  name:'Raposa Flamejante', icon:'🦊',rar:'flame',  mps:12,  sell:115, isPet:true},
+  {id:'magmabird',name:'Pássaro Magma',     icon:'🦜',rar:'flame',  mps:9,   sell:90,  isPet:true},
+  {id:'infblade', name:'Lâmina Flamejante', icon:'🗡️',rar:'flame',  mps:11,  sell:110, isPet:false},
+  {id:'lava_gem', name:'Gema de Lava',      icon:'🔴',rar:'flame',  mps:7,   sell:70,  isPet:false},
+  // BLAZE (rare)
+  {id:'firewolf', name:'Lobo de Fogo',      icon:'🐺',rar:'blaze',  mps:25,  sell:500, isPet:true},
+  {id:'firetiger',name:'Tigre Chamas',      icon:'🐯',rar:'blaze',  mps:30,  sell:600, isPet:true},
+  {id:'firesnake',name:'Cobra de Lava',     icon:'🐍',rar:'blaze',  mps:22,  sell:440, isPet:true},
+  {id:'molten',   name:'Rocha Fundida',     icon:'🪨',rar:'blaze',  mps:18,  sell:360, isPet:false},
+  {id:'blazecrw', name:'Coroa de Brasa',    icon:'👑',rar:'blaze',  mps:35,  sell:700, isPet:false},
+  // INFERNO (epic)
+  {id:'hellhound',name:'Cão do Inferno',    icon:'🐕',rar:'inferno',mps:80,  sell:4000,isPet:true},
+  {id:'infdragon',name:'Dragão Infernal',   icon:'🐉',rar:'inferno',mps:100, sell:5000,isPet:true},
+  {id:'lavagiant',name:'Gigante de Lava',   icon:'🗿',rar:'inferno',mps:90,  sell:4500,isPet:false},
+  {id:'pyromancer',name:'Piromante',        icon:'🧙',rar:'inferno',mps:75,  sell:3750,isPet:false},
+  // PHOENIX (epic+)
+  {id:'miniphoenix',name:'Fênix Jovem',     icon:'🦅',rar:'phoenix',mps:150, sell:7500,isPet:true},
+  {id:'fireangel', name:'Anjo do Fogo',     icon:'👼',rar:'phoenix',mps:130, sell:6500,isPet:true},
+  {id:'suncrest',  name:'Crista Solar',     icon:'☀️',rar:'phoenix',mps:160, sell:8000,isPet:false},
+  // VOLCANO (supreme)
+  {id:'volcano_pet',name:'Vulcão Vivo',     icon:'🌋',rar:'volcano',mps:500, sell:25000,isPet:true},
+  {id:'lava_titan',name:'Titã de Lava',     icon:'🗿',rar:'volcano',mps:450, sell:22500,isPet:false},
+  {id:'fireking',  name:'Rei do Fogo',      icon:'🤴',rar:'volcano',mps:600, sell:30000,isPet:true},
+  // MAGMA (craft: 50 Volcano)
+  {id:'magmacore', name:'Núcleo de Magma',  icon:'🔮',rar:'magma',  mps:5000000000,sell:5000000,isPet:false},
+  {id:'magmadrake',name:'Drake de Magma',   icon:'🐲',rar:'magma',  mps:5000000000,sell:5000000,isPet:true},
+  // SOLAR (craft: 3 Magma)
+  {id:'solar_god', name:'Deus Solar',       icon:'🌞',rar:'solar',  mps:30000000000,sell:30000000,isPet:false},
+  {id:'sundragon', name:'Dragão do Sol',    icon:'🌠',rar:'solar',  mps:30000000000,sell:30000000,isPet:true},
+  // NOVA (craft: 5 Solar)
+  {id:'nova_flame',name:'Chama Nova',       icon:'💫',rar:'nova',   mps:200000000000,sell:200000000,isPet:false},
+  // GOD FIRE (0.001% / Lucky 500+)
+  {id:'godfire_pet',name:'DEUS DO FOGO',    icon:'⚡',rar:'godfire',mps:Infinity,sell:Infinity,isPet:true},
+];
+const IM={};ITEMS.forEach(x=>IM[x.id]=x);
+const CRAFT_ONLY=['magma','solar','nova'];
+
+// ═══ STATE ═══
+let G={
+  money:0,mps:0,earned:0,blocks:0,items:0,cost:0,clicks:0,
+  inv:[],eq:[null,null,null],maxSlots:3,
+  boostEnd:0,sellQty:{},luckyLevel:1,collected:{},
+  diamonds:0,diamNextAt:0,
+  spins:0,arenas:0,
+};
+const SK='fireversion1';
+function save(){try{localStorage.setItem(SK,JSON.stringify(G));}catch(e){}}
+function load(){
+  try{
+    const d=JSON.parse(localStorage.getItem(SK)||'null');if(!d)return;
+    Object.assign(G,d);G.clicks=0;
+    if(!G.sellQty)G.sellQty={};if(!G.maxSlots)G.maxSlots=3;
+    if(!G.luckyLevel||G.luckyLevel<1)G.luckyLevel=1;
+    if(!G.collected)G.collected={};
+    if(!G.diamonds)G.diamonds=0;
+    if(!G.diamNextAt||G.diamNextAt<Date.now())G.diamNextAt=Date.now()+300000;
+    while(G.eq.length<3)G.eq.push(null);
+    calcMps();toast('🔥 Jogo de fogo carregado!');
+  }catch(e){}
+}
+setInterval(save,10000);
+function doReset(){if(confirm('Apagar TODO o progresso?')){localStorage.removeItem(SK);location.reload();}}
+function calcMps(){
+  G.mps=0;for(let i=0;i<G.maxSlots;i++){
+    const id=G.eq[i];if(id&&IM[id]){
+      if(IM[id].mps===Infinity)G.mps=Infinity;
+      else if(G.mps!==Infinity)G.mps+=IM[id].mps;
+    }
+  }
+}
+
+// ═══ DROP SYSTEM ═══
+function getChances(){
+  const lv=G.luckyLevel;
+  let w={ember:60,flame:25,blaze:10,inferno:4,phoenix:0.9,volcano:0.09,magma:0,solar:0,nova:0,godfire:0};
+  if(lv>=10){const t=Math.min((lv-10)/40,1);w.ember=Math.max(5,60-t*50);w.flame=Math.min(45,25+t*20);w.blaze=Math.min(30,10+t*15);w.inferno=Math.min(15,4+t*8);w.phoenix=Math.min(5,0.9+t*3);}
+  if(lv>=50){const t=Math.min((lv-50)/50,1);w.ember=0;w.flame=0;w.blaze=Math.max(5,30-t*20);w.inferno=Math.min(35,15+t*20);w.phoenix=Math.min(20,5+t*15);w.volcano=Math.min(5,0.09+t*4);}
+  if(lv>=100){w.ember=0;w.flame=0;w.blaze=0;w.inferno=20;w.phoenix=35;w.volcano=15;w.magma=0;w.godfire=0;}
+  if(lv>=500){w.volcano=20;w.magma=0.5;w.godfire=0.001;}
+  if(lv>=1000){w.magma=3;w.solar=0.5;w.godfire=0.01;}
+  return w;
+}
+function pickItem(){
+  const w=getChances(),tot=Object.values(w).reduce((a,b)=>a+b,0);
+  let r=Math.random()*tot,rar='ember';
+  for(const[k,v]of Object.entries(w)){r-=v;if(r<=0){rar=k;break;}}
+  if(rar==='godfire')return IM['godfire_pet'];
+  const pool=ITEMS.filter(x=>x.rar===rar&&!CRAFT_ONLY.includes(x.rar));
+  if(!pool.length)return ITEMS[0];
+  return pool[Math.floor(Math.random()*pool.length)];
+}
+
+// ═══ CLICK ═══
+let busy=false;
+function tap(){
+  if(busy)return;ensAC();
+  const cost=G.cost,last=(G.clicks===4);
+  if(last&&G.money<cost){
+    beep('no');shakeBlk();
+    document.getElementById('cerr').textContent='Faltam '+ff(cost-G.money)+' 🪙';
+    setTimeout(()=>{document.getElementById('cerr').textContent='';},1700);return;
+  }
+  G.clicks++;renderDots();
+  document.getElementById('fcg').setAttribute('opacity',(G.clicks/5)*.9);
+  const b=document.getElementById('blk');b.classList.remove('shake');void b.offsetWidth;b.classList.add('shake');
+  beep('tick');
+  if(G.clicks>=5){
+    busy=true;G.money-=cost;G.cost=cost+5;G.blocks++;G.clicks=0;
+    setTimeout(()=>{
+      b.classList.remove('shake');b.classList.add('pop');
+      document.getElementById('fcg').setAttribute('opacity','0');
+      const item=pickItemFire();
+      const jack=(item.rar==='phoenix'&&Math.random()<.12)||(item.rar==='volcano'&&Math.random()<.25)||(item.rar==='godfire');
+      const rect=b.getBoundingClientRect();
+      const cx=rect.left+rect.width/2,cy=rect.top+rect.height/2;
+      spawn(cx,cy,item.rar);
+      const gain=item.mps===Infinity?0:Math.round((1+RO[item.rar]*2)*(jack?3:1));
+      if(gain)G.money+=gain,G.earned+=gain;
+      G.items++;addInv(item.id);
+      beep(item.rar);
+      if(jack){
+        const jk=document.getElementById('jackpot');
+        document.getElementById('jtext').textContent=item.rar==='godfire'?'⚡ DEUS DO FOGO!\nINFINITO! ⚡':'🔥 JACKPOT!\n'+RL[item.rar];
+        jk.classList.add('show');setTimeout(()=>jk.classList.remove('show'),2200);
+        spawn(cx,cy,item.rar);
+      }
+      showRew(item,gain,jack);
+      if(gain)floatT('+'+ff(gain),cx,cy-50);
+      refresh();save();
+      setTimeout(()=>{b.classList.remove('pop');busy=false;renderDots();},420);
+    },180);
+  }else refresh();
+}
+function shakeBlk(){const b=document.getElementById('blk');b.classList.remove('shake');void b.offsetWidth;b.classList.add('shake');setTimeout(()=>b.classList.remove('shake'),280);}
+function renderDots(){for(let i=0;i<5;i++)document.getElementById('d'+i).classList.toggle('on',i<G.clicks);}
+
+// ═══ INVENTORY ═══
+function addInv(id){const e=G.inv.find(x=>x.id===id);if(e)e.c++;else G.inv.push({id,c:1});if(!G.collected[id])G.collected[id]=true;}
+function removeInv(id,n=1){const e=G.inv.find(x=>x.id===id);if(e){e.c=Math.max(0,e.c-n);if(e.c===0)G.inv=G.inv.filter(x=>x.id!==id);}}
+function eqC(id){return G.eq.filter(x=>x===id).length;}
+function avail(id){const e=G.inv.find(x=>x.id===id);return(e?e.c:0)-eqC(id);}
+function doEquip(id){
+  let sl=-1;for(let i=0;i<G.maxSlots;i++){if(G.eq[i]===null){sl=i;break;}}
+  if(sl===-1){beep('no');toast('❌ Slots cheios!');return;}
+  if(avail(id)<=0){beep('no');toast('❌ Sem cópias!');return;}
+  G.eq[sl]=id;calcMps();beep('flame');toast('🔥 '+IM[id].name+' equipado!');refresh();renderInv();save();
+}
+function doUnequip(i){const id=G.eq[i];if(!id)return;G.eq[i]=null;calcMps();toast('🔓 '+IM[id].name+' desequipado');refresh();renderInv();save();}
+function renderInv(){
+  for(let i=0;i<3;i++){
+    const el=document.getElementById('sl'+i);if(!el)continue;
+    const id=G.eq[i];el.className='eqs'+(id?' filled':'');
+    if(id&&IM[id]){
+      const it=IM[id];
+      el.innerHTML='<span class="sn">'+(i+1)+'</span><span class="si">'+it.icon+'</span>'
+        +'<span class="sname" style="color:'+RC[it.rar]+'">'+it.name+'</span>'
+        +'<span class="smps">+'+(it.mps===Infinity?'∞':ff(it.mps))+'/s</span>'
+        +'<span class="rmx" onclick="doUnequip('+i+')">✕</span>';
+    }else el.innerHTML='<span class="sn">'+(i+1)+'</span><span class="evoid">Vazio</span>';
+  }
+  const used=G.eq.filter(x=>x!==null).length;
+  document.getElementById('eqlbl').textContent=used+'/'+G.maxSlots;
+  const bag=document.getElementById('baglist');
+  const sorted=[...G.inv].sort((a,b)=>(RO[IM[b.id]?.rar]||0)-(RO[IM[a.id]?.rar]||0));
+  document.getElementById('baglbl').textContent=G.inv.reduce((s,x)=>s+x.c,0)+' itens';
+  if(!sorted.length){bag.innerHTML='<div style="text-align:center;padding:18px 0;color:var(--ink3);font-size:.76rem">Abra Fire Blocks para ganhar itens!</div>';return;}
+  bag.innerHTML='';
+  sorted.forEach(({id,c})=>{
+    const it=IM[id];if(!it)return;
+    const av=avail(id),can=av>0&&G.eq.some(x=>x===null);
+    const div=document.createElement('div');div.className='ii '+it.rar;
+    div.innerHTML='<span class="ico">'+it.icon+'</span>'
+      +'<div class="inf"><div class="nm" style="color:'+RC[it.rar]+'">'+it.name+'</div>'
+      +'<div class="sub"><span class="g">+'+(it.mps===Infinity?'∞':ff(it.mps))+'/s</span> · <span class="pr">'+ff(it.sell)+'🪙</span>'+(it.isPet?' · 🔥':'')+'</div></div>'
+      +'<div class="rgt"><span style="font-size:.65rem;font-weight:700;color:var(--ink2)">×'+c+'</span>'
+      +'<button class="btn btn-fire" style="font-size:.56rem;padding:3px 6px" onclick="doEquip(\''+id+'\')" '+(can?'':'disabled')+'>'+(can?'Eq.':'—')+'</button></div>';
+    bag.appendChild(div);
+  });
+}
+
+// ═══ SELL ═══
+function renderSell(){
+  if(!G.sellQty)G.sellQty={};
+  const list=document.getElementById('selllist');
+  const sorted=[...G.inv].sort((a,b)=>(RO[IM[b.id]?.rar]||0)-(RO[IM[a.id]?.rar]||0));
+  list.innerHTML='';let tot=0;
+  sorted.forEach(({id})=>{
+    const it=IM[id];if(!it)return;
+    const av=avail(id);if(av<=0)return;
+    if(!G.sellQty[id])G.sellQty[id]=0;
+    G.sellQty[id]=Math.min(G.sellQty[id],av);
+    const qty=G.sellQty[id];
+    if(it.sell!==Infinity)tot+=qty*it.sell;
+    const div=document.createElement('div');div.className='sell-item';
+    div.innerHTML='<span style="font-size:1.32rem;flex-shrink:0;width:23px;text-align:center">'+it.icon+'</span>'
+      +'<div style="flex:1;min-width:0"><div style="font-size:.7rem;font-weight:700;color:'+RC[it.rar]+'">'+it.name+'</div>'
+      +'<div style="font-size:.58rem;color:var(--gold);font-weight:700">'+ff(it.sell)+'🪙 · '+av+' disp.</div></div>'
+      +'<div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0">'
+      +'<div style="display:flex;align-items:center;gap:4px">'
+      +'<div class="qty-btn" onclick="adjSell(\''+id+'\',-1)">−</div>'
+      +'<div style="font-size:.78rem;font-weight:800;min-width:16px;text-align:center" id="sqv-'+id+'">'+qty+'</div>'
+      +'<div class="qty-btn" onclick="adjSell(\''+id+'\',1)">+</div></div>'
+      +'<button class="btn btn-gold" style="font-size:.56rem;padding:3px 6px" onclick="sellOne(\''+id+'\')">Tudo</button></div>';
+    list.appendChild(div);
+  });
+  if(!list.children.length)list.innerHTML='<div style="text-align:center;padding:18px;color:var(--ink3)">Nenhum item.</div>';
+  document.getElementById('sell-preview').textContent=ff(tot)+' 🪙';
+}
+function adjSell(id,d){
+  if(!G.sellQty)G.sellQty={};
+  const av=avail(id);G.sellQty[id]=Math.max(0,Math.min(av,(G.sellQty[id]||0)+d));
+  const qe=document.getElementById('sqv-'+id);if(qe)qe.textContent=G.sellQty[id];
+  let t=0;Object.entries(G.sellQty).forEach(([k,v])=>{if(IM[k]&&IM[k].sell!==Infinity)t+=v*IM[k].sell;});
+  document.getElementById('sell-preview').textContent=ff(t)+' 🪙';
+}
+function sellOne(id){
+  const av=avail(id);if(av<=0)return;
+  const it=IM[id];const gain=it.sell===Infinity?1e12:av*it.sell;
+  removeInv(id,av);G.money+=gain;G.earned+=gain;
+  beep('sell');toast('🔥 Vendeu '+av+'× '+it.name+'!');
+  if(G.sellQty)G.sellQty[id]=0;refresh();renderSell();save();
+}
+function sellAll(){
+  if(!G.sellQty)return;let tot=0,cnt=0;
+  Object.entries(G.sellQty).forEach(([id,qty])=>{
+    if(!qty||!IM[id])return;
+    const av=avail(id),q=Math.min(qty,av);if(!q)return;
+    const it=IM[id];const gain=it.sell===Infinity?1e12:q*it.sell;
+    removeInv(id,q);G.money+=gain;G.earned+=gain;tot+=gain;cnt+=q;G.sellQty[id]=0;
+  });
+  if(!cnt){toast('⚠️ Selecione itens!');return;}
+  beep('sell');toast('🔥 Vendeu '+cnt+' itens por '+ff(tot)+'🪙!');
+  floatT('+'+ff(tot),innerWidth/2,innerHeight/2);refresh();renderSell();save();
+}
+
+// ═══ EVENTS (ICE + FIRE VARIANTS) ═══
+const FIRE_EVENTS=[
+  {id:'blizzard',name:'Blizzard Glacial',icon:'❄️',
+   desc:'Gelo invade o Fire Block! Itens de gelo raros e Lucky congelado.',
+   effects:['Gelo 3x','Itens de Gelo','Lucky +50%'],theme:'evt-ice',
+   rarMod:{},moneyMult:1,luckyMult:1.5,isIce:true,duration:120000},
+  {id:'inferno_evt',name:'Grande Inferno',icon:'🔥',
+   desc:'O inferno explodiu! Itens Inferno e Phoenix muito mais frequentes.',
+   effects:['Inferno 3x','Phoenix 2x','Moedas 1.5x'],theme:'evt-inferno-evt',
+   rarMod:{inferno:3,phoenix:2},moneyMult:1.5,luckyMult:1,isIce:false,duration:120000},
+  {id:'volcano_evt',name:'Erupção Vulcânica',icon:'🌋',
+   desc:'O vulcão entrou em erupção! Itens de Vulcão muito mais frequentes!',
+   effects:['Vulcão 4x','Blaze 2x','Moedas 2x'],theme:'evt-volcano-evt',
+   rarMod:{volcano:4,blaze:2},moneyMult:2,luckyMult:1,isIce:false,duration:120000},
+  {id:'golden',name:'Chuva Dourada',icon:'✨',
+   desc:'Ouro por toda parte! Moedas 3x e Lucky dobrado!',
+   effects:['Moedas 3x','Lucky 2x','Raros+'],theme:'evt-golden',
+   rarMod:{flame:1.5,blaze:1.5},moneyMult:3,luckyMult:2,isIce:false,duration:120000},
+];
+// Ice-only items (only during blizzard)
+const ICE_ITEMS=[
+  {id:'icicle',   name:'Gelo Sideral',      icon:'🧊',rar:'flame',  mps:15,  sell:150, isPet:false},
+  {id:'snowwolf', name:'Lobo de Neve',       icon:'🐺',rar:'blaze',  mps:40,  sell:800, isPet:true},
+  {id:'icephoenix',name:'Fênix de Gelo',    icon:'🦅',rar:'phoenix',mps:200, sell:10000,isPet:true},
+  {id:'frostdragon',name:'Dragão Glacial',  icon:'🐲',rar:'inferno',mps:120, sell:6000, isPet:true},
+  {id:'blizzardking',name:'Rei do Blizzard',icon:'👑',rar:'volcano',mps:800, sell:40000,isPet:true},
+];
+ICE_ITEMS.forEach(x=>{if(!IM[x.id]){ITEMS.push(x);IM[x.id]=x;}});
+
+let currentEvt=null,evtEnd=0,evtCooldown=Date.now()+30000;
+const EVT_INT=300000;
+
+function tickEvents(){
+  const now=Date.now();
+  if(currentEvt&&now>=evtEnd)endEvt();
+  if(!currentEvt&&now>=evtCooldown)startEvt();
+  updateEvtBanner();
+}
+function startEvt(){
+  currentEvt=FIRE_EVENTS[Math.floor(Math.random()*FIRE_EVENTS.length)];
+  evtEnd=Date.now()+(currentEvt.duration||120000);
+  evtCooldown=evtEnd+EVT_INT;
+  document.body.className=currentEvt.theme;
+  // Ice visual + sound effect
+  if(currentEvt.isIce){beep('ice');iceFlash();}
+  else beep('tierup');
+  // Jackpot banner
+  const jk=document.getElementById('jackpot');
+  document.getElementById('jtext').textContent=currentEvt.icon+' '+currentEvt.name+'!\n'+currentEvt.effects[0];
+  jk.classList.add('show');setTimeout(()=>jk.classList.remove('show'),2500);
+  toast(currentEvt.icon+' EVENTO: '+currentEvt.name+'!');
+  updateEvtBanner();
+}
+function endEvt(){
+  const n=currentEvt.name;
+  currentEvt=null;document.body.className='';
+  updateEvtBanner();toast('✅ Evento encerrado: '+n);
+}
+function updateEvtBanner(){
+  const b=document.getElementById('evtbanner');
+  if(!currentEvt){b.innerHTML='';b.classList.remove('show');return;}
+  const rem=Math.max(0,Math.ceil((evtEnd-Date.now())/1000));
+  const ts=Math.floor(rem/60)+':'+(rem%60<10?'0':'')+(rem%60);
+  const col=currentEvt.isIce?'rgba(68,170,255,.5)':'rgba(255,80,0,.5)';
+  b.style.background='linear-gradient(90deg,'+col+',transparent)';
+  b.innerHTML=currentEvt.icon+' <strong>'+currentEvt.name+'</strong> <span style="opacity:.7;font-size:.66rem;margin-left:4px">'+ts+'</span>';
+  b.classList.add('show');
+}
+function iceFlash(){
+  // Blue-white screen flash + ice crackle particles
+  document.body.style.transition='filter .15s';
+  document.body.style.filter='brightness(2) hue-rotate(180deg) saturate(3)';
+  setTimeout(()=>{document.body.style.filter='brightness(1.5) hue-rotate(160deg)';
+    setTimeout(()=>{document.body.style.filter='';document.body.style.transition='';},300);},200);
+  // Spawn ice particles
+  for(let i=0;i<5;i++)setTimeout(()=>spawnIce(),i*100);
+}
+function spawnIce(){
+  for(let i=0;i<20;i++){
+    const a=Math.random()*Math.PI*2,sp=Math.random()*8+2;
+    PP.push({x:innerWidth/2,y:innerHeight/2,
+      vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-Math.random()*3,
+      r:Math.random()*4+2,color:['#88EEFF','#AAFFFF','#FFFFFF','#44AAFF'][Math.floor(Math.random()*4)],
+      life:1,dec:.018,grav:.12});
+  }
+}
+
+// Pick item respects active event
+function pickItemFire(){
+  // Ice event: chance to drop ice items
+  if(currentEvt&&currentEvt.isIce&&Math.random()<0.4){
+    return ICE_ITEMS[Math.floor(Math.random()*ICE_ITEMS.length)];
+  }
+  const w=getChances();
+  // Apply event rarMod
+  if(currentEvt&&currentEvt.rarMod)
+    Object.entries(currentEvt.rarMod).forEach(([k,v])=>{if(w[k]!==undefined)w[k]*=v;});
+  const tot=Object.values(w).reduce((a,b)=>a+b,0);
+  let r=Math.random()*tot,rar='ember';
+  for(const[k,v]of Object.entries(w)){r-=v;if(r<=0){rar=k;break;}}
+  if(rar==='godfire')return IM['godfire_pet'];
+  const pool=ITEMS.filter(x=>x.rar===rar&&!CRAFT_ONLY.includes(x.rar)&&!ICE_ITEMS.some(i=>i.id===x.id));
+  if(!pool.length)return ITEMS[0];
+  return pool[Math.floor(Math.random()*pool.length)];
+}
+
+// ═══ DIAMONDS ═══
+function tickDiamonds(){
+  if(!G.diamNextAt)G.diamNextAt=Date.now()+300000;
+  if(Date.now()>=G.diamNextAt){
+    G.diamonds++;G.diamNextAt=Date.now()+300000;
+    beep('heal');toast('💎 +1 Diamante de Fogo!');
+    renderDiamUI();
+  }
+}
+function renderDiamUI(){
+  const d=document.getElementById('diamonds-disp');
+  if(d)d.textContent=G.diamonds;
+}
+
+const DIAM_PACKS=[
+  {id:'d1',name:'Faísca',     icon:'✨',gems:5,  price:10000,  bonus:''},
+  {id:'d2',name:'Chama',      icon:'🔥',gems:15, price:25000,  bonus:'',featured:false},
+  {id:'d3',name:'Inferno',    icon:'🌋',gems:50, price:75000,  bonus:'+10 bônus!',featured:true},
+  {id:'d4',name:'Vulcão',     icon:'🌋',gems:120,price:150000, bonus:'+30 bônus!',featured:false},
+  {id:'d5',name:'Solar',      icon:'☀️',gems:300,price:300000, bonus:'+100 bônus!',featured:false},
+];
+const DIAM_PRIZES=[
+  {id:'dp1',name:'Pet Aleatório',     icon:'🔥',cost:5,   type:'pet'},
+  {id:'dp2',name:'Pet Blaze',         icon:'💥',cost:15,  type:'blaze'},
+  {id:'dp3',name:'Pet Inferno',       icon:'🌋',cost:40,  type:'inferno'},
+  {id:'dp4',name:'Pet Phoenix',       icon:'🦅',cost:100, type:'phoenix'},
+  {id:'dp5',name:'Custo Reset',       icon:'🔄',cost:8,   type:'costreset'},
+  {id:'dp6',name:'Boost 2x (5min)',   icon:'⚡',cost:20,  type:'boost5'},
+  {id:'dp7',name:'Lucky +10',         icon:'🍀',cost:30,  type:'lucky10'},
+  {id:'dp8',name:'Pet de Gelo (Raro)',icon:'❄️',cost:50,  type:'ice'},
+];
+
+function renderDiamonds(){
+  const el=document.getElementById('diamonds-screen');if(!el)return;
+  const rem=Math.max(0,Math.ceil((G.diamNextAt-Date.now())/1000));
+  const ts=Math.floor(rem/60)+':'+(rem%60<10?'0':'')+(rem%60);
+  el.innerHTML='';
+  // Header
+  const hd=document.createElement('div');
+  hd.style.cssText='text-align:center;margin-bottom:14px';
+  hd.innerHTML='<div style="font-size:2rem">💎</div>'
+    +'<div style="font-size:1rem;font-weight:800;color:#88CCFF;margin-top:4px">'+G.diamonds+' Diamantes de Fogo</div>'
+    +'<div style="font-size:.65rem;color:var(--ink3);margin-top:2px">Próximo grátis em: <strong style="color:#88CCFF">'+ts+'</strong></div>';
+  el.appendChild(hd);
+  // Buy packs
+  const bl=document.createElement('div');bl.className='slbl';bl.innerHTML='💰 Comprar com Moedas';el.appendChild(bl);
+  DIAM_PACKS.forEach(pk=>{
+    const can=G.money>=pk.price;
+    const div=document.createElement('div');div.className='diam-pack'+(pk.featured?' featured':'');
+    div.innerHTML='<div style="font-size:1.8rem;flex-shrink:0">'+pk.icon+'</div>'
+      +'<div style="flex:1"><div style="font-size:.82rem;font-weight:800;color:#88CCFF">'+pk.name+'</div>'
+      +'<div style="font-size:.68rem;color:var(--gold);font-weight:700">💎 '+pk.gems+(pk.bonus?' <span style="color:#44FF88">'+pk.bonus+'</span>':'')+'</div>'
+      +(pk.featured?'<div class="diam-badge" style="margin-top:3px;display:inline-block">MELHOR VALOR</div>':'')+'</div>'
+      +'<div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0">'
+      +'<div style="font-size:.76rem;font-weight:800;color:var(--gold)">'+ff(pk.price)+' 🪙</div>'
+      +'<button class="btn '+(can?'btn-fire':'btn-dark')+'" onclick="buyDiamPack(\''+pk.id+'\')" '+(can?'':'disabled')+'>'+(can?'Comprar':'Sem 🪙')+'</button></div>';
+    el.appendChild(div);
+  });
+  // Spend diamonds
+  const sl=document.createElement('div');sl.className='slbl';sl.style.marginTop='14px';sl.innerHTML='🛒 Gastar Diamantes';el.appendChild(sl);
+  DIAM_PRIZES.forEach(dp=>{
+    const can=G.diamonds>=dp.cost;
+    const div=document.createElement('div');div.className='diam-pack';
+    div.innerHTML='<div style="font-size:1.65rem;flex-shrink:0">'+dp.icon+'</div>'
+      +'<div style="flex:1"><div style="font-size:.78rem;font-weight:800">'+dp.name+'</div></div>'
+      +'<div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0">'
+      +'<div style="font-size:.76rem;font-weight:800;color:#88CCFF">💎 '+dp.cost+'</div>'
+      +'<button class="btn '+(can?'btn-fire':'btn-dark')+'" onclick="buyDiamPrize(\''+dp.id+'\')" '+(can?'':'disabled')+'>'+(can?'Resgatar':'Sem 💎')+'</button></div>';
+    el.appendChild(div);
+  });
+}
+function buyDiamPack(id){
+  const pk=DIAM_PACKS.find(x=>x.id===id);if(!pk)return;
+  if(G.money<pk.price){beep('no');toast('❌ Sem moedas!');return;}
+  G.money-=pk.price;
+  const bonus=pk.featured?10:pk.gems>=120?30:pk.gems>=50?10:0;
+  G.diamonds+=pk.gems+bonus;
+  beep('tierup');spawn(innerWidth/2,innerHeight*.4,'solar');
+  toast('💎 +'+( pk.gems+bonus)+' Diamantes!');floatT('+'+pk.gems+'💎',innerWidth/2,innerHeight/2);
+  renderDiamonds();renderDiamUI();refresh();save();
+}
+function buyDiamPrize(id){
+  const dp=DIAM_PRIZES.find(x=>x.id===id);if(!dp)return;
+  if(G.diamonds<dp.cost){beep('no');toast('❌ Sem diamantes!');return;}
+  G.diamonds-=dp.cost;
+  if(dp.type==='pet'){const pool=ITEMS.filter(x=>!CRAFT_ONLY.includes(x.rar)&&!ICE_ITEMS.some(i=>i.id===x.id));const it=pool[Math.floor(Math.random()*pool.length)];addInv(it.id);G.items++;showRew(it,0,false);beep(it.rar);}
+  else if(['blaze','inferno','phoenix'].includes(dp.type)){const pool=ITEMS.filter(x=>x.rar===dp.type);const it=pool[Math.floor(Math.random()*pool.length)];addInv(it.id);G.items++;showRew(it,0,false);beep(it.rar);}
+  else if(dp.type==='costreset'){G.cost=0;toast('🔄 Custo zerado!');beep('tick');}
+  else if(dp.type==='boost5'){G.boostEnd=Date.now()+300000;toast('⚡ Boost 2x por 5 min!');beep('blaze');}
+  else if(dp.type==='lucky10'){G.luckyLevel=Math.min(1000,G.luckyLevel+10);toast('🍀 Lucky '+G.luckyLevel+'x!');beep('tierup');}
+  else if(dp.type==='ice'){const it=ICE_ITEMS[Math.floor(Math.random()*ICE_ITEMS.length)];addInv(it.id);G.items++;showRew(it,0,true);beep('ice');iceFlash();}
+  spawn(innerWidth/2,innerHeight*.4,'nova');floatT('-'+dp.cost+'💎',innerWidth/2,innerHeight*.6);
+  renderDiamonds();renderDiamUI();refresh();save();
+}
+
+// ═══ LUCKY FIRE SCREEN ═══
+function luckyCost(lv){return lv*500000;}
+function upgradeLucky(){
+  if(G.luckyLevel>=1000){toast('🔥 Lucky já no MÁXIMO!');return;}
+  const cost=luckyCost(G.luckyLevel);
+  if(G.money<cost){beep('no');toast('❌ Precisa de '+ff(cost)+' 🪙!');return;}
+  G.money-=cost;G.luckyLevel++;
+  const lv=G.luckyLevel;
+  if([10,50,100,300,500,1000].includes(lv)){
+    beep('tierup');
+    for(let i=0;i<3;i++)setTimeout(()=>spawn(innerWidth/2,innerHeight*.4,'volcano'),i*200);
+    document.body.style.filter='brightness(1.5) saturate(2)';
+    setTimeout(()=>{document.body.style.filter='';},300);
+    const msgs={10:'🔥 Lucky 10x — Itens raros+!',50:'💥 Lucky 50x — Blaze comum!',100:'🌋 Lucky 100x — Inferno & Phoenix!',300:'☀️ Lucky 300x — Vulcão aparece!',500:'✨ Lucky 500x — Solar possível!',1000:'⚡ Lucky 1000x — DEUS DO FOGO!'};
+    toast(msgs[lv]||'🔥 Lucky '+lv+'x!');
+  }else{beep('flame');toast('🔥 Lucky '+lv+'x!');}
+  floatT('🔥 +1 Lucky',innerWidth/2,innerHeight*.45);
+  refresh();renderLucky();save();
+}
+function renderLucky(){
+  const el=document.getElementById('lucky-screen');if(!el)return;
+  const lv=G.luckyLevel,isMax=lv>=1000,cost=isMax?0:luckyCost(lv);
+  const canBuy=!isMax&&G.money>=cost;
+  const eff=lv*(currentEvt?currentEvt.luckyMult:1);
+  const nodes=[1,10,50,100,200,300,500,700,1000];
+  el.innerHTML='';
+  const hd=document.createElement('div');hd.style.cssText='text-align:center;padding:12px 0 8px';
+  hd.innerHTML='<div style="font-size:2.5rem">🔥</div>'
+    +'<div style="font-size:1.4rem;font-weight:800;color:#FF8800;margin-top:3px">Lucky '+lv+'x</div>'
+    +'<div style="font-size:.65rem;color:var(--ink3);margin-top:2px">'+(isMax?'🏆 MÁXIMO ABSOLUTO!':'Nível '+lv+' de 1000')+'</div>';
+  el.appendChild(hd);
+  const pb=document.createElement('div');pb.className='luck-bar';
+  const pf=document.createElement('div');pf.className='luck-fill';pf.style.width=(lv/10)+'%';
+  pb.appendChild(pf);el.appendChild(pb);
+  // Tier desc
+  const tierDesc=lv>=1000?'⚡ MÁXIMO — Deus do Fogo aparece frequentemente!':
+    lv>=500?'✨ Solar e Nova possíveis!':
+    lv>=300?'🌋 Vulcão aparece mais!':
+    lv>=100?'💥 Inferno e Phoenix frequentes':
+    lv>=50?'🔥 Blaze muito mais comum':
+    lv>=10?'💧 Itens Ember diminuem':'⚪ Normal — Drops padrão';
+  const info=document.createElement('div');info.className='note';info.style.marginBottom='10px';
+  info.innerHTML='<strong style="color:#FF8800">Tier atual:</strong> '+tierDesc
+    +(currentEvt&&currentEvt.luckyMult>1?'<br><span style="color:#FF8800">✦ Evento: ×'+currentEvt.luckyMult+'</span>':'');
+  el.appendChild(info);
+  const ng=document.createElement('div');ng.className='luck-grid';
+  nodes.forEach(n=>{const nd=document.createElement('div');nd.className='luck-node'+(lv>n?' on':lv===n?' cur':'');nd.textContent=n+'x';ng.appendChild(nd);});
+  el.appendChild(ng);
+  const sp=document.createElement('div');sp.style.height='10px';el.appendChild(sp);
+  if(!isMax){
+    const bb=document.createElement('button');bb.className='btn '+(canBuy?'btn-fire':'btn-dark');
+    bb.style.cssText='width:100%;padding:12px;font-size:.85rem;margin-top:8px';bb.disabled=!canBuy;
+    bb.textContent=canBuy?'🔥 Upgrade Lucky '+(lv+1)+'x — '+ff(cost)+' 🪙':'❌ Precisa de '+ff(cost)+' 🪙';
+    bb.onclick=upgradeLucky;el.appendChild(bb);
+  }else{
+    const mx=document.createElement('div');mx.style.cssText='text-align:center;padding:12px;background:rgba(255,100,0,.1);border:1px solid rgba(255,100,0,.4);border-radius:10px;font-size:.8rem;font-weight:700;color:#FF8800;margin-top:8px';
+    mx.textContent='🏆 Lucky 1000x — DEUS DO FOGO pode dropar!';el.appendChild(mx);
+  }
+}
+
+// ═══ ROULETTE ═══
+const ROULETTE_SEGMENTS=[
+  {label:'💀 NADA',  color:'#330000',type:'nothing',val:0,prob:25},
+  {label:'🪙 500',   color:'#442200',type:'coins',  val:500,prob:20},
+  {label:'🔥 Pet',   color:'#882200',type:'pet',    val:0,prob:18},
+  {label:'🪙 2.000', color:'#553300',type:'coins',  val:2000,prob:15},
+  {label:'💎 Ember', color:'#AA3300',type:'ember',  val:0,prob:10},
+  {label:'🪙 10.000',color:'#FF4400',type:'coins',  val:10000,prob:7},
+  {label:'🌋 Raro',  color:'#CC2200',type:'rare',   val:0,prob:3},
+  {label:'⚡ Jackpot',color:'#FF8800',type:'jackpot',val:0,prob:2},
+];
+let rouletteAngle=0,rouletteSpinning=false,spinCost=1000;
+
+function drawRoulette(angle){
+  const cv=document.getElementById('roulette-canvas');if(!cv)return;
+  const ctx=cv.getContext('2d'),cx=130,cy=130,r=120;
+  ctx.clearRect(0,0,260,260);
+  const total=ROULETTE_SEGMENTS.reduce((s,x)=>s+x.prob,0);
+  let cur=angle;
+  ROULETTE_SEGMENTS.forEach(seg=>{
+    const slice=(seg.prob/total)*Math.PI*2;
+    ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,cur,cur+slice);ctx.closePath();
+    ctx.fillStyle=seg.color;ctx.fill();
+    ctx.strokeStyle='rgba(255,150,0,.3)';ctx.lineWidth=1.5;ctx.stroke();
+    // Label
+    const mid=cur+slice/2;
+    ctx.save();ctx.translate(cx+Math.cos(mid)*r*.65,cy+Math.sin(mid)*r*.65);ctx.rotate(mid+Math.PI/2);
+    ctx.fillStyle='#FFF';ctx.font='bold 10px system-ui';ctx.textAlign='center';
+    ctx.fillText(seg.label,0,0);ctx.restore();
+    cur+=slice;
+  });
+  // Center
+  ctx.beginPath();ctx.arc(cx,cy,18,0,Math.PI*2);
+  const grd=ctx.createRadialGradient(cx,cy,2,cx,cy,18);
+  grd.addColorStop(0,'#FFCC00');grd.addColorStop(1,'#FF4400');
+  ctx.fillStyle=grd;ctx.fill();
+  ctx.strokeStyle='rgba(255,200,0,.6)';ctx.lineWidth=2;ctx.stroke();
+  ctx.fillStyle='#FFF';ctx.font='bold 13px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.fillText('🔥',cx,cy);
+  // Pointer
+  ctx.beginPath();ctx.moveTo(cx-10,14);ctx.lineTo(cx+10,14);ctx.lineTo(cx,38);ctx.closePath();
+  ctx.fillStyle='#FFCC00';ctx.fill();ctx.strokeStyle='#FF4400';ctx.lineWidth=2;ctx.stroke();
+}
+
+function spinRoulette(){
+  if(rouletteSpinning)return;ensAC();
+  if(G.money<spinCost){beep('no');toast('❌ Precisa de '+ff(spinCost)+' 🪙!');return;}
+  G.money-=spinCost;G.spins++;
+  rouletteSpinning=true;
+  document.getElementById('roulette-spin').disabled=true;
+  document.getElementById('roulette-result').innerHTML='';
+  beep('roulette');
+  const spins=5+Math.random()*4;
+  const target=Math.random()*Math.PI*2;
+  const totalAngle=spins*Math.PI*2+target;
+  const start=performance.now(),dur=4000+Math.random()*2000;
+  const startAngle=rouletteAngle;
+  function animate(now){
+    const p=Math.min((now-start)/dur,1);
+    const ease=1-Math.pow(1-p,4);
+    rouletteAngle=startAngle+totalAngle*ease;
+    drawRoulette(rouletteAngle);
+    if(p<1){requestAnimationFrame(animate);}
+    else{
+      rouletteSpinning=false;
+      document.getElementById('roulette-spin').disabled=false;
+      spinCost=Math.floor(spinCost*1.15);
+      document.getElementById('spin-cost').textContent=ff(spinCost)+' 🪙';
+      showRouletteResult(rouletteAngle);
+      refresh();save();
+    }
+  }
+  requestAnimationFrame(animate);
+}
+
+function showRouletteResult(angle){
+  const total=ROULETTE_SEGMENTS.reduce((s,x)=>s+x.prob,0);
+  const ptr=-Math.PI/2;
+  const norm=((ptr-angle)%(Math.PI*2)+Math.PI*4)%(Math.PI*2);
+  let cur=0,seg=ROULETTE_SEGMENTS[0];
+  for(const s of ROULETTE_SEGMENTS){const slice=(s.prob/total)*Math.PI*2;if(norm>=cur&&norm<cur+slice){seg=s;break;}cur+=slice;}
+  let msg='',gain=0;
+  if(seg.type==='nothing'){msg='💀 Azar... Não foi dessa vez!';beep('no');}
+  else if(seg.type==='coins'){gain=seg.val;G.money+=gain;G.earned+=gain;msg='🪙 +'+ff(gain)+' moedas!';beep('sell');floatT('+'+ff(gain),innerWidth/2,innerHeight*.4);}
+  else if(seg.type==='jackpot'){gain=spinCost*10;G.money+=gain;G.earned+=gain;msg='⚡ JACKPOT! +'+ff(gain)+' 🪙!';beep('tierup');spawn(innerWidth/2,innerHeight*.4,'nova');const jk=document.getElementById('jackpot');document.getElementById('jtext').textContent='⚡ JACKPOT!\n+'+ff(gain)+'🪙!';jk.classList.add('show');setTimeout(()=>jk.classList.remove('show'),2500);}
+  else if(seg.type==='pet'||seg.type==='rare'){
+    const pool=ITEMS.filter(x=>seg.type==='rare'?RO[x.rar]>=3:RO[x.rar]<=2);
+    const item=pool[Math.floor(Math.random()*pool.length)];
+    addInv(item.id);G.items++;
+    msg='🔥 Ganhou: '+item.icon+' '+item.name+'!';beep(item.rar);
+    showRew(item,0,false);spawn(innerWidth/2,innerHeight*.4,item.rar);
+  }
+  else if(seg.type==='ember'){msg='💎 +1 Ember! Raridade especial!';beep('flame');}
+  const rd=document.getElementById('roulette-result');
+  rd.innerHTML='<div class="rou-prize" style="color:'+seg.color+'">'+msg+'</div>';
+  toast(msg);
+}
+
+// ═══ ARENA FIRE ═══
+let arenaState=null,arenaPlayer=null,arenaEnemy=null;
+let playerHpMax=0,enemyHpMax=0,healUsed=0,battleBusy=false,arenaLog=[],turnNum=0;
+const HEAL_MAX=3;
+
+function petToFighter(it){
+  const mv=it.mps===Infinity?5000000:it.mps;
+  const hp=Math.max(80,Math.min(9999,Math.floor(Math.pow(mv,.45)*4+60)));
+  const atk=Math.max(5,Math.floor(hp*.14));
+  const spec=Math.max(10,Math.floor(hp*.32));
+  return{id:it.id,name:it.name,icon:it.icon,rar:it.rar,hp,hpMax:hp,atk,specAtk:spec};
+}
+function buildEnemy(p){
+  const keys=Object.keys(RO);
+  const pi=RO[p.rar]||0;
+  const eRar=keys.find(k=>RO[k]===Math.max(0,pi+Math.floor(Math.random()*3)-1))||p.rar;
+  const pool=ITEMS.filter(x=>x.rar===eRar&&!CRAFT_ONLY.includes(x.rar));
+  const eit=pool.length?pool[Math.floor(Math.random()*pool.length)]:ITEMS[0];
+  const base=petToFighter(eit);
+  const v=x=>Math.max(1,Math.floor(x*(0.75+Math.random()*.5)));
+  const ehp=v(p.hpMax);
+  return{...base,hp:ehp,hpMax:ehp,atk:v(p.atk),specAtk:v(p.specAtk),name:'IA '+eit.name,icon:eit.icon};
+}
+
+function renderArena(){
+  const el=document.getElementById('arena-screen');if(!el)return;el.innerHTML='';
+  if(arenaState==='battle')renderArenaBattle(el);
+  else if(arenaState==='result')renderArenaResult(el);
+  else renderArenaSelect(el);
+}
+function renderArenaSelect(el){
+  const hd=document.createElement('div');hd.style.cssText='text-align:center;margin-bottom:10px';
+  hd.innerHTML='<div style="font-size:1rem;font-weight:800;color:var(--acc2)">⚔️ Arena de Fogo</div>'
+    +'<div style="font-size:.65rem;color:var(--ink3);margin-top:2px">Lute com seus monstros de fogo!</div>';el.appendChild(hd);
+  const info=document.createElement('div');info.className='note';info.style.marginBottom='9px';
+  info.innerHTML='⚔️ <strong>Atacar</strong> — dano normal | 💥 <strong>Especial</strong> — 2.5× dano<br>'
+    +'❤️ <strong>Curar</strong> — 30% HP (máx 3×) | 🏃 <strong>Fugir</strong> — sem perdas<br>'
+    +'<span style="color:var(--red)">⚠️ Derrota = perde o item! Vitória = 🪙 moedas!</span>';el.appendChild(info);
+  const allInv=[...G.inv].filter(x=>IM[x.id]&&avail(x.id)>0).sort((a,b)=>(RO[IM[b.id]?.rar]||0)-(RO[IM[a.id]?.rar]||0));
+  if(!allInv.length){const nm=document.createElement('div');nm.className='note';nm.textContent='Sem itens!';el.appendChild(nm);return;}
+  const lbl=document.createElement('div');lbl.className='slbl';lbl.innerHTML='🔥 Escolha seu guerreiro <span class="slbl-badge">'+allInv.length+' disponíveis</span>';el.appendChild(lbl);
+  const grid=document.createElement('div');grid.className='arena-petsel';
+  allInv.forEach(({id})=>{
+    const it=IM[id];if(!it)return;const f=petToFighter(it);
+    const div=document.createElement('div');div.className='ap-card';
+    div.innerHTML='<div style="font-size:1.45rem">'+it.icon+'</div>'
+      +'<div style="font-size:.56rem;font-weight:700;color:'+RC[it.rar]+'">'+it.name+'</div>'
+      +'<div style="font-size:.5rem;color:var(--ink3);margin-top:2px">❤️'+f.hp+' ⚔️'+f.atk+'</div>';
+    div.onclick=()=>startBattle(it);grid.appendChild(div);
+  });el.appendChild(grid);
+}
+function startBattle(item){
+  G.arenas++;
+  arenaPlayer=petToFighter(item);arenaEnemy=buildEnemy(arenaPlayer);
+  playerHpMax=arenaPlayer.hp;enemyHpMax=arenaEnemy.hp;
+  healUsed=0;arenaLog=[];turnNum=1;battleBusy=false;arenaState='battle';
+  pushLog('🔥 BATALHA DE FOGO! '+arenaPlayer.icon+' VS '+arenaEnemy.icon,'neutral');
+  renderArena();
+}
+function pushLog(msg,type){arenaLog.push({msg,type});if(arenaLog.length>20)arenaLog.shift();}
+function renderArenaBattle(el){
+  const ehpPct=Math.max(0,arenaEnemy.hp/enemyHpMax*100);
+  const phpPct=Math.max(0,arenaPlayer.hp/playerHpMax*100);
+  const enDiv=document.createElement('div');enDiv.className='arena-fighter enemy';
+  enDiv.innerHTML='<span class="af-icon" id="af-enemy">'+arenaEnemy.icon+'</span>'
+    +'<div class="af-name" style="color:#FF4444">'+arenaEnemy.name+' (IA)</div>'
+    +'<div class="hp-bar-wrap"><div class="hp-bar enemy-hp" id="ehp-bar" style="width:'+ehpPct+'%"></div></div>'
+    +'<div class="hp-text" style="color:#FF6666">❤️ '+Math.max(0,arenaEnemy.hp)+' / '+enemyHpMax+'</div>';
+  el.appendChild(enDiv);
+  const vs=document.createElement('div');vs.className='arena-vs';vs.textContent='🔥 TURNO '+turnNum;el.appendChild(vs);
+  const plDiv=document.createElement('div');plDiv.className='arena-fighter player';
+  plDiv.innerHTML='<span class="af-icon" id="af-player">'+arenaPlayer.icon+'</span>'
+    +'<div class="af-name" style="color:#FFAA44">'+arenaPlayer.name+' (Você)</div>'
+    +'<div class="hp-bar-wrap"><div class="hp-bar player-hp" id="php-bar" style="width:'+phpPct+'%"></div></div>'
+    +'<div class="hp-text" style="color:#FFCC66">❤️ '+Math.max(0,arenaPlayer.hp)+' / '+playerHpMax+'</div>';
+  el.appendChild(plDiv);
+  const logWrap=document.createElement('div');logWrap.className='arena-log';
+  const colors={player:'#FFAA44',enemy:'#FF4444',heal:'#44FF88',neutral:'var(--ink2)',crit:'#FFDD00'};
+  [...arenaLog].reverse().slice(0,5).forEach(e=>{
+    const d=document.createElement('div');d.className='log-entry';d.style.color=colors[e.type]||'var(--ink2)';d.textContent=e.msg;logWrap.appendChild(d);
+  });el.appendChild(logWrap);
+  const actGrid=document.createElement('div');actGrid.className='arena-actions';
+  const mkBtn=(cls,ico,label,sub,fn,dis=false)=>{
+    const b=document.createElement('button');b.className='arena-btn '+cls;b.disabled=battleBusy||dis;
+    b.innerHTML='<span class="ab-ico">'+ico+'</span><span>'+label+'</span><span style="font-size:.54rem;opacity:.75">'+sub+'</span>';
+    b.onclick=fn;return b;
+  };
+  actGrid.appendChild(mkBtn('atk','⚔️','Atacar','dano normal',()=>playerAction('atk')));
+  actGrid.appendChild(mkBtn('spec','💥','Especial','dano ×2.5',()=>playerAction('spec')));
+  actGrid.appendChild(mkBtn('heal','❤️','Curar','30% HP',()=>playerAction('heal'),healUsed>=HEAL_MAX));
+  actGrid.appendChild(mkBtn('flee','🏃','Fugir','sem perdas',()=>{if(confirm('Fugir?')){arenaState=null;toast('🏃 Fugiu!');renderArena();}}));
+  const hc=document.createElement('div');hc.style.cssText='grid-column:span 2;text-align:center;font-size:.6rem;color:var(--ink3);padding:2px 0';
+  hc.innerHTML='❤️ Curas: <strong>'+(HEAL_MAX-healUsed)+'</strong>/'+HEAL_MAX;actGrid.appendChild(hc);
+  el.appendChild(actGrid);
+}
+function playerAction(type){
+  if(battleBusy||arenaState!=='battle')return;
+  battleBusy=true;ensAC();
+
+  if(type==='heal'){
+    if(healUsed>=HEAL_MAX){battleBusy=false;return;}
+    const h=Math.floor(playerHpMax*.3);
+    arenaPlayer.hp=Math.min(playerHpMax,arenaPlayer.hp+h);
+    healUsed++;
+    pushLog('❤️ '+arenaPlayer.icon+' se cura! +'+h+' HP','heal');
+    beep('heal');spawnNum(h,true,false,true);
+    renderArena();// update display ONCE, buttons disabled (battleBusy=true)
+    setTimeout(()=>{
+      if(arenaState!=='battle')return;
+      enemyTurn();
+    },900);
+    return;
+  }
+  const isCrit=type==='spec'?false:Math.random()<.15;
+  const dmg=type==='spec'
+    ?Math.floor(arenaPlayer.specAtk*(0.9+Math.random()*.4))
+    :Math.floor(arenaPlayer.atk*(0.85+Math.random()*.5)*(isCrit?1.8:1));
+  arenaEnemy.hp=Math.max(0,arenaEnemy.hp-dmg);
+  const msg=(type==='spec'?'💥 ESPECIAL! ':isCrit?'🔥 CRÍTICO! ':'⚔️ ')
+    +arenaPlayer.icon+' — '+dmg+' dano!';
+  pushLog(msg,isCrit?'crit':'player');
+  beep(type==='spec'?'blaze':'tick');
+  spawnNum(dmg,false,isCrit,false);
+  animIcon('af-enemy','hit-anim');bloodFire(false);
+  renderArena();// buttons disabled while battleBusy=true
+  if(arenaEnemy.hp<=0){
+    setTimeout(()=>endBattle(true),700);
+    return;
+  }
+  setTimeout(()=>{
+    if(arenaState!=='battle')return;
+    enemyTurn();
+  },900);
+}
+
+function enemyTurn(){
+  if(arenaState!=='battle')return;
+  turnNum++;
+  const aiPct=arenaEnemy.hp/enemyHpMax;
+  const r=Math.random();
+  let dmg=0,msg='';
+  if(aiPct<0.25&&r<0.5){
+    const h=Math.floor(enemyHpMax*.18);
+    arenaEnemy.hp=Math.min(enemyHpMax,arenaEnemy.hp+h);
+    msg='💚 IA '+arenaEnemy.icon+' se cura! +'+h+' HP';
+    pushLog(msg,'heal');beep('heal');
+    spawnNum(h,false,false,true);animIcon('af-enemy','heal-anim');
+  }else{
+    const spec=r<0.28;const isCrit=!spec&&Math.random()<.1;
+    dmg=spec
+      ?Math.floor(arenaEnemy.specAtk*(0.9+Math.random()*.4))
+      :Math.floor(arenaEnemy.atk*(0.8+Math.random()*.5)*(isCrit?1.7:1));
+    arenaPlayer.hp=Math.max(0,arenaPlayer.hp-dmg);
+    msg=(spec?'💥 IA ESPECIAL! ':isCrit?'💢 CRÍTICO IA! ':'⚔️ IA ')
+      +arenaEnemy.icon+' — '+dmg+' dano!';
+    pushLog(msg,isCrit?'crit':'enemy');
+    beep(spec?'blaze':'tick');
+    spawnNum(dmg,true,isCrit,false);
+    animIcon('af-player','hit-anim');bloodFire(true);
+    if(dmg>playerHpMax*.2){
+      document.body.style.transition='filter .08s';
+      document.body.style.filter='brightness(1.6) saturate(1.8)';
+      setTimeout(()=>{document.body.style.filter='';document.body.style.transition='';},180);
+    }
+  }
+  if(arenaPlayer.hp<=0){
+    renderArena();
+    setTimeout(()=>endBattle(false),700);
+    return;
+  }
+  // Only NOW allow player to act again
+  battleBusy=false;
+  renderArena();
+}
+function endBattle(won){
+  arenaState='result';
+  if(won){
+    const reward=Math.floor(enemyHpMax*55*(1+(RO[arenaEnemy.rar]||0)*.3));
+    G.money+=reward;G.earned+=reward;
+    pushLog('🏆 VITÓRIA FLAMEJANTE! +'+ff(reward)+'🪙','crit');
+    beep('tierup');spawn(innerWidth/2,innerHeight*.4,'nova');toast('🏆 VITÓRIA! +'+ff(reward)+'🪙');refresh();save();
+  }else{
+    if(arenaPlayer)removeInv(arenaPlayer.id,1);calcMps();
+    pushLog('💀 DERROTA NO INFERNO...','enemy');beep('no');toast('💀 Derrotado!');refresh();save();
+  }
+  renderArena();
+}
+function animIcon(id,cls){const el=document.getElementById(id);if(!el)return;el.classList.remove(cls);void el.offsetWidth;el.classList.add(cls);setTimeout(()=>el?.classList?.remove(cls),380);}
+function spawnNum(n,isPlayer,isCrit,isHeal){
+  const el=document.createElement('div');
+  const x=isPlayer?innerWidth*.32:innerWidth*.68;
+  const y=isPlayer?innerHeight*.58:innerHeight*.33;
+  el.style.cssText='position:fixed;z-index:600;pointer-events:none;font-weight:900;'
+    +'font-family:system-ui;text-shadow:0 2px 8px rgba(0,0,0,.9);'
+    +'left:'+x+'px;top:'+y+'px;transform:translateX(-50%);'
+    +'font-size:'+(isCrit?'1.7rem':'1.2rem')+';'
+    +'color:'+(isHeal?'#44FF88':isCrit?'#FFDD00':'#FF4400')+';animation:ftu .9s ease-out forwards';
+  el.textContent=(isHeal?'❤️+':isCrit?'🔥':'')+n;
+  document.body.appendChild(el);setTimeout(()=>el.remove(),950);
+}
+function bloodFire(isPlayer){
+  const x=isPlayer?innerWidth*.25:innerWidth*.75,y=isPlayer?innerHeight*.6:innerHeight*.33;
+  for(let i=0;i<8;i++){
+    const d=document.createElement('div');
+    const a=Math.random()*Math.PI*2,dist=15+Math.random()*25,sz=4+Math.random()*6;
+    d.style.cssText='position:fixed;z-index:599;pointer-events:none;border-radius:50%;'
+      +'background:radial-gradient(circle,#FF6600,#FF0000);'
+      +'width:'+sz+'px;height:'+sz+'px;'
+      +'left:'+(x+Math.cos(a)*dist)+'px;top:'+(y+Math.sin(a)*dist)+'px;'
+      +'animation:ftu .7s ease-out forwards';
+    document.body.appendChild(d);setTimeout(()=>d.remove(),750);
+  }
+}
+function renderArenaResult(el){
+  const won=arenaLog.some(e=>e.msg.includes('VITÓRIA'));
+  const reward=won?Math.floor(enemyHpMax*55*(1+(RO[arenaEnemy?.rar||'ember']||0)*.3)):0;
+  const res=document.createElement('div');res.className='arena-result';
+  res.innerHTML='<span class="res-ico">'+(won?'🏆':'💀')+'</span>'
+    +'<div class="res-title" style="color:'+(won?'#FFAA44':'#FF4444')+'">'+( won?'VITÓRIA!':'DERROTA!')+'</div>'
+    +'<div style="font-size:.76rem;color:var(--ink2);margin-bottom:10px">'+( won?'Ganhou <strong style="color:var(--gold)">'+ff(reward)+'🪙</strong>!':'Item perdido nas chamas...')+'</div>';
+  el.appendChild(res);
+  const logWrap=document.createElement('div');logWrap.className='arena-log';logWrap.style.maxHeight='110px';
+  const colors={player:'#FFAA44',enemy:'#FF4444',heal:'#44FF88',neutral:'var(--ink2)',crit:'#FFDD00'};
+  [...arenaLog].reverse().forEach(e=>{const d=document.createElement('div');d.className='log-entry';d.style.color=colors[e.type]||'var(--ink2)';d.textContent=e.msg;logWrap.appendChild(d);});
+  el.appendChild(logWrap);
+  const btns=document.createElement('div');btns.style.cssText='display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px';
+  const b1=document.createElement('button');b1.className='btn btn-fire';b1.style.padding='11px';b1.textContent='🔥 Lutar de Novo';b1.onclick=()=>{arenaState=null;renderArena();};
+  const b2=document.createElement('button');b2.className='btn btn-dark';b2.style.padding='11px';b2.textContent='🏠 Voltar';b2.onclick=()=>{arenaState=null;renderArena();};
+  btns.appendChild(b1);btns.appendChild(b2);el.appendChild(btns);
+}
+
+// ═══ SHOP ═══
+const SHOP_ITEMS=[
+  {id:'s1',name:'Pacote Brasa',     desc:'3 itens de fogo aleatórios!',      icon:'📦',price:500,   type:'pack3'},
+  {id:'s2',name:'Pacote Chama',     desc:'1 item Chama garantido!',          icon:'🔥',price:2000,  type:'flame'},
+  {id:'s3',name:'Pacote Blaze',     desc:'1 item Blaze garantido!',          icon:'💥',price:8000,  type:'blaze'},
+  {id:'s4',name:'Pacote Inferno',   desc:'1 item Inferno garantido!',        icon:'🌋',price:30000, type:'inferno'},
+  {id:'s5',name:'Fênix Booster',    desc:'1 item Fênix garantido!',          icon:'🦅',price:100000,type:'phoenix'},
+  {id:'s6',name:'Boost 2x (2min)', desc:'Renda dobrada por 2 minutos!',     icon:'⚡',price:1000,  type:'boost'},
+  {id:'s7',name:'Custo Reset',      desc:'Reseta o custo para 0.',           icon:'🔄',price:800,   type:'costreset'},
+  {id:'s8',name:'Lucky +5',         desc:'+5 níveis de Lucky de fogo!',      icon:'🍀',price:5000000,type:'luckyboost'},
+];
+function renderShop(){
+  const list=document.getElementById('shoplist');list.innerHTML='';
+  SHOP_ITEMS.forEach(si=>{
+    const can=G.money>=si.price;
+    const div=document.createElement('div');div.className='shop-item';
+    div.innerHTML='<div style="font-size:1.75rem;flex-shrink:0">'+si.icon+'</div>'
+      +'<div style="flex:1;min-width:0"><div style="font-size:.76rem;font-weight:800">'+si.name+'</div>'
+      +'<div style="font-size:.6rem;color:var(--ink3);margin-top:2px">'+si.desc+'</div></div>'
+      +'<div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0">'
+      +'<div style="font-size:.76rem;font-weight:800;color:var(--gold)">'+ff(si.price)+'🪙</div>'
+      +'<button class="btn '+(can?'btn-fire':'btn-dark')+'" onclick="buyShop(\''+si.id+'\')" '+(can?'':'disabled')+'>'+(can?'Comprar':'Sem 🪙')+'</button></div>';
+    list.appendChild(div);
+  });
+}
+function buyShop(sid){
+  const si=SHOP_ITEMS.find(x=>x.id===sid);if(!si)return;
+  if(G.money<si.price){beep('no');toast('❌ Sem moedas!');return;}
+  G.money-=si.price;
+  if(si.type==='pack3'){for(let i=0;i<3;i++){const it=pickItem();addInv(it.id);G.items++;}toast('📦 3 itens!');beep('ember');}
+  else if(['flame','blaze','inferno','phoenix'].includes(si.type)){
+    const pool=ITEMS.filter(x=>x.rar===si.type);const it=pool[Math.floor(Math.random()*pool.length)];
+    addInv(it.id);G.items++;showRew(it,0,false);beep(it.rar);
+  }else if(si.type==='boost'){G.boostEnd=Date.now()+120000;toast('⚡ Renda 2x!');beep('flame');}
+  else if(si.type==='costreset'){G.cost=0;toast('🔄 Custo zerado!');beep('tick');}
+  else if(si.type==='luckyboost'){G.luckyLevel=Math.min(1000,G.luckyLevel+5);toast('🍀 Lucky '+G.luckyLevel+'x!');beep('tierup');}
+  spawn(innerWidth/2,innerHeight*.4,'flame');floatT('-'+ff(si.price),innerWidth/2,innerHeight/2);
+  refresh();renderShop();save();
+}
+
+// ═══ COLLECTION ═══
+function renderCollection(){
+  const el=document.getElementById('coll-screen');if(!el)return;
+  const tot=ITEMS.length,got=Object.keys(G.collected||{}).length;
+  el.innerHTML='';
+  const hd=document.createElement('div');hd.style.cssText='text-align:center;margin-bottom:12px';
+  hd.innerHTML='<div style="font-size:.95rem;font-weight:800;color:var(--acc2)">🔥 Coleção Fire Version</div>'
+    +'<div style="font-size:.7rem;color:var(--ink3);margin-top:2px">'+got+'/'+tot+' descobertos</div>'
+    +'<div style="background:rgba(255,80,0,.1);border-radius:50px;height:6px;margin:6px 18px 0;overflow:hidden">'
+    +'<div style="height:100%;width:'+Math.round(got/tot*100)+'%;background:linear-gradient(90deg,#FF2200,#FF8800,#FFCC00);border-radius:50px;transition:width .5s"></div></div>';
+  el.appendChild(hd);
+  // Group by rarity
+  RARITIES.forEach(rar=>{
+    const ri=ITEMS.filter(x=>x.rar===rar.id);if(!ri.length)return;
+    const rg=ri.filter(x=>G.collected&&G.collected[x.id]).length;
+    const sec=document.createElement('div');sec.style.marginBottom='12px';
+    const lbl=document.createElement('div');lbl.className='slbl';
+    lbl.innerHTML='<span style="color:'+rar.color+'">🔥 '+rar.label+'</span> <span class="slbl-badge">'+rg+'/'+ri.length+'</span>';
+    sec.appendChild(lbl);
+    const grid=document.createElement('div');grid.style.cssText='display:grid;grid-template-columns:repeat(4,1fr);gap:5px';
+    ri.forEach(item=>{
+      const disc=!!(G.collected&&G.collected[item.id]);
+      const cell=document.createElement('div');
+      cell.style.cssText='border-radius:10px;padding:6px 2px;text-align:center;border:1.5px solid '+(disc?rar.color:'rgba(255,80,0,.08)')+';background:'+(disc?'rgba(255,80,0,.06)':'transparent');
+      if(disc&&rar.order>=5)cell.style.boxShadow='0 0 8px '+rar.color;
+      cell.innerHTML='<div style="font-size:1.35rem;'+(disc?'':'filter:grayscale(1);opacity:.22')+'">'+item.icon+'</div>'
+        +'<div style="font-size:.48rem;font-weight:700;margin-top:2px;color:'+(disc?rar.color:'var(--ink3)')+'">'+( disc?item.name:'???')+'</div>'
+        +(disc?'<div style="font-size:.44rem;color:var(--green)">+'+(item.mps===Infinity?'∞':ff(item.mps))+'/s</div>':'');
+      grid.appendChild(cell);
+    });
+    sec.appendChild(grid);el.appendChild(sec);
+  });
+}
+
+// ═══ REWARD ═══
+function showRew(item,gain,jack,isNew){
+  document.getElementById('rwico').textContent=item.icon;
+  const ico=document.getElementById('rwico');ico.style.animation='none';void ico.offsetWidth;ico.style.animation='iconbounce .55s ease-out';
+  document.getElementById('rwnm').textContent=jack?'🔥 '+item.name+' 🔥':item.name;
+  document.getElementById('rwnm').style.color=RC[item.rar];
+  document.getElementById('rwrar').textContent=RL[item.rar];document.getElementById('rwrar').style.color=RC[item.rar];
+  document.getElementById('rwstrip').style.background=RC[item.rar];
+  document.getElementById('rwmps').textContent='+'+(item.mps===Infinity?'∞':ff(item.mps))+'/s';
+  document.getElementById('rwgain').textContent=gain>0?'+'+ff(gain)+' 🪙':'Adicionado ao inventário';
+  document.getElementById('rwnew').style.display=isNew?'block':'none';
+  document.getElementById('rew').classList.add('on');
+  if(item.rar==='godfire'||item.rar==='nova'){spawn(innerWidth/2,innerHeight*.4,item.rar);setTimeout(()=>spawn(innerWidth/2,innerHeight*.4,item.rar),400);}
+}
+function closeRew(){document.getElementById('rew').classList.remove('on');}
+
+// ═══ STATS ═══
+function renderStats(){
+  document.getElementById('st-bl').textContent=ff(G.blocks);
+  document.getElementById('st-to').textContent=ff(G.earned);
+  document.getElementById('st-it').textContent=G.items;
+  document.getElementById('st-mp').textContent=G.mps===Infinity?'∞':ff(G.mps);
+  document.getElementById('st-sp').textContent=G.spins||0;
+  document.getElementById('st-ar').textContent=G.arenas||0;
+}
+
+// ═══ TABS ═══
+function go(t){
+  const all=['play','inv','sell','roulette','arena','lucky','diamonds','shop','coll','stats'];
+  all.forEach(s=>{
+    const sc=document.getElementById(s);const tb=document.getElementById('t-'+s);
+    if(sc)sc.classList.toggle('on',s===t);if(tb)tb.classList.toggle('on',s===t);
+  });
+  if(t==='inv')renderInv();if(t==='sell')renderSell();
+  if(t==='roulette'){drawRoulette(rouletteAngle);}
+  if(t==='arena')renderArena();
+  if(t==='lucky')renderLucky();
+  if(t==='diamonds'){renderDiamonds();renderDiamUI();}
+  if(t==='shop')renderShop();
+  if(t==='coll')renderCollection();if(t==='stats')renderStats();
+  beep('tick');
+}
+
+// ═══ REFRESH ═══
+function refresh(){
+  document.getElementById('money').textContent=ff(G.money);
+  const now=Date.now(),boosted=G.boostEnd>now;
+  const em=currentEvt?currentEvt.moneyMult:1;
+  const eff=G.mps===Infinity?Infinity:G.mps*em*(boosted?2:1);
+  document.getElementById('mpsv').textContent=(eff===Infinity?'∞':ff(eff))+'/s';
+  if(currentEvt){const mb=document.getElementById('multbadge');mb.textContent=currentEvt.icon+' '+currentEvt.name+' ATIVO!';mb.classList.add('show');}
+  else{const mb=document.getElementById('multbadge');if(mb)mb.classList.remove('show');}
+  document.getElementById('cval').textContent=ff(G.cost)+' 🪙';
+  document.getElementById('cval').className=G.money<G.cost?'red':'';
+  document.getElementById('ms-bl').textContent=ff(G.blocks);
+  document.getElementById('ms-it').textContent=G.items;
+  document.getElementById('ms-to').textContent=ff(G.earned);
+  document.getElementById('luck-disp').textContent=G.luckyLevel+'x';
+  renderDiamUI();renderDots();
+}
+
+// ═══ IDLE ═══
+setInterval(()=>{
+  if(G.mps===0)return;
+  const now=Date.now();const m=(G.boostEnd>now?2:1)*(currentEvt?currentEvt.moneyMult:1);
+  if(G.mps===Infinity){G.money=Infinity;G.earned=Infinity;}
+  else{const g=G.mps*m/10;G.money+=g;G.earned+=g;}
+  document.getElementById('money').textContent=ff(G.money);
+},100);
+
+// ═══ MUSIC — Fire Theme ═══
+let Ac,musOn=false,musNodes=[];
+function ensAC(){if(!Ac)Ac=new(window.AudioContext||window.webkitAudioContext)();if(Ac.state==='suspended')Ac.resume();}
+function startMusic(){
+  try{
+    ensAC();stopMusic();musOn=true;
+    const master=Ac.createGain();master.gain.value=.16;master.connect(Ac.destination);musNodes=[master];
+    // Deep fire bass drone
+    [[55,.28,'sawtooth'],[82.5,.12,'sawtooth'],[110,.07,'triangle']].forEach(([f,g,t])=>{
+      const o=Ac.createOscillator(),gn=Ac.createGain();o.type=t;o.frequency.value=f;gn.gain.value=g;
+      o.connect(gn);gn.connect(master);o.start();musNodes.push(o,gn);
+    });
+    // Fire melody — minor pentatonic (dark/aggressive)
+    const notes=[220,261,293,349,392,440,523,493,440,392,349,293,261,220,246,293];
+    const durs= [.4, .3, .3, .4, .3, .3, .5, .3, .3, .4, .3, .3, .4, .5, .3, .4];
+    let melStep=0,melTime=Ac.currentTime+.5;
+    function schedMel(){
+      if(!musOn)return;
+      for(let i=0;i<4;i++){
+        const idx=(melStep+i)%notes.length;
+        const o=Ac.createOscillator(),g=Ac.createGain();
+        o.type='sawtooth';o.frequency.value=notes[idx];
+        g.gain.setValueAtTime(0,melTime);
+        g.gain.linearRampToValueAtTime(.055,melTime+.04);
+        g.gain.exponentialRampToValueAtTime(.001,melTime+durs[idx]*.85);
+        o.connect(g);g.connect(master);o.start(melTime);o.stop(melTime+durs[idx]);
+        melTime+=durs[idx]*.36;
+      }
+      melStep=(melStep+4)%notes.length;
+      musNodes._melT=setTimeout(schedMel,580);
+    }
+    schedMel();
+    // LFO crackle
+    const lfo=Ac.createOscillator(),lfg=Ac.createGain();
+    lfo.frequency.value=.12;lfo.type='sine';lfg.gain.value=.05;
+    lfo.connect(lfg);lfg.connect(master.gain);lfo.start();musNodes.push(lfo,lfg);
+    crackle();
+  }catch(e){}
+}
+let crT;
+function crackle(){
+  if(!musOn)return;
+  try{
+    ensAC();const f=800+Math.random()*2000;
+    const o=Ac.createOscillator(),g=Ac.createGain();o.type='sawtooth';o.frequency.value=f;
+    g.gain.setValueAtTime(0,Ac.currentTime);g.gain.linearRampToValueAtTime(.015,Ac.currentTime+.01);
+    g.gain.exponentialRampToValueAtTime(.001,Ac.currentTime+.08);
+    o.connect(g);g.connect(Ac.destination);o.start();o.stop(Ac.currentTime+.08);
+  }catch(e){}
+  crT=setTimeout(crackle,300+Math.random()*700);
+}
+function stopMusic(){
+  musOn=false;clearTimeout(crT);
+  if(musNodes._melT)clearTimeout(musNodes._melT);
+  musNodes.forEach(n=>{try{n.stop?n.stop():n.disconnect();}catch(e){}});musNodes=[];
+}
+function toggleMusic(){ensAC();if(musOn){stopMusic();toast('🔇 Música pausada');}else{startMusic();toast('🎵 Música de fogo!');}document.getElementById('music-btn').textContent=musOn?'🔇':'🎵';}
+
+// ═══ SOUNDS ═══
+function beep(type){
+  try{
+    ensAC();const o=Ac.createOscillator(),g=Ac.createGain();
+    o.connect(g);g.connect(Ac.destination);const t=Ac.currentTime;
+    const fire=[0,3,7];
+    if(type==='tick'){o.type='sawtooth';o.frequency.setValueAtTime(220,t);o.frequency.exponentialRampToValueAtTime(440,t+.06);g.gain.setValueAtTime(.06,t);g.gain.exponentialRampToValueAtTime(.001,t+.08);o.start();o.stop(t+.08);}
+    else if(type==='no'){o.type='square';o.frequency.setValueAtTime(150,t);o.frequency.exponentialRampToValueAtTime(80,t+.12);g.gain.setValueAtTime(.07,t);g.gain.exponentialRampToValueAtTime(.001,t+.12);o.start();o.stop(t+.12);}
+    else if(type==='sell'){o.type='sine';o.frequency.setValueAtTime(600,t);o.frequency.exponentialRampToValueAtTime(900,t+.1);g.gain.setValueAtTime(.07,t);g.gain.exponentialRampToValueAtTime(.001,t+.14);o.start();o.stop(t+.14);}
+    else if(type==='flame'||type==='ember'){o.type='sawtooth';o.frequency.setValueAtTime(330,t);o.frequency.exponentialRampToValueAtTime(660,t+.18);g.gain.setValueAtTime(.1,t);g.gain.exponentialRampToValueAtTime(.001,t+.24);o.start();o.stop(t+.24);}
+    else if(type==='blaze'||type==='inferno'){fire.forEach((s,i)=>{const o2=Ac.createOscillator(),g2=Ac.createGain();o2.connect(g2);g2.connect(Ac.destination);o2.type='sawtooth';const f=220*Math.pow(2,s/12);o2.frequency.setValueAtTime(f,t+i*.05);o2.frequency.exponentialRampToValueAtTime(f*2,t+.45);g2.gain.setValueAtTime(0,t);g2.gain.linearRampToValueAtTime(.08,t+.05+i*.05);g2.gain.exponentialRampToValueAtTime(.001,t+.55);o2.start(t);o2.stop(t+.55);});return;}
+    else if(type==='phoenix'||type==='volcano'||type==='nova'){[0,4,7,10].forEach((s,i)=>{const o2=Ac.createOscillator(),g2=Ac.createGain();o2.connect(g2);g2.connect(Ac.destination);o2.type='sawtooth';const f=165*Math.pow(2,s/12);o2.frequency.setValueAtTime(f,t+i*.08);o2.frequency.exponentialRampToValueAtTime(f*3,t+1.1);g2.gain.setValueAtTime(0,t);g2.gain.linearRampToValueAtTime(.09,t+.08+i*.08);g2.gain.exponentialRampToValueAtTime(.001,t+1.4);o2.start(t);o2.stop(t+1.4);});return;}
+    else if(type==='tierup'){[0,4,7,12,16].forEach((s,i)=>{const o2=Ac.createOscillator(),g2=Ac.createGain();o2.connect(g2);g2.connect(Ac.destination);o2.type='sawtooth';const f=220*Math.pow(2,s/12);o2.frequency.setValueAtTime(f,t+i*.09);g2.gain.setValueAtTime(0,t);g2.gain.linearRampToValueAtTime(.11,t+.03+i*.09);g2.gain.exponentialRampToValueAtTime(.001,t+.7+i*.09);o2.start(t+i*.09);o2.stop(t+.8+i*.09);});return;}
+    else if(type==='ice'){[0,5,9,14].forEach((s,i)=>{const o2=Ac.createOscillator(),g2=Ac.createGain();o2.connect(g2);g2.connect(Ac.destination);o2.type='sine';const f=880*Math.pow(2,s/12);o2.frequency.setValueAtTime(f*1.5,t+i*.06);o2.frequency.exponentialRampToValueAtTime(f*.5,t+.5);g2.gain.setValueAtTime(0,t);g2.gain.linearRampToValueAtTime(.1,t+.02+i*.06);g2.gain.exponentialRampToValueAtTime(.001,t+.6);o2.start(t+i*.06);o2.stop(t+.65);});return;}
+    else if(type==='roulette'){[0,3,5,7,10,12].forEach((s,i)=>{const o2=Ac.createOscillator(),g2=Ac.createGain();o2.connect(g2);g2.connect(Ac.destination);o2.type='sine';const f=330*Math.pow(2,s/12);o2.frequency.setValueAtTime(f,t+i*.12);g2.gain.setValueAtTime(0,t);g2.gain.linearRampToValueAtTime(.07,t+.02+i*.12);g2.gain.exponentialRampToValueAtTime(.001,t+.16+i*.12);o2.start(t+i*.12);o2.stop(t+.2+i*.12);});return;}
+  }catch(e){}
+}
+
+// ═══ PARTICLES ═══
+const pc=document.getElementById('pc'),px=pc.getContext('2d');let PP=[];
+function iPC(){pc.width=innerWidth;pc.height=innerHeight;}
+const PCOLS={
+  ember:['#FF9966','#FFAA44','#FFF'],flame:['#FF5500','#FF8800','#FFAA44'],
+  blaze:['#FF2200','#FF5500','#FF8800'],inferno:['#CC0000','#FF2200','#FF5500'],
+  phoenix:['#FF8800','#FFCC00','#FFEE88','#FFF'],volcano:['#FF4400','#FF8800','#FFCC00','#FF0000'],
+  magma:['#FF6600','#FFAA00','#FFF'],solar:['#FFCC00','#FFEE88','#FFF','#FF8800'],
+  nova:['#FF0044','#FF6600','#FFCC00','#FFF'],godfire:['#FFF','#FFEE00','#FF8800','#FF2200','#FFAAAA'],
+};
+function spawn(x,y,rar){
+  const cols=PCOLS[rar]||PCOLS.ember;
+  const n={ember:14,flame:24,blaze:38,inferno:48,phoenix:60,volcano:70,magma:75,solar:80,nova:90,godfire:120}[rar]||14;
+  for(let i=0;i<n;i++){
+    const a=Math.random()*Math.PI*2,sp=Math.random()*8+2;
+    PP.push({x,y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-Math.random()*3,
+      r:Math.random()*4.5+2,color:cols[Math.floor(Math.random()*cols.length)],
+      life:1,dec:Math.random()*.022+.012,grav:.17});
+  }
+}
+function drawPP(){
+  px.clearRect(0,0,pc.width,pc.height);PP=PP.filter(p=>p.life>0);
+  PP.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=p.grav;p.vx*=.97;p.life-=p.dec;
+    px.globalAlpha=Math.max(0,p.life);px.fillStyle=p.color;
+    px.beginPath();px.arc(p.x,p.y,p.r,0,Math.PI*2);px.fill();
+  });px.globalAlpha=1;
+}
+
+// ═══ STARFIELD (FIRE EMBERS) ═══
+const sf=document.getElementById('starfield'),sx=sf.getContext('2d');let STARS=[];
+function initStars(){
+  sf.width=innerWidth;sf.height=innerHeight;STARS=[];
+  for(let i=0;i<120;i++)STARS.push({
+    x:Math.random()*sf.width,y:Math.random()*sf.height,
+    r:Math.random()*1.8+.3,sp:Math.random()*.006+.002,ph:Math.random()*Math.PI*2,
+    isEmber:Math.random()>.4,vy:-Math.random()*.3-.1,vx:(Math.random()-.5)*.2
+  });
+}
+let ST=0;
+function drawStars(){
+  ST+=.016;sx.clearRect(0,0,sf.width,sf.height);
+  // Fire gradient background
+  const bg=sx.createRadialGradient(sf.width/2,sf.height,0,sf.width/2,sf.height*.3,sf.height);
+  bg.addColorStop(0,'#1A0400');bg.addColorStop(.5,'#0F0200');bg.addColorStop(1,'#080100');
+  sx.fillStyle=bg;sx.fillRect(0,0,sf.width,sf.height);
+  // Draw embers floating up
+  STARS.forEach(s=>{
+    s.y+=s.vy;s.x+=s.vx;
+    if(s.y<-10){s.y=sf.height+10;s.x=Math.random()*sf.width;}
+    const a=s.isEmber?.4+.5*(0.5+0.5*Math.sin(ST*s.sp*30+s.ph)):.3+.4*(0.5+0.5*Math.sin(ST*s.sp*15+s.ph));
+    const col=s.isEmber?`rgba(255,${Math.floor(80+Math.sin(ST*s.sp*20+s.ph)*60)},20,${a})`:`rgba(255,200,100,${a*.6})`;
+    sx.beginPath();sx.arc(s.x,s.y,s.r,0,Math.PI*2);sx.fillStyle=col;sx.fill();
+  });
+}
+
+// ═══ FORMAT ═══
+function ff(n){
+  if(n===Infinity||n==='∞')return '∞';n=Math.floor(n);
+  if(n>=1e15)return(n/1e15).toFixed(1)+'Qa';if(n>=1e12)return(n/1e12).toFixed(1)+'T';
+  if(n>=1e9)return(n/1e9).toFixed(2)+'B';if(n>=1e6)return(n/1e6).toFixed(1)+'M';
+  if(n>=1e3)return(n/1e3).toFixed(1)+'K';return n+'';
+}
+let ttmr;
+function toast(msg){const el=document.getElementById('tst');el.textContent=msg;el.classList.add('on');clearTimeout(ttmr);ttmr=setTimeout(()=>el.classList.remove('on'),2600);}
+function floatT(txt,x,y){const el=document.createElement('div');el.className='ft';el.textContent=txt;el.style.cssText='left:'+(x-14)+'px;top:'+y+'px;color:var(--acc2)';document.body.appendChild(el);setTimeout(()=>el.remove(),950);}
+
+// ═══ MAIN LOOP ═══
+let frame=0;
+function loop(){
+  frame++;drawStars();drawPP();
+  if(frame%60===0){tickEvents();tickDiamonds();updateEvtBanner();refresh();}
+  requestAnimationFrame(loop);
+}
+
+// ═══ INIT ═══
+window.addEventListener('resize',()=>{iPC();initStars();});
+iPC();initStars();load();refresh();drawRoulette(0);
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>
